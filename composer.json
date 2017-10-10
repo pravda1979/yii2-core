@@ -1,0 +1,21 @@
+{
+    "name": "pravda1979/yii2-core",
+    "description": "Core Module",
+    "type": "yii2-extension",
+    "keywords": ["yii2","extension","core"],
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Pravda Aleksei",
+            "email": "pravda.aleksei@gmail.com"
+        }
+    ],
+    "require": {
+        "yiisoft/yii2": "*"
+    },
+    "autoload": {
+        "psr-4": {
+            "pravda1979\\core\\": ""
+        }
+    }
+}
