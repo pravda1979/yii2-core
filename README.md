@@ -41,8 +41,19 @@ Add to console/config/main.php
         'authManager' => [
             'class' => 'yii\rbac\DbManager',
         ],
+    ],
+    'controllerMap' => [
         //...
-    ];
+        'migrate' => [
+            'class' => 'yii\console\controllers\MigrateController',
+            'templateFile' => '@pravda1979/core/components/migration/template.php',
+            'migrationPath' => [
+                '@pravda1979/core/migrations',
+                '@console/migrations',
+                '@yii/rbac/migrations',
+            ],
+        ],
+    ],    
 
 Add to backend/config/main.php
 
@@ -51,8 +62,8 @@ Add to backend/config/main.php
         'core' => [
             'class' => 'pravda1979\core\Module',
             'useLteAdminTheme' => true, // or false, if you want to use yii bootsrap theme
+            'skin' => 'skin-blue, // default
         ],
-        //...
     ],
     'components' => [
         //...
@@ -61,7 +72,6 @@ Add to backend/config/main.php
             'enableAutoLogin' => true,
             'identityCookie' => ['name' => '_identity-backend', 'httpOnly' => true],
         ],
-        //...
     ],
 
         
