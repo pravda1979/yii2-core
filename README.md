@@ -1,6 +1,15 @@
 Core Module
 ===========
-Core Module
+Include:
+- Users
+- Messages Translates in database
+- Statuses of records
+- LTE Admin template
+- Gii template
+- Migration template
+- Actions (index, create, update, view, delete)
+- StringValidator
+
 
 Installation
 ------------
@@ -24,8 +33,6 @@ to the require section of your `composer.json` file.
 
 Usage
 -----
-
-Once the extension is installed, simply use it in your code by  :
 
 ```php
 <?= \pravda1979\core\AutoloadExample::widget(); ?>```
