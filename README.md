@@ -9,6 +9,7 @@ Include:
 - Migration template
 - Actions (index, create, update, view, delete)
 - StringValidator
+- EntryMenu widget
 
 
 Installation

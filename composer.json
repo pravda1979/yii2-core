@@ -14,6 +14,9 @@
         "yiisoft/yii2": "*",
         "dmstr/yii2-adminlte-asset": "2.6.2"
     },
+    "extra": {
+        "bootstrap": "pravda1979\\core\\Module"
+    },
     "autoload": {
         "psr-4": {
             "pravda1979\\core\\": ""
