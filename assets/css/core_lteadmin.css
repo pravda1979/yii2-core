@@ -1,0 +1,12 @@
+body {
+    overflow-y: scroll !important;
+}
+
+.wrapper {
+    overflow-y: hidden !important;
+}
+
+.sidebar-menu ul li a {
+    white-space: normal;
+    word-wrap: break-word;
+}

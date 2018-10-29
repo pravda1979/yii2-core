@@ -31,9 +31,40 @@ or add
 
 to the require section of your `composer.json` file.
 
+Add to project config:
+----------------------
 
+Add to console/config/main.php
+
+    'components' => [
+        //...
+        'authManager' => [
+            'class' => 'yii\rbac\DbManager',
+        ],
+        //...
+    ];
+
+Add to backend/config/main.php
+
+    'modules' => [
+        //...
+        'core' => [
+            'class' => 'pravda1979\core\Module',
+            'useLteAdminTheme' => true, // or false, if you want to use yii bootsrap theme
+        ],
+        //...
+    ],
+    'components' => [
+        //...
+        'user' => [
+            'identityClass' => 'pravda1979\core\models\User',
+            'enableAutoLogin' => true,
+            'identityCookie' => ['name' => '_identity-backend', 'httpOnly' => true],
+        ],
+        //...
+    ],
+
+        
 Usage
 -----
 
-```php
-<?= \pravda1979\core\AutoloadExample::widget(); ?>```
