@@ -3,7 +3,6 @@
 namespace pravda1979\core\components\core;
 
 use Yii;
-use pravda1979\core\components\core\Controller;
 use yii\filters\VerbFilter;
 
 /**
@@ -19,14 +18,14 @@ class DataController extends Controller
      */
     public function behaviors()
     {
-        return [
+        return array_merge(parent::behaviors(), [
             'verbs' => [
                 'class' => VerbFilter::className(),
                 'actions' => [
-                    'delete' => ['POST'],
+                    'delete' => ['post'],
                 ],
             ],
-        ];
+        ]);
     }
 
     public function actions()
@@ -35,22 +34,27 @@ class DataController extends Controller
             'index' => [
                 'class' => 'pravda1979\core\components\actions\IndexAction',
                 'searchModelClass' => $this::searchModelClass,
+                'checkAccess' => [$this, 'checkAccess'],
             ],
             'create' => [
                 'class' => 'pravda1979\core\components\actions\CreateAction',
                 'modelClass' => $this::modelClass,
+                'checkAccess' => [$this, 'checkAccess'],
             ],
             'update' => [
                 'class' => 'pravda1979\core\components\actions\UpdateAction',
                 'modelClass' => $this::modelClass,
+                'checkAccess' => [$this, 'checkAccess'],
             ],
             'view' => [
                 'class' => 'pravda1979\core\components\actions\ViewAction',
                 'modelClass' => $this::modelClass,
+                'checkAccess' => [$this, 'checkAccess'],
             ],
             'delete' => [
                 'class' => 'pravda1979\core\components\actions\DeleteAction',
                 'modelClass' => $this::modelClass,
+                'checkAccess' => [$this, 'checkAccess'],
             ],
         ];
     }

@@ -72,4 +72,20 @@ class Message extends \pravda1979\core\components\core\ActiveRecord
     {
         return new \pravda1979\core\queries\MessageQuery(get_called_class());
     }
+
+    /**
+     * @inheritdoc
+     */
+    public static function getFullNameSql()
+    {
+        return 'translation';
+    }
+
+    /**
+     * @return mixed|string
+     */
+    public function getFullName()
+    {
+        return $this->translation;
+    }
 }

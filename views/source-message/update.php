@@ -7,7 +7,7 @@ use yii\helpers\Html;
 
 $this->title = Yii::t('SourceMessage', 'Updating')  . ': '.  $model->fullName;
 $this->params['breadcrumbs'][] = ['label' => Yii::t('SourceMessage', 'Source Messages'), 'url' => ['index']];
-$this->params['breadcrumbs'][] = ['label' => $model->id, 'url' => ['view', 'id' => $model->id]];
+$this->params['breadcrumbs'][] = ['label' => $model->fullName, 'url' => ['view', 'id' => $model->id]];
 $this->params['breadcrumbs'][] = Yii::t('SourceMessage', 'Updating');
 ?>
 <div class="source-message-update">

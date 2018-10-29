@@ -5,25 +5,25 @@ use pravda1979\core\components\migration\Migration;
 class m181025_220108_status extends Migration
 {
     public $table_name = 'status';
-    public $route = 'status';
+    public $route = 'core/status';
     public $parents = [
-        '$route: editor' => '$route: viewer',
-        '$route: admin' => '$route: editor',
-        'viewer' => '$route: viewer',
-        'editor' => '$route: editor',
-        'admin' => '$route: admin',
+        'Status: editor' => 'Status: viewer',
+        'Status: admin' => 'Status: editor',
+        'viewer' => 'Status: viewer',
+        'editor' => 'Status: editor',
+        'admin' => 'Status: admin',
     ];
     public $actions = [
-        '$route: viewer' => [
+        'Status: viewer' => [
             'index',
             'view',
             'autocomplete',
         ],
-        '$route: editor' => [
+        'Status: editor' => [
             'create',
             'update',
         ],
-        '$route: admin' => [
+        'Status: admin' => [
             'delete',
         ],
     ];

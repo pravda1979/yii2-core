@@ -2,7 +2,8 @@
 
 use yii\helpers\Html;
 use yii\grid\GridView;
-use yii\widgets\Pjax;use pravda1979\core\models\Status;
+use yii\widgets\Pjax;
+use pravda1979\core\models\Status;
 use pravda1979\core\models\User;
 
 /* @var $this yii\web\View */
@@ -29,13 +30,13 @@ $this->params['breadcrumbs'][] = $this->title;
 
                 // 'id',
                 'username',
-                'auth_key',
-                'password_hash',
-                'password_reset_token',
-               // 'email:email',
-               // 'name',
-               // 'user_state',
-               // 'note:ntext',
+                'name',
+//                'auth_key',
+//                'password_hash',
+//                'password_reset_token',
+                'email:email',
+                'note:ntext',
+                'user_state:boolean',
                 // [
                 //     'attribute' => 'status_id',
                 //     'value' => 'status.fullName',

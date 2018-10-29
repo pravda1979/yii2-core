@@ -10,11 +10,10 @@ namespace pravda1979\core\components\actions;
 
 use pravda1979\core\components\core\ActiveRecord;
 use Yii;
-use yii\base\Action;
 use yii\base\InvalidConfigException;
 use yii\web\NotFoundHttpException;
 
-class ViewAction extends Action
+class ViewAction extends \pravda1979\core\components\core\Action
 {
     /**
      * @var string the model class name. This property must be set.
@@ -36,6 +35,10 @@ class ViewAction extends Action
     {
         /** @var ActiveRecord $model */
         $model = $this->findModel($id);
+
+        if ($this->checkAccess) {
+            call_user_func($this->checkAccess, $this->id, $model);
+        }
 
         return $this->controller->render('view', [
             'model' => $model,

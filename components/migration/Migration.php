@@ -26,7 +26,7 @@ class Migration extends \yii\db\Migration
      */
     public function getTranslates($translates = [])
     {
-        $className = Inflector::id2camel($this->route);
+        $className = Inflector::classify($this->table_name);
         $classesName = Inflector::pluralize($className);
 
         $singular = $this->modelNames['singular'];

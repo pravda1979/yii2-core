@@ -14,7 +14,7 @@ use pravda1979\core\models\User;
     <?php $form = ActiveForm::begin(); ?>
     <div class="box-body table-responsive">
 
-        <?= $form->field($model, 'language')->textInput(['maxlength' => true]) ?>
+        <?php //echo $form->field($model, 'language')->textInput(['maxlength' => true]) ?>
 
         <?= $form->field($model, 'translation')->textarea(['rows' => 6]) ?>
 

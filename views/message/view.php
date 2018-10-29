@@ -22,7 +22,7 @@ $this->params['breadcrumbs'][] = $this->title;
             'model' => $model,
             'attributes' => [
                 'id',
-                'language',
+//                'language',
                 'translation:ntext',
             ],
         ]) ?>

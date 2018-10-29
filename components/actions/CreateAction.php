@@ -8,9 +8,9 @@
 
 namespace pravda1979\core\components\actions;
 
+use pravda1979\core\components\core\Action;
 use pravda1979\core\components\core\ActiveRecord;
 use Yii;
-use yii\base\Action;
 use yii\base\InvalidConfigException;
 
 class CreateAction extends Action
@@ -32,6 +32,10 @@ class CreateAction extends Action
     {
         /** @var ActiveRecord $model */
         $model = new $this->modelClass;
+
+        if ($this->checkAccess) {
+            call_user_func($this->checkAccess, $this->id);
+        }
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             return $this->controller->redirect(['view', 'id' => $model->id]);

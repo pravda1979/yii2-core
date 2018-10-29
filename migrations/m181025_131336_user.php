@@ -5,25 +5,23 @@ use pravda1979\core\components\migration\Migration;
 class m181025_131336_user extends Migration
 {
     public $table_name = 'user';
-    public $route = 'user';
+    public $route = 'core/user';
     public $parents = [
-        '$route: editor' => '$route: viewer',
-        '$route: admin' => '$route: editor',
-        'viewer' => '$route: viewer',
-        'editor' => '$route: editor',
-        'admin' => '$route: admin',
+        'User: editor' => 'User: viewer',
+        'User: admin' => 'User: editor',
+        'admin' => 'User: admin',
     ];
     public $actions = [
-        '$route: viewer' => [
+        'User: viewer' => [
             'index',
             'view',
             'autocomplete',
         ],
-        '$route: editor' => [
+        'User: editor' => [
             'create',
             'update',
         ],
-        '$route: admin' => [
+        'User: admin' => [
             'delete',
         ],
     ];
@@ -84,20 +82,61 @@ class m181025_131336_user extends Migration
 
             $this->addForeignKey("{{%fk_" . "user_id" . "_$this->table_name}}", "{{%$this->table_name}}", "[[user_id]]", "{{%user}}", "[[id]]");
 
-            $this->insert('{{%user}}', [
-                'id' => 1,
-                'username' => 'admin',
-                'name' => 'Администратор',
-                'email' => 'admin@example.com',
-                'auth_key' => Yii::$app->security->generateRandomString(),
-                'password_hash' => Yii::$app->security->generatePasswordHash('admin'),
-                'user_state' => 1,
-                'status_id' => 1,
-                'user_id' => 1,
-                'created_at' => new \yii\db\Expression('NOW()'),
-                'updated_at' => new \yii\db\Expression('NOW()'),
+            $this->batchInsert('{{%user}}', ['id', 'username', 'name', 'email', 'auth_key', 'password_hash', 'user_state', 'status_id', 'user_id', 'created_at', 'updated_at',], [
+                [
+                    1,
+                    'admin',
+                    'Администратор',
+                    'admin@example.com',
+                    Yii::$app->security->generateRandomString(),
+                    Yii::$app->security->generatePasswordHash('admin'),
+                    1,
+                    1,
+                    1,
+                    new \yii\db\Expression('NOW()'),
+                    new \yii\db\Expression('NOW()'),
+                ],
+                [
+                    2,
+                    'editor',
+                    'Редактор',
+                    'editor@example.com',
+                    Yii::$app->security->generateRandomString(),
+                    Yii::$app->security->generatePasswordHash('editor'),
+                    1,
+                    1,
+                    1,
+                    new \yii\db\Expression('NOW()'),
+                    new \yii\db\Expression('NOW()'),
+                ],
+                [
+                    3,
+                    'viewer',
+                    'Зритель',
+                    'viewer@example.com',
+                    Yii::$app->security->generateRandomString(),
+                    Yii::$app->security->generatePasswordHash('viewer'),
+                    1,
+                    1,
+                    1,
+                    new \yii\db\Expression('NOW()'),
+                    new \yii\db\Expression('NOW()'),
+                ],
             ]);
         }
+
+        $admin = $this->getRole('admin');
+        $editor = $this->getRole('editor');
+        $viewer = $this->getRole('viewer');
+
+        $authManager = Yii::$app->authManager;
+
+        if ($authManager->getAssignment('admin', 1) === null)
+            $authManager->assign($admin, 1);
+        if ($authManager->getAssignment('editor', 2) === null)
+            $authManager->assign($editor, 2);
+        if ($authManager->getAssignment('viewer', 3) === null)
+            $authManager->assign($viewer, 3);
 
         $this->createTranslates();
         $this->createRbac();

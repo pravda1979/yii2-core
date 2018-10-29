@@ -49,17 +49,17 @@ use pravda1979\core\models\User;
 
                     <?= $form->field($model, 'username')->textInput(['maxlength' => true]) ?>
 
-                    <?= $form->field($model, 'auth_key')->textInput(['maxlength' => true]) ?>
+                    <?php //echo $form->field($model, 'auth_key')->textInput(['maxlength' => true]) ?>
 
-                    <?= $form->field($model, 'password_hash')->textInput(['maxlength' => true]) ?>
+                    <?php //echo $form->field($model, 'password_hash')->textInput(['maxlength' => true]) ?>
 
-                    <?= $form->field($model, 'password_reset_token')->textInput(['maxlength' => true]) ?>
+                    <?php //echo $form->field($model, 'password_reset_token')->textInput(['maxlength' => true]) ?>
 
                     <?= $form->field($model, 'email')->textInput(['maxlength' => true]) ?>
 
                     <?= $form->field($model, 'name')->textInput(['maxlength' => true]) ?>
 
-                    <?= $form->field($model, 'user_state')->textInput() ?>
+                    <?= $form->field($model, 'user_state')->dropDownList(['1' => 'Да', '0' => 'Нет'], ['prompt' => '']) ?>
 
                     <?= $form->field($model, 'note')->textarea(['rows' => 6]) ?>
 

@@ -10,7 +10,7 @@ Include:
 - Actions (index, create, update, view, delete)
 - StringValidator
 - EntryMenu widget
-
+- checkAccess
 
 Installation
 ------------

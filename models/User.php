@@ -5,6 +5,7 @@ namespace pravda1979\core\models;
 use Yii;
 use pravda1979\core\components\validators\StringFilter;
 use yii\base\NotSupportedException;
+use yii\helpers\ArrayHelper;
 use yii\web\IdentityInterface;
 
 /**
@@ -34,6 +35,8 @@ class User extends \pravda1979\core\components\core\ActiveRecord implements Iden
     const STATE_DELETED = 0;
     const STATE_ACTIVE = 1;
 
+    private $_userRights = [];
+
     /**
      * {@inheritdoc}
      */
@@ -62,6 +65,7 @@ class User extends \pravda1979\core\components\core\ActiveRecord implements Iden
             [['password_reset_token'], 'unique'],
             [['status_id'], 'exist', 'skipOnError' => true, 'targetClass' => Status::className(), 'targetAttribute' => ['status_id' => 'id']],
             [['user_id'], 'exist', 'skipOnError' => true, 'targetClass' => User::className(), 'targetAttribute' => ['user_id' => 'id']],
+            [['userRights'], 'safe'],
         ];
     }
 
@@ -110,7 +114,7 @@ class User extends \pravda1979\core\components\core\ActiveRecord implements Iden
     {
         return $this->hasOne(Status::className(), ['id' => 'status_id']);
     }
-    
+
     /**
      * {@inheritdoc}
      * @return \pravda1979\core\queries\UserQuery the active query used by this AR class.
@@ -258,4 +262,70 @@ class User extends \pravda1979\core\components\core\ActiveRecord implements Iden
     {
         $this->password_reset_token = null;
     }
+
+    public function getUserRights($fromDB = false)
+    {
+        $result = $this->_userRights;
+        if (empty($result) || $fromDB == true) {
+            $authManager = Yii::$app->authManager;
+            $roles = $authManager->getRolesByUser($this->id);
+            $result = ArrayHelper::getColumn($roles, 'name');
+            if ($fromDB == false)
+                $this->_userRights = $result;
+        }
+        return $result;
+    }
+
+    public function setUserRights($rights)
+    {
+        $this->_userRights = $rights;
+    }
+
+    public static function getListUserRights()
+    {
+        $result = [];
+        $authManager = Yii::$app->authManager;
+        $roles = $authManager->getRoles();
+        foreach ($roles as $role) {
+            $result[$role->name] = Yii::t('role', $role->name);
+        }
+        asort($result);
+        return $result;
+    }
+
+    public function assignUserRights()
+    {
+        $authManager = Yii::$app->authManager;
+
+        // Delete old from post
+        foreach ($this->getUserRights(true) as $right) {
+            if (!in_array($right, $this->_userRights) && $authManager->getAssignment($right, $this->id) != null) {
+                $role = $authManager->getRole($right);
+                $authManager->revoke($role, $this->id);
+            }
+        }
+
+        //Save from post
+        foreach ($this->_userRights as $right) {
+            $role = $authManager->getRole($right);
+            if ($role !== null) {
+                if ($authManager->getAssignment($role->name, $this->id) === null)
+                    $authManager->assign($role, $this->id);
+            }
+        }
+
+        return $this->getListUserRights();
+    }
+
+    /**
+     * @inheritdoc
+     * @param bool $insert
+     * @param array $changedAttributes
+     */
+    public function afterSave($insert, $changedAttributes)
+    {
+        $this->assignUserRights();
+        parent::afterSave($insert, $changedAttributes);
+    }
+
 }

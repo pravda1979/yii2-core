@@ -23,12 +23,12 @@ $this->params['breadcrumbs'][] = $this->title;
             'attributes' => [
                 'id',
                 'username',
-                'auth_key',
-                'password_hash',
-                'password_reset_token',
+//                'auth_key',
+//                'password_hash',
+//                'password_reset_token',
                 'email:email',
                 'name',
-                'user_state',
+                'user_state:boolean',
                 'note:ntext',
                 [
                     'attribute' => 'status_id',

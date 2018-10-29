@@ -32,7 +32,6 @@ class Module extends \yii\base\Module
      */
     public function init()
     {
-//        Yii::warning(2);
         parent::init();
 
         Yii::$app->user->loginUrl = ['/user/login'];

@@ -10,11 +10,10 @@ namespace pravda1979\core\components\actions;
 
 use pravda1979\core\components\core\ActiveRecord;
 use Yii;
-use yii\base\Action;
 use yii\base\InvalidConfigException;
 use yii\web\NotFoundHttpException;
 
-class UpdateAction extends Action
+class UpdateAction extends \pravda1979\core\components\core\Action
 {
     public $modelClass = '';
 
@@ -34,6 +33,10 @@ class UpdateAction extends Action
         /** @var ActiveRecord $model */
 
         $model = $this->findModel($id);
+
+        if ($this->checkAccess) {
+            call_user_func($this->checkAccess, $this->id, $model);
+        }
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             return $this->controller->redirect(['view', 'id' => $model->id]);
