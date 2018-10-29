@@ -4,7 +4,7 @@ use pravda1979\core\components\migration\Migration;
 
 class m181025_131336_user extends Migration
 {
-    public $table_name = 'core_user';
+    public $table_name = 'user';
     public $route = 'user';
     public $parents = [
         '$route: editor' => '$route: viewer',
@@ -82,9 +82,9 @@ class m181025_131336_user extends Migration
                 'updated_at' => $this->timestamp()->defaultValue(null),
             ], $tableOptions);
 
-            $this->addForeignKey("{{%fk_" . "user_id" . "_$this->table_name}}", "{{%$this->table_name}}", "[[user_id]]", "{{%core_user}}", "[[id]]");
+            $this->addForeignKey("{{%fk_" . "user_id" . "_$this->table_name}}", "{{%$this->table_name}}", "[[user_id]]", "{{%user}}", "[[id]]");
 
-            $this->insert('{{%core_user}}', [
+            $this->insert('{{%user}}', [
                 'id' => 1,
                 'username' => 'admin',
                 'name' => 'Администратор',

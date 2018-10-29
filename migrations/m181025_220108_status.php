@@ -78,7 +78,7 @@ class m181025_220108_status extends Migration
                 'updated_at' => $this->timestamp()->defaultValue(null),
             ], $tableOptions);
 
-            $this->addForeignKey("{{%fk_" . "user_id" . "_$this->table_name}}", "{{%$this->table_name}}", "[[user_id]]", "{{%core_user}}", "[[id]]");
+            $this->addForeignKey("{{%fk_" . "user_id" . "_$this->table_name}}", "{{%$this->table_name}}", "[[user_id]]", "{{%user}}", "[[id]]");
             $this->addForeignKey("{{%fk_" . "status_id" . "_$this->table_name}}", "{{%$this->table_name}}", "[[status_id]]", "{{%status}}", "[[id]]");
 
             $this->createIndex("{{%ix_" . "is_default" . "_$this->table_name}}", "{{%$this->table_name}}", "[[is_default]]");
@@ -91,7 +91,7 @@ class m181025_220108_status extends Migration
             ]);
 
             // Добавляем связь для поля "status_id" в таблице "user"
-            $this->addForeignKey("{{%fk_" . "status_id" . "_user}}", "{{%core_user}}", "[[status_id]]", "{{%status}}", "[[id]]");
+            $this->addForeignKey("{{%fk_" . "status_id" . "_user}}", "{{%user}}", "[[status_id]]", "{{%status}}", "[[id]]");
         }
 
         $this->createTranslates();
@@ -101,7 +101,7 @@ class m181025_220108_status extends Migration
     public function safeDown()
     {
         // Удаляем связь для поля "status_id" в таблице "user"
-        $this->dropForeignKey("{{%fk_" . "status_id" . "_user}}", "{{%core_user}}");
+        $this->dropForeignKey("{{%fk_" . "status_id" . "_user}}", "{{%user}}");
 
         if ($this->db->schema->getTableSchema("{{%$this->table_name}}", true) != null)
             $this->dropTable("{{%$this->table_name}}");

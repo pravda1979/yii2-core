@@ -39,7 +39,7 @@ class User extends \pravda1979\core\components\core\ActiveRecord implements Iden
      */
     public static function tableName()
     {
-        return '{{%core_user}}';
+        return '{{%user}}';
     }
 
     /**
