@@ -212,6 +212,14 @@ For add Gii template, add in config
             ],
         ],
     ];
+Base classes for Gii template:
+
+```
+- pravda1979\core\components\core\ActiveRecord
+- pravda1979\core\components\core\ActiveQuery
+- pravda1979\core\components\core\DataController
+```
+
                             
 Usage
 -----
