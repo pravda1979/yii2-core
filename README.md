@@ -62,7 +62,7 @@ Add to backend/config/main.php
         'core' => [
             'class' => 'pravda1979\core\Module',
             'useLteAdminTheme' => true, // or false, if you want to use yii bootsrap theme
-            'skin' => 'skin-blue, // default
+            'skin' => 'skin-blue', // default
         ],
     ],
     'components' => [
@@ -74,7 +74,38 @@ Add to backend/config/main.php
         ],
     ],
 
+Add to common/config/main.php
+
+    'language' => 'ru-RU',
+    'sourceLanguage' => 'en-US',
+    //...
+    'components' => [
+        //...
+        'i18n' => [
+            'translations' => [
+                'app*' => [
+                    'class' => 'yii\i18n\DbMessageSource',
+                    'sourceMessageTable' => '{{%source_message}}',
+                    'messageTable' => '{{%message}}',
+                    // 'enableCaching' => true,
+                    // 'cachingDuration' => 60*60*24,
+                    'forceTranslation' => true,
+                    'on missingTranslation' => ['pravda1979\core\components\core\TranslationEventHandler', 'addMissingTranslation'],
+                ],
+                '*' => [
+                    'class' => 'yii\i18n\DbMessageSource',
+                    'sourceMessageTable' => '{{%source_message}}',
+                    'messageTable' => '{{%message}}',
+                    // 'enableCaching' => true,
+                    // 'cachingDuration' => 60*60*24,
+                    'forceTranslation' => true,
+                    'on missingTranslation' => ['pravda1979\core\components\core\TranslationEventHandler', 'addMissingTranslation'],
+                ],
+            ],
+        ],
+    ],
         
+                
 Usage
 -----
 
