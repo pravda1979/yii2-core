@@ -38,7 +38,7 @@ class CreateAction extends Action
         }
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->controller->redirect(['view', 'id' => $model->id]);
+            return $this->controller->goBack(['view', 'id' => $model->id]);
         }
 
         return $this->controller->render('create', [

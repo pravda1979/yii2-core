@@ -40,8 +40,7 @@ class DeleteAction extends \pravda1979\core\components\core\Action
 
         $model->delete();
 
-        return $this->controller->redirect(['index']);
-
+        return $this->controller->goBack(['index']);
     }
 
     /**

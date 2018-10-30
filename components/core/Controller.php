@@ -4,6 +4,7 @@ namespace pravda1979\core\components\core;
 
 use pravda1979\core\models\User;
 use Yii;
+use yii\helpers\Url;
 use yii\web\ForbiddenHttpException;
 
 class Controller extends \yii\web\Controller
@@ -49,5 +50,23 @@ class Controller extends \yii\web\Controller
 
         $this->denyAccess($user);
         return false;
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function afterAction($action, $result)
+    {
+//        Yii::warning('afterAction', 'Controller');
+//        Yii::warning($action instanceof Action);
+//        Yii::warning(Url::current(),'Url::current()');
+//        Yii::warning(Yii::$app->getRequest()->getUrl(),'Yii::$app->getRequest()->getUrl()');
+
+        // Remember current url for goBack() function after create/update/delete record
+        if (!$action instanceof Action) {
+            Url::remember();
+        }
+
+        return parent::afterAction($action, $result);
     }
 }

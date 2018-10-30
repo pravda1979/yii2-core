@@ -11,6 +11,7 @@ namespace pravda1979\core\components\actions;
 use pravda1979\core\components\core\Action;
 use Yii;
 use yii\base\InvalidConfigException;
+use yii\helpers\Url;
 
 class IndexAction extends Action
 {
@@ -36,6 +37,7 @@ class IndexAction extends Action
         $searchModel = new $this->searchModelClass;
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
+        Url::remember();
         return $this->controller->render('index', [
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,

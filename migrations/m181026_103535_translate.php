@@ -11,8 +11,8 @@ class m181026_103535_translate extends Migration
     {
         $translates = [
             'ru-RU' => [
-                'menu' => [
-                    'menu' => 'Меню',
+                'menu.main' => [
+                    'menu.main' => 'Главное меню',
                 ],
                 'models' => [
                     'models' => 'Модели',
@@ -29,6 +29,9 @@ class m181026_103535_translate extends Migration
                     'Cancel' => 'Отмена',
                     'Search' => 'Поиск',
                     'Find' => 'Найти',
+                    'Deleted record' => 'Удаленная запись',
+                    'Draft record' => 'Черновик',
+                    'Active record' => 'Активная запись',
                 ],
                 'LoginForm' => [
                     'LoginForm' => 'Форма входа',

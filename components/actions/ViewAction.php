@@ -11,6 +11,7 @@ namespace pravda1979\core\components\actions;
 use pravda1979\core\components\core\ActiveRecord;
 use Yii;
 use yii\base\InvalidConfigException;
+use yii\helpers\Url;
 use yii\web\NotFoundHttpException;
 
 class ViewAction extends \pravda1979\core\components\core\Action
@@ -40,6 +41,7 @@ class ViewAction extends \pravda1979\core\components\core\Action
             call_user_func($this->checkAccess, $this->id, $model);
         }
 
+        Url::remember();
         return $this->controller->render('view', [
             'model' => $model,
         ]);

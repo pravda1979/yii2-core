@@ -40,10 +40,10 @@ class <?= $className ?> extends Migration
             'delete',
         ],
     ];
-    public $ruNames = [
+    public $modelNames = [
         'singular' => '<?= $modelName ?>',
         'plural' => '<?= $modelsName ?>',
-        'nominative' => '<?= Inflector::camel2id($modelName) ?>', // Винительный падеж (кого, что)
+        'accusative' => '<?= Inflector::camel2id($modelName) ?>', // Винительный падеж (кого, что)
         'genitive' => '<?= Inflector::camel2id($modelName) ?>', // Родительный падеж (кого, чего)
     ];
 

@@ -23,8 +23,10 @@ class Module extends \yii\base\Module
     public $skin = 'skin-blue';
 
     public $urlRules = [
-        '<controller:(user|status|source-message|message)>' => 'core/<controller>/index',
-        '<controller:(user|status|source-message|message)>/<action>' => 'core/<controller>/<action>',
+        '<controller:(user|status|source-message|message|menu)>' => 'core/<controller>/index',
+        '<module>/<controller:(user|status|source-message|message|menu)>' => 'core/<controller>/index',
+        '<controller:(user|status|source-message|message|menu)>' => 'core/<controller>/index',
+        '<controller:(user|status|source-message|message|menu)>/<action>' => 'core/<controller>/<action>',
     ];
 
     /**

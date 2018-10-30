@@ -33,6 +33,7 @@ class SourceMessage extends \pravda1979\core\components\core\ActiveRecord
         return [
             [['category', 'message'], StringFilter::className()],
             [['category', 'message'], 'default', 'value' => null],
+            [['category', 'message'], 'required'],
             [['message'], 'string'],
             [['category'], 'string', 'max' => 255],
         ];

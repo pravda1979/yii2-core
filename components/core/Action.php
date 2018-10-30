@@ -8,6 +8,8 @@
 
 namespace pravda1979\core\components\core;
 
+use Yii;
+
 class Action extends \yii\base\Action
 {
     /**

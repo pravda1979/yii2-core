@@ -49,7 +49,7 @@ use pravda1979\core\models\User;
 
                     <?= $form->field($model, 'language')->textInput(['maxlength' => true]) ?>
 
-                    <?= $form->field($model, 'translation')->textarea(['rows' => 6]) ?>
+                    <?= $form->field($model, 'translation')->textInput() ?>
 
                 </div>
 

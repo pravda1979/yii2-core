@@ -48,11 +48,11 @@ use pravda1979\core\models\User;
 
                     <?= $form->field($model, 'name')->textInput(['maxlength' => true]) ?>
 
-                    <?= $form->field($model, 'fixed_status_id')->textInput() ?>
+                    <?= $form->field($model, 'fixed_status_id')->dropDownList(Status::getListFixedStatus(), ['prompt' => '']) ?>
 
                     <?= $form->field($model, 'is_default')->dropDownList(['1' => 'Да', '0' => 'Нет'], ['prompt' => '']) ?>
 
-                    <?= $form->field($model, 'note')->textarea(['rows' => 6]) ?>
+                    <?= $form->field($model, 'note')->textInput(['rows' => 6]) ?>
 
                     <?= $form->field($model, 'status_id')->dropDownList(Status::getListWithGroup(), ['prompt' => '']) ?>
 

@@ -39,7 +39,7 @@ class Migration extends \yii\db\Migration
                 'models' => [
                     $className => $singular,
                 ],
-                'menu' => [
+                'menu.main' => [
                     Inflector::camel2words($classesName) => $plural,
                 ],
                 'role' => [
