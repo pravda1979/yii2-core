@@ -12,7 +12,7 @@ $this->params['breadcrumbs'][] = Yii::t('Message', 'Updating');
 ?>
 <div class="message-update">
 
-    <?=  \pravda1979\core\widgets\EntryMenu::widget(['template'=>'{index}{create}}{view}{delete}{backup}', 'model' => $model]); ?>
+    <?=  \pravda1979\core\widgets\EntryMenu::widget(['template'=>'{index}{view}{delete}{backup}', 'model' => $model]); ?>
 
     <?= $this->render('_form', [
         'model' => $model,

@@ -4,6 +4,7 @@ use yii\helpers\Html;
 use yii\bootstrap\ActiveForm;
 use pravda1979\core\models\Status;
 use pravda1979\core\models\User;
+use pravda1979\core\models\Menu;
 
 /* @var $this yii\web\View */
 /* @var $model pravda1979\core\searches\MenuSearch */
@@ -53,6 +54,10 @@ use pravda1979\core\models\User;
                     <?= $form->field($model, 'icon')->textInput(['maxlength' => true]) ?>
 
                     <?= $form->field($model, 'url')->textInput(['maxlength' => true]) ?>
+
+                    <?= $form->field($model, 'use_url_helper')->dropDownList(['1' => 'Да', '0' => 'Нет'], ['prompt' => '']) ?>
+
+                    <?= $form->field($model, 'visible')->dropDownList(Menu::getListVisible(), ['prompt' => '']) ?>
 
                     <?= $form->field($model, 'linkOptions')->textarea(['rows' => 6]) ?>
 

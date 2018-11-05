@@ -23,7 +23,10 @@ $this->params['breadcrumbs'][] = $this->title;
             'attributes' => [
                 'id',
                 'name',
-                'fixed_status_id',
+                [
+                    'attribute' => 'fixed_status_id',
+                    'value' => ArrayHelper::getValue($model, 'fixedStatusName'),
+                ],
                 'is_default:boolean',
                 'note:ntext',
                 [

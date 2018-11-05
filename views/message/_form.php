@@ -16,6 +16,10 @@ use pravda1979\core\models\User;
 
         <?php //echo $form->field($model, 'language')->textInput(['maxlength' => true]) ?>
 
+        <?= $form->field($model->sourceMessage, 'translatedCategory')->textInput(['disabled' => 'disabled'])->label($model->sourceMessage->getAttributeLabel('category')) ?>
+
+        <?= $form->field($model->sourceMessage, 'message')->textInput(['disabled' => 'disabled']) ?>
+
         <?= $form->field($model, 'translation')->textInput() ?>
 
     </div>

@@ -4,6 +4,8 @@ use yii\helpers\Html;
 use yii\widgets\ActiveForm;
 use pravda1979\core\models\Status;
 use pravda1979\core\models\User;
+use pravda1979\core\models\Menu;
+
 
 /* @var $this yii\web\View */
 /* @var $model pravda1979\core\models\Menu */
@@ -14,21 +16,47 @@ use pravda1979\core\models\User;
     <?php $form = ActiveForm::begin(); ?>
     <div class="box-body table-responsive">
 
-        <?= $form->field($model, 'menu_id')->textInput(['maxlength' => true]) ?>
+        <div class="row">
+            <div class="col-md-6">
+                <?= $form->field($model, 'menu_id')->textInput(['maxlength' => true]) ?>
+            </div>
+            <div class="col-md-6">
+                <?= $form->field($model, 'parent_id')->dropDownList(Menu::getList(), ['prompt' => '']) ?>
+            </div>
+        </div>
 
-        <?= $form->field($model, 'label')->textInput(['maxlength' => true]) ?>
+        <div class="row">
+            <div class="col-md-6">
+                <?= $form->field($model, 'label')->textInput(['maxlength' => true]) ?>
+            </div>
+            <div class="col-md-6">
+                <?= $form->field($model, 'icon')->textInput(['maxlength' => true]) ?>
+            </div>
+        </div>
 
-        <?= $form->field($model, 'icon')->textInput(['maxlength' => true]) ?>
+        <div class="row">
+            <div class="col-md-4">
+                <?= $form->field($model, 'url')->textInput(['maxlength' => true]) ?>
+            </div>
+            <div class="col-md-4">
+                <?= $form->field($model, 'visible')->dropDownList(Menu::getListVisible(), ['prompt' => '']) ?>
+            </div>
+            <div class="col-md-4">
+                <?= $form->field($model, 'use_url_helper')->checkbox() ?>
+            </div>
+        </div>
 
-        <?= $form->field($model, 'url')->textInput(['maxlength' => true]) ?>
-
-        <?= $form->field($model, 'linkOptions')->textarea(['rows' => 6]) ?>
-
-        <?= $form->field($model, 'position')->textInput() ?>
-
-        <?= $form->field($model, 'level')->textInput() ?>
-
-        <?= $form->field($model, 'parent_id')->textInput() ?>
+        <div class="row">
+            <div class="col-md-6">
+                <?= $form->field($model, 'linkOptions')->textInput() ?>
+            </div>
+            <div class="col-md-3">
+                <?= $form->field($model, 'position')->textInput() ?>
+            </div>
+            <div class="col-md-3">
+                <?= $form->field($model, 'level')->textInput() ?>
+            </div>
+        </div>
 
         <?= $form->field($model, 'note')->textarea(['rows' => 6]) ?>
 

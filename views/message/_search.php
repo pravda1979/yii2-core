@@ -4,6 +4,7 @@ use yii\helpers\Html;
 use yii\bootstrap\ActiveForm;
 use pravda1979\core\models\Status;
 use pravda1979\core\models\User;
+use pravda1979\core\models\SourceMessage;
 
 /* @var $this yii\web\View */
 /* @var $model pravda1979\core\searches\MessageSearch */
@@ -47,7 +48,11 @@ use pravda1979\core\models\User;
 
                     <?= $form->field($model, 'id')->textInput() ?>
 
-                    <?= $form->field($model, 'language')->textInput(['maxlength' => true]) ?>
+                    <?php //echo $form->field($model, 'language')->textInput(['maxlength' => true]) ?>
+
+                    <?= $form->field($model, 'category')->dropDownList(SourceMessage::getListCategories(), ['prompt' => '']) ?>
+
+                    <?= $form->field($model, 'message')->textInput(['maxlength' => true]) ?>
 
                     <?= $form->field($model, 'translation')->textInput() ?>
 

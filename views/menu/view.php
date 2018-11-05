@@ -25,11 +25,19 @@ $this->params['breadcrumbs'][] = $this->title;
                 'menu_id',
                 'label',
                 'icon',
-                'url:url',
+                'url',
+                'use_url_helper:boolean',
+                [
+                    'attribute' => 'visible',
+                    'value' =>$model->getVisibleName(),
+                ],
                 'linkOptions:ntext',
                 'position',
                 'level',
-                'parent_id',
+                [
+                    'attribute' => 'parent_id',
+                    'value' =>$model->getParentLabel(),
+                ],
                 'note:ntext',
                 [
                     'attribute' => 'status_id',

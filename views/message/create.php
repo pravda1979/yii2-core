@@ -12,7 +12,7 @@ $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="message-create">
 
-    <?= \pravda1979\core\widgets\EntryMenu::widget(['template' => '{index}{create}']); ?>
+    <?= \pravda1979\core\widgets\EntryMenu::widget(['template' => '{index}']); ?>
 
     <?= $this->render('_form', [
     'model' => $model,

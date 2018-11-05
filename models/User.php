@@ -88,6 +88,7 @@ class User extends \pravda1979\core\components\core\ActiveRecord implements Iden
             'user_id' => Yii::t('User', 'User ID'),
             'created_at' => Yii::t('User', 'Created At'),
             'updated_at' => Yii::t('User', 'Updated At'),
+            'userRights' => Yii::t('User', 'User Rights'),
         ];
     }
 

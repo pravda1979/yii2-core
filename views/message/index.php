@@ -14,7 +14,7 @@ $this->title = Yii::t('Message', 'Messages');
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 
-<?= \pravda1979\core\widgets\EntryMenu::widget(['template' => '{create}{search}{reset}']); ?>
+<?= \pravda1979\core\widgets\EntryMenu::widget(['template' => '{search}{reset}']); ?>
 
 <div class="message-index box box-primary">
     <?php Pjax::begin(); ?>

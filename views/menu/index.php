@@ -5,6 +5,7 @@ use yii\grid\GridView;
 use yii\widgets\Pjax;
 use pravda1979\core\models\Status;
 use pravda1979\core\models\User;
+use pravda1979\core\models\Menu;
 
 /* @var $this yii\web\View */
 /* @var $searchModel pravda1979\core\searches\MenuSearch */
@@ -30,13 +31,23 @@ $this->params['breadcrumbs'][] = $this->title;
 
                 // 'id',
                 'menu_id',
+                 [
+                     'attribute' => 'parent_id',
+                     'value' => 'parentLabel',
+                     'filter' => Menu::getListExistParents(),
+                 ],
+                 [
+                     'attribute' => 'visible',
+                     'value' => 'visibleName',
+                     'filter' => Menu::getListVisible(),
+                 ],
                 'label',
                 'icon',
-                'url:url',
+                'url',
+               // 'use_url_helper:boolean',
                // 'linkOptions:ntext',
                // 'position',
                // 'level',
-               // 'parent_id',
                // 'note:ntext',
                 // [
                 //     'attribute' => 'status_id',

@@ -30,7 +30,11 @@ $this->params['breadcrumbs'][] = $this->title;
 
                 // 'id',
                 'name',
-                'fixed_status_id',
+                [
+                    'attribute' => 'fixed_status_id',
+                    'value' => 'fixedStatusName',
+                    'filter' => Status::getListFixedStatus(),
+                ],
                 'is_default:boolean',
                 'note:ntext',
                 // [

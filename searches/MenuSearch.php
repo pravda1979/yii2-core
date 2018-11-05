@@ -19,7 +19,7 @@ class MenuSearch extends Menu
     public function rules()
     {
         return [
-            [['id', 'position', 'level', 'parent_id', 'status_id', 'user_id'], 'integer'],
+            [['id', 'use_url_helper', 'visible', 'position', 'level', 'parent_id', 'status_id', 'user_id'], 'integer'],
             [['menu_id', 'label', 'icon', 'url', 'linkOptions', 'note', 'created_at', 'updated_at'], 'safe'],
         ];
     }
@@ -62,6 +62,8 @@ class MenuSearch extends Menu
         // grid filtering conditions
         $query->andFilterWhere([
             'id' => $this->id,
+            'use_url_helper' => $this->use_url_helper,
+            'visible' => $this->visible,
             'position' => $this->position,
             'level' => $this->level,
             'parent_id' => $this->parent_id,

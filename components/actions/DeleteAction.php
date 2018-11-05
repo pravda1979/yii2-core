@@ -56,6 +56,6 @@ class DeleteAction extends \pravda1979\core\components\core\Action
             return $model;
         }
 
-        throw new NotFoundHttpException(Yii::t('User', 'The requested page does not exist.'));
+        throw new NotFoundHttpException(Yii::t('app', 'The requested page does not exist.'));
     }
 }

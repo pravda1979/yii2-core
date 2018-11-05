@@ -19,6 +19,9 @@ class m181026_103535_translate extends Migration
                 ],
                 'role' => [
                     'role' => 'Роль',
+                    'viewer' => ':: Зритель',
+                    'editor' => ':: Редактор',
+                    'admin' => ':: Администратор',
                 ],
                 'app' => [
                     'app' => 'Приложение',
@@ -32,6 +35,7 @@ class m181026_103535_translate extends Migration
                     'Deleted record' => 'Удаленная запись',
                     'Draft record' => 'Черновик',
                     'Active record' => 'Активная запись',
+                    'The requested page does not exist.' => 'Запрашиваемая Вами страница не найдена.',
                 ],
                 'LoginForm' => [
                     'LoginForm' => 'Форма входа',

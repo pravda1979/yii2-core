@@ -48,6 +48,7 @@ class m181025_131336_user extends Migration
                     'Auth Key' => 'Ключ авторизации',
                     'Password Hash' => 'Хэш пароля',
                     'Password Reset Token' => 'Токен сброса пароля',
+                    'User Rights' => 'Права доступа',
                 ],
             ],
         ];
