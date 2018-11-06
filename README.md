@@ -11,6 +11,7 @@ Include:
 - StringValidator
 - EntryMenu widget
 - checkAccess
+- Menus
 
 Installation
 ------------

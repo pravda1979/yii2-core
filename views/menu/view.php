@@ -9,7 +9,7 @@ use pravda1979\core\models\User;
 /* @var $this yii\web\View */
 /* @var $model pravda1979\core\models\Menu */
 
-$this->title = Yii::t('Menu', 'Viewing')  . ': '.  $model->fullName;
+$this->title = Yii::t('Menu', 'Viewing') . ': ' . $model->fullName;
 $this->params['breadcrumbs'][] = ['label' => Yii::t('Menu', 'Menus'), 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 ?>
@@ -24,19 +24,23 @@ $this->params['breadcrumbs'][] = $this->title;
                 'id',
                 'menu_id',
                 'label',
-                'icon',
+                [
+                    'attribute' => 'icon',
+                    'format' => 'html',
+                    'value' => Html::tag('span', ' ' . $model->icon, ['class' => 'fa fa-' . $model->icon, 'title' => $model->icon]),
+                ],
                 'url',
                 'use_url_helper:boolean',
                 [
                     'attribute' => 'visible',
-                    'value' =>$model->getVisibleName(),
+                    'value' => $model->getVisibleName(),
                 ],
                 'linkOptions:ntext',
                 'position',
                 'level',
                 [
                     'attribute' => 'parent_id',
-                    'value' =>$model->getParentLabel(),
+                    'value' => $model->getParentLabel(),
                 ],
                 'note:ntext',
                 [
@@ -45,7 +49,7 @@ $this->params['breadcrumbs'][] = $this->title;
                 ],
                 [
                     'attribute' => 'user_id',
-                    'value' =>  ArrayHelper::getValue($model, 'user.fullName'),
+                    'value' => ArrayHelper::getValue($model, 'user.fullName'),
                 ],
                 'created_at:datetime',
                 'updated_at:datetime',

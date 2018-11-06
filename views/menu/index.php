@@ -31,24 +31,30 @@ $this->params['breadcrumbs'][] = $this->title;
 
                 // 'id',
                 'menu_id',
-                 [
-                     'attribute' => 'parent_id',
-                     'value' => 'parentLabel',
-                     'filter' => Menu::getListExistParents(),
-                 ],
-                 [
-                     'attribute' => 'visible',
-                     'value' => 'visibleName',
-                     'filter' => Menu::getListVisible(),
-                 ],
+                [
+                    'attribute' => 'parent_id',
+                    'value' => 'parentLabel',
+                    'filter' => Menu::getListExistParents(),
+                ],
+                [
+                    'attribute' => 'visible',
+                    'value' => 'visibleName',
+                    'filter' => Menu::getListVisible(),
+                ],
                 'label',
-                'icon',
+                [
+                    'attribute' => 'icon',
+                    'format' => 'html',
+                    'value' => function ($data) {
+                        return Html::tag('span', ' ' . $data->icon, ['class' => 'fa fa-' . $data->icon, 'title' => $data->icon]);
+                    },
+                ],
                 'url',
-               // 'use_url_helper:boolean',
-               // 'linkOptions:ntext',
-               // 'position',
-               // 'level',
-               // 'note:ntext',
+                // 'use_url_helper:boolean',
+                // 'linkOptions:ntext',
+                // 'position',
+                // 'level',
+                // 'note:ntext',
                 // [
                 //     'attribute' => 'status_id',
                 //     'value' => 'status.fullName',
