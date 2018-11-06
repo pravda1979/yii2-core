@@ -101,7 +101,7 @@ class Menu extends \pravda1979\core\components\core\ActiveRecord
      */
     public function getParent()
     {
-        return $this->hasOne(Menu::className(), ['id' => 'parent_id']);
+        return $this->hasOne(Menu::className(), ['id' => 'parent_id'])->inverseOf('children');
     }
 
     /**
@@ -109,7 +109,7 @@ class Menu extends \pravda1979\core\components\core\ActiveRecord
      */
     public function getChildren()
     {
-        return $this->hasMany(Menu::className(), ['parent_id' => 'id']);
+        return $this->hasMany(Menu::className(), ['parent_id' => 'id'])->inverseOf('parent');
     }
 
     /**
@@ -183,7 +183,7 @@ class Menu extends \pravda1979\core\components\core\ActiveRecord
             $tmp = [
                 'label' => Yii::t('menu.main', $item->label),
                 'icon' => $item->icon,
-                'url' => $item->use_url_helper ? Url::to([$item->url]) : $item->url,
+                'url' => $item->use_url_helper ? [$item->url] : $item->url,
                 'visible' => $visible,
                 'active' => (strpos($item->url, Yii::$app->controller->getUniqueId()) !== false),
             ];
@@ -203,8 +203,25 @@ class Menu extends \pravda1979\core\components\core\ActiveRecord
      */
     public static function getMenu($menu_id)
     {
-        $result = static::getMenuItems(['and', ['=', 'menu_id', $menu_id], ['is', 'parent_id', new \yii\db\Expression('null')]]);
+        $key = 'user' . Yii::$app->user->id . ".Menu." . $menu_id;
+        $result = Yii::$app->cache->getOrSet($key, function () use ($menu_id) {
+            return static::getMenuItems(['and', ['=', 'menu_id', $menu_id], ['is', 'parent_id', new \yii\db\Expression('null')]]);
+        });
+        static::setActive($result);
         return $result;
+    }
+
+    public static function setActive(&$menuItems)
+    {
+        foreach ($menuItems as &$item) {
+            $itemUrl = is_array($item['url']) ? $item['url'][0] : $item['url'];
+            if (isset($item['active']))
+                $item['active'] = (strpos($itemUrl . '/', Yii::$app->controller->getUniqueId() . '/') !== false);
+            if (isset($item['items'])) {
+                static::setActive($item['items']);
+                $item['active'] = (array_search(true, ArrayHelper::getColumn($item['items'], 'active')) !== false);
+            }
+        }
     }
 
     /**

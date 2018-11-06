@@ -2,12 +2,33 @@
 
 namespace pravda1979\core\controllers;
 
-use pravda1979\core\components\core\Controller;
+use Yii;
+use pravda1979\core\components\core\BackupController;
+use yii\web\ForbiddenHttpException;
 
 /**
  * Default controller for the `core` module
  */
-class DefaultController extends Controller
+class DefaultController extends BackupController
 {
+    /**
+     * Очищает весь кэш
+     * @return \yii\web\Response
+     * @throws ForbiddenHttpException
+     */
+    public function actionDeleteCache()
+    {
+        if (Yii::$app->user->can('admin')) {
+            Yii::$app->cache->flush();
+            Yii::$app->getSession()->addFlash('success', "Кэш очищен.");
 
+            if (Yii::$app->request->referrer == Yii::$app->request->absoluteUrl) {
+                return $this->goBack();
+            } else {
+                return $this->redirect(Yii::$app->request->referrer);
+            }
+        } else {
+            throw new ForbiddenHttpException(Yii::t('yii', 'You are not allowed to perform this action.'));
+        }
+    }
 }

@@ -66,6 +66,7 @@ class m181030_164117_menu extends Migration
                     'dirs' => 'Справочники',
                     'data' => 'Данные',
                     'instruments' => 'Инструменты',
+                    'Delete cache' => 'Очистить кеш',
                 ],
             ],
         ];
@@ -110,17 +111,18 @@ class m181030_164117_menu extends Migration
 // $VISIBLE_CHECK_ACCESS = 1; $VISIBLE_GUEST = 10; $VISIBLE_AUTHORIZED = 20; $VISIBLE_ADMIN = 30;
 // $VISIBLE_ALWAYS = 40; $VISIBLE_NEVER = 50; $VISIBLE_HAS_CHILDREN = 60;
 // data=>1; dirs=>2; admin=>3; instruments=>8;
-            $this->batchInsert('{{%' . $this->table_name . '}}', ['id', 'use_url_helper', 'visible', 'menu_id', 'label', 'icon', 'url', 'parent_id', 'level', 'status_id', 'user_id'], [
-                [1, 1, 60, 'menu.main', 'data', 'files-o', null, null, 0, 1, 1],
-                [2, 1, 60, 'menu.main', 'dirs', 'book', null, null, 0, 1, 1],
-                [3, 1, 60, 'menu.main', 'admin', 'key', null, null, 0, 1, 1],
-                [4, 1, 1, 'menu.main', 'Users', 'users', '/core/user/index', 3, 1, 1, 1],
-                [5, 1, 1, 'menu.main', 'Statuses', null, '/core/status/index', 3, 1, 1, 1],
-                [6, 1, 1, 'menu.main', 'Messages', null, '/core/message/index', 3, 1, 1, 1],
-                [7, 1, 1, 'menu.main', 'Menus', null, '/core/menu/index', 3, 1, 1, 1],
-                [8, 1, 60, 'menu.main', 'instruments', 'wrench', null, 3, 1, 1, 1],
-                [9, 1, 30, 'menu.main', 'Gii', null, '/gii', 8, 2, 1, 1],
-                [10, 0, 30, 'menu.main', 'phpMyAdmin', null, '/tools/phpMyAdmin', 8, 2, 1, 1],
+            $this->batchInsert('{{%' . $this->table_name . '}}', ['id', 'use_url_helper', 'visible', 'menu_id', 'label', 'icon', 'url', 'parent_id', 'level', 'status_id', 'user_id', 'updated_at'], [
+                [1, 1, 60, 'menu.main', 'data', 'files-o', null, null, 0, 1, 1, new \yii\db\Expression('NOW()')],
+                [2, 1, 60, 'menu.main', 'dirs', 'book', null, null, 0, 1, 1, new \yii\db\Expression('NOW()')],
+                [3, 1, 60, 'menu.main', 'admin', 'key', null, null, 0, 1, 1, new \yii\db\Expression('NOW()')],
+                [4, 1, 1, 'menu.main', 'Users', 'users', '/core/user/index', 3, 1, 1, 1, new \yii\db\Expression('NOW()')],
+                [5, 1, 1, 'menu.main', 'Statuses', null, '/core/status/index', 3, 1, 1, 1, new \yii\db\Expression('NOW()')],
+                [6, 1, 1, 'menu.main', 'Messages', null, '/core/message/index', 3, 1, 1, 1, new \yii\db\Expression('NOW()')],
+                [7, 1, 1, 'menu.main', 'Menus', null, '/core/menu/index', 3, 1, 1, 1, new \yii\db\Expression('NOW()')],
+                [8, 1, 60, 'menu.main', 'instruments', 'wrench', null, 3, 1, 1, 1, new \yii\db\Expression('NOW()')],
+                [9, 1, 30, 'menu.main', 'Gii', null, '/gii', 8, 2, 1, 1, new \yii\db\Expression('NOW()')],
+                [10, 0, 30, 'menu.main', 'phpMyAdmin', null, '/tools/phpMyAdmin', 8, 2, 1, 1, new \yii\db\Expression('NOW()')],
+                [11, 1, 30, 'menu.main', 'Delete cache', 'trash', '/core/default/delete-cache', 3, 2, 1, 1, new \yii\db\Expression('NOW()')],
             ]);
         }
 

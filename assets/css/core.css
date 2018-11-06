@@ -19,3 +19,7 @@ table.detail-view th {
 .text-red{
     color: #dd4b39 !important;
 }
+
+.box-body .row{
+    margin-right: 0;
+}

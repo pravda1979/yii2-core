@@ -50,7 +50,10 @@ class MessageSearch extends Message
         // add conditions that should always apply here
 
         $query->alias('t');
-        $query->joinWith('sourceMessage source', false);
+        $query->joinWith('sourceMessage sourceMessage', false);
+        $query->with('sourceMessage');
+
+//        $query->addSelect(['source.message','source.category']);
 
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
@@ -67,23 +70,23 @@ class MessageSearch extends Message
 
         // sorting data
         $dataProvider->sort->attributes['category'] = [
-            'asc' => ['source.category' => SORT_ASC],
-            'desc' => ['source.category' => SORT_DESC],
+            'asc' => ['sourceMessage.category' => SORT_ASC],
+            'desc' => ['sourceMessage.category' => SORT_DESC],
         ];
         $dataProvider->sort->attributes['message'] = [
-            'asc' => ['source.message' => SORT_ASC],
-            'desc' => ['source.message' => SORT_DESC],
+            'asc' => ['sourceMessage.message' => SORT_ASC],
+            'desc' => ['sourceMessage.message' => SORT_DESC],
         ];
 
         // grid filtering conditions
         $query->andFilterWhere([
             't.id' => $this->id,
-            'source.category' => $this->category,
+            'sourceMessage.category' => $this->category,
         ]);
 
         $query->andFilterWhere(['like', 't.language', $this->language])
             ->andFilterWhere(['like', 't.translation', $this->translation])
-            ->andFilterWhere(['like', 'source.message', $this->message]);
+            ->andFilterWhere(['like', 'sourceMessage.message', $this->message]);
 
         return $dataProvider;
     }

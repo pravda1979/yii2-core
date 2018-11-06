@@ -7,6 +7,7 @@ use Yii;
 use pravda1979\core\components\core\DataController;
 use yii\filters\AccessControl;
 use yii\filters\VerbFilter;
+use yii\helpers\ArrayHelper;
 
 /**
  * UserController implements the CRUD actions for User model.
@@ -21,28 +22,14 @@ class UserController extends DataController
      */
     public function behaviors()
     {
-        return [
-//            'access' => [
-//                'class' => AccessControl::className(),
-//                'rules' => [
-//                    [
-//                        'actions' => ['login'],
-//                        'allow' => true,
-//                    ],
-//                    [
-//                        'actions' => ['logout'],
-//                        'allow' => true,
-//                        'roles' => ['@'],
-//                    ],
-//                ],
-//            ],
+        return ArrayHelper::merge(parent::behaviors(), [
             'verbs' => [
                 'class' => VerbFilter::className(),
                 'actions' => [
                     'logout' => ['post'],
                 ],
             ],
-        ];
+        ]);
     }
 
     /**

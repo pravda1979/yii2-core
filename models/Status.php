@@ -211,16 +211,20 @@ class Status extends \pravda1979\core\components\core\ActiveRecord
 
     public static function getListWithGroup($params = [])
     {
-        $select = ['id', 'label' => 'name', 'group' => new Expression('CASE fixed_status_id when ' . static::$FIXED_STATUS_REAL . ' then "Активно" else "Не активно" END')];
-        $order = ['fixed_status_id' => SORT_DESC, 'name' => SORT_ASC];
+        $key = 'Status.getListWithGroup';
+        $result = Yii::$app->cache->getOrSet($key, function () use ($params) {
+            $select = ['id', 'label' => 'name', 'group' => new Expression('CASE fixed_status_id when ' . static::$FIXED_STATUS_REAL . ' then "Активно" else "Не активно" END')];
+            $order = ['fixed_status_id' => SORT_DESC, 'name' => SORT_ASC];
 
-        $sqlQuery = self::find()
-            ->orderBy($order)
-            ->andFilterWhere($params)
-            ->select($select)
-            ->real()
-            ->asArray();
+            $sqlQuery = self::find()
+                ->orderBy($order)
+                ->andFilterWhere($params)
+                ->select($select)
+                ->real()
+                ->asArray();
 
-        return ArrayHelper::map($sqlQuery->all(), 'id', 'label', 'group');
+            return ArrayHelper::map($sqlQuery->all(), 'id', 'label', 'group');
+        });
+        return $result;
     }
 }

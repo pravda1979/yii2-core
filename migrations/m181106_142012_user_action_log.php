@@ -1,0 +1,122 @@
+<?php
+
+use pravda1979\core\components\migration\Migration;
+
+class m181106_142012_user_action_log extends Migration
+{
+    public $table_name = 'user_action_log';
+    public $route = 'core/user-action-log';
+    public $parents = [
+        'UserActionLog: editor' => 'UserActionLog: viewer',
+        'UserActionLog: admin' => 'UserActionLog: editor',
+        'viewer' => 'UserActionLog: viewer',
+        'editor' => 'UserActionLog: editor',
+        'admin' => 'UserActionLog: admin',
+    ];
+    public $actions = [
+        'UserActionLog: viewer' => [
+            'index',
+            'view',
+            'autocomplete',
+        ],
+        'UserActionLog: editor' => [
+            'create',
+            'update',
+        ],
+        'UserActionLog: admin' => [
+            'delete',
+        ],
+    ];
+    public $modelNames = [
+        'singular' => 'Действие пользователя',
+        'plural' => 'Журнал действий пользователей',
+        'accusative' => 'запись', // Винительный падеж (кого, что)
+        'genitive' => 'запись', // Родительный падеж (кого, чего)
+    ];
+
+    /**
+     * @inheritdoc
+     */
+    public function getTranslates($translates = [])
+    {
+        $translates =[
+            'ru-RU' => [
+                'UserActionLog' => [
+                    'Search' => 'Поиск в журнале действий',
+                    'Controller' => 'Контроллер',
+                    'Action' => 'Действие',
+                    'Route' => 'Маршрут',
+                    'Method' => 'Метод',
+                    'User IP' => 'IP-адрес',
+                    'Url' => 'URL',
+                    'Created At' => 'Дата и время',
+                ],
+                'actions' => [
+                    'actions' => 'Действия',
+                    'index' => 'Список',
+                    'create' => 'Создание',
+                    'update' => 'Редактирование',
+                    'delete' => 'Удаление',
+                    'view' => 'Просмотр',
+                    'login' => 'Авторизация',
+                    'logout' => 'Выход',
+                    'delete-cache' => 'Очистка кеша',
+                ],
+            ],
+        ];
+        return parent::getTranslates($translates);
+    }
+
+    public function safeUp()
+    {
+        $tableOptions = '';
+        if ($this->db->driverName === 'mysql') {
+            $tableOptions = 'ENGINE=InnoDB DEFAULT CHARSET=utf8';
+        }
+
+        if ($this->db->schema->getTableSchema("{{%$this->table_name}}", true) === null) {
+            $this->createTable("{{%$this->table_name}}", [
+                'id' => $this->primaryKey(),
+
+                'controller' => $this->string(255),
+                'action' => $this->string(255),
+                'route' => $this->string(255),
+                'method' => $this->string(255),
+                'user_ip' => $this->string(255),
+                'url' => $this->text(),
+
+                'note' => $this->text(),
+                'status_id' => $this->integer()->notNull(),
+                'user_id' => $this->integer(),
+                'created_at' => $this->timestamp()->notNull()->defaultExpression('CURRENT_TIMESTAMP'),
+                'updated_at' => $this->timestamp()->defaultValue(null),
+            ], $tableOptions);
+
+            $this->addForeignKey("{{%fk_" . "user_id" . "_$this->table_name}}", "{{%$this->table_name}}", "[[user_id]]", "{{%user}}", "[[id]]");
+            $this->addForeignKey("{{%fk_" . "status_id" . "_$this->table_name}}", "{{%$this->table_name}}", "[[status_id]]", "{{%status}}", "[[id]]");
+
+            $this->createIndex("{{%ix_" . "controller" . "_$this->table_name}}", "{{%$this->table_name}}", "[[controller]]");
+            $this->createIndex("{{%ix_" . "action" . "_$this->table_name}}", "{{%$this->table_name}}", "[[action]]");
+
+        }
+
+// $VISIBLE_CHECK_ACCESS = 1; $VISIBLE_GUEST = 10; $VISIBLE_AUTHORIZED = 20; $VISIBLE_ADMIN = 30;
+// $VISIBLE_ALWAYS = 40; $VISIBLE_NEVER = 50; $VISIBLE_HAS_CHILDREN = 60;
+// data=>1; dirs=>2; admin=>3; instruments=>8;
+            $this->batchInsert('{{%menu}}', ['use_url_helper', 'visible', 'menu_id', 'label', 'icon', 'url', 'parent_id', 'level', 'status_id', 'user_id'], [
+                [1, 1, 'menu.main', 'User Action Logs', null, '/core/user-action-log/index', 3, 1, 1, 1],
+            ]);
+
+        $this->createTranslates();
+        $this->createRbac();
+    }
+
+    public function safeDown()
+    {
+        if ($this->db->schema->getTableSchema("{{%$this->table_name}}", true) != null)
+            $this->dropTable("{{%$this->table_name}}");
+        $this->deleteTranslates();
+        $this->deleteRbac();
+        $this->delete('{{%menu}}', ['menu_id' => 'menu.main', 'label' => 'User Action Logs']);
+    }
+}

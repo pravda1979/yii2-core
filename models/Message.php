@@ -61,7 +61,7 @@ class Message extends \pravda1979\core\components\core\ActiveRecord
      */
     public function getSourceMessage()
     {
-        return $this->hasOne(SourceMessage::className(), ['id' => 'id']);
+        return $this->hasOne(SourceMessage::className(), ['id' => 'id'])->inverseOf('messages');
     }
 
     /**

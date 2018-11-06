@@ -5,13 +5,13 @@ namespace pravda1979\core\searches;
 use Yii;
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
-use pravda1979\core\models\Menu;
+use pravda1979\core\models\UserActionLog;
 use yii\db\Expression;
 
 /**
- * MenuSearch represents the model behind the search form of `pravda1979\core\models\Menu`.
+ * UserActionLogSearch represents the model behind the search form of `pravda1979\core\models\UserActionLog`.
  */
-class MenuSearch extends Menu
+class UserActionLogSearch extends UserActionLog
 {
     /**
      * @inheritdoc
@@ -19,8 +19,8 @@ class MenuSearch extends Menu
     public function rules()
     {
         return [
-            [['id', 'use_url_helper', 'visible', 'position', 'level', 'parent_id', 'status_id', 'user_id'], 'integer'],
-            [['menu_id', 'label', 'icon', 'url', 'linkOptions', 'note', 'created_at', 'updated_at'], 'safe'],
+            [['id', 'status_id', 'user_id'], 'integer'],
+            [['controller', 'action', 'route', 'method', 'user_ip', 'url', 'note', 'created_at', 'updated_at'], 'safe'],
         ];
     }
 
@@ -42,8 +42,8 @@ class MenuSearch extends Menu
      */
     public function search($params)
     {
-        $query = Menu::find();
-        $query->with(['parent']);
+        $query = UserActionLog::find();
+        $query->with(['user']);
 
         // add conditions that should always apply here
 
@@ -63,20 +63,16 @@ class MenuSearch extends Menu
         // grid filtering conditions
         $query->andFilterWhere([
             'id' => $this->id,
-            'use_url_helper' => $this->use_url_helper,
-            'visible' => $this->visible,
-            'position' => $this->position,
-            'level' => $this->level,
-            'parent_id' => $this->parent_id,
             'status_id' => $this->status_id,
             'user_id' => $this->user_id,
         ]);
 
-        $query->andFilterWhere(['like', 'menu_id', $this->menu_id])
-            ->andFilterWhere(['like', 'label', $this->label])
-            ->andFilterWhere(['like', 'icon', $this->icon])
+        $query->andFilterWhere(['like', 'controller', $this->controller])
+            ->andFilterWhere(['like', 'action', $this->action])
+            ->andFilterWhere(['like', 'route', $this->route])
+            ->andFilterWhere(['like', 'method', $this->method])
+            ->andFilterWhere(['like', 'user_ip', $this->user_ip])
             ->andFilterWhere(['like', 'url', $this->url])
-            ->andFilterWhere(['like', 'linkOptions', $this->linkOptions])
             ->andFilterWhere(['like', 'note', $this->note])
             ->andFilterWhere(['like', new Expression('DATE_FORMAT(created_at, "%d.%m.%Y %k:%i:%s")'), $this->created_at])
             ->andFilterWhere(['like', new Expression('DATE_FORMAT(updated_at, "%d.%m.%Y %k:%i:%s")'), $this->updated_at]);

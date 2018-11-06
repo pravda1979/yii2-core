@@ -43,6 +43,7 @@ class Module extends \yii\base\Module
         if (!$authManager) {
             Yii::$app->set('authManager', [
                 'class' => DbManager::className(),
+                'cache' => 'cache',
             ]);
         } else if (!($authManager instanceof ManagerInterface)) {
             throw new InvalidConfigException('You have wrong authManager configuration');

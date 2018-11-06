@@ -12,6 +12,7 @@ Include:
 - EntryMenu widget
 - checkAccess
 - Menus
+- Logging users actions
 
 Installation
 ------------
@@ -196,7 +197,7 @@ For change view, add in config
         
 
 For add Gii template, add in config
------------------------------
+------------------------------------
 
     $config['modules']['gii'] = [
         'class' => 'yii\gii\Module',
@@ -224,4 +225,19 @@ Base classes for Gii template:
                             
 Usage
 -----
+
+Getting menu items array:
+```
+$menuItems = \pravda1979\core\models\Menu::getMenu('menu.main');
+```
+
+Login url:
+```
+'/core/user/login'
+```
+
+Logout url:
+```
+'/core/user/logout'
+```
 
