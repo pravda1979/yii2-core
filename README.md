@@ -13,6 +13,7 @@ Include:
 - checkAccess
 - Menus
 - Logging users actions
+- Backup/restore all changes
 
 Installation
 ------------

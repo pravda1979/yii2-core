@@ -11,6 +11,7 @@ namespace pravda1979\core\components\actions;
 use pravda1979\core\components\core\ActiveRecord;
 use Yii;
 use yii\base\InvalidConfigException;
+use yii\helpers\Html;
 use yii\web\NotFoundHttpException;
 
 class UpdateAction extends \pravda1979\core\components\core\Action
@@ -38,8 +39,12 @@ class UpdateAction extends \pravda1979\core\components\core\Action
             call_user_func($this->checkAccess, $this->id, $model);
         }
 
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->controller->goBack(['view', 'id' => $model->id]);
+        if ($model->load(Yii::$app->request->post()) && $model->validate()) {
+            if (!$model->save(false)) {
+                Yii::$app->getSession()->addFlash('error', Html::errorSummary($model, ['header' => '']));
+            }else{
+                return $this->controller->goBack(['view', 'id' => $model->id]);
+            }
         }
 
         return $this->controller->render('update', [

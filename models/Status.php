@@ -4,6 +4,7 @@ namespace pravda1979\core\models;
 
 use Yii;
 use pravda1979\core\components\validators\StringFilter;
+use yii\caching\DbDependency;
 use yii\db\Expression;
 use yii\helpers\ArrayHelper;
 
@@ -24,6 +25,8 @@ use yii\helpers\ArrayHelper;
  * @property Status[] $statuses
  * @property User $user
  * @property User[] $users
+ *
+ * @property string $fixedStatusName
  */
 class Status extends \pravda1979\core\components\core\ActiveRecord
 {
@@ -116,6 +119,17 @@ class Status extends \pravda1979\core\components\core\ActiveRecord
     public static function find()
     {
         return new \pravda1979\core\queries\StatusQuery(get_called_class());
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function getBackupLabels()
+    {
+        return array_merge(parent::getBackupLabels(), [
+            'fixed_status_id' => $this->fixedStatusName,
+            'is_default' => Yii::$app->formatter->asBoolean($this->is_default),
+        ]);
     }
 
     /**

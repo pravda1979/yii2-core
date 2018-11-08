@@ -154,6 +154,7 @@ class Menu extends \pravda1979\core\components\core\ActiveRecord
         $result = [];
         $items = static::find()
             ->andFilterWhere($where)
+            ->orderBy(['position' => SORT_ASC, 'id' => SORT_ASC])
             ->real()->all();
 
         /** @var Menu $item */

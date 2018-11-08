@@ -2,14 +2,13 @@
 
 namespace pravda1979\core\components\core;
 
-use pravda1979\core\components\behaviors\UserActionLogBehavior;
 use Yii;
 use yii\filters\VerbFilter;
 
 /**
  * UserController implements the CRUD actions for User model.
  */
-class DataController extends BackupController
+class DataController extends BackendController
 {
     const modelClass = '';
     const searchModelClass = '';

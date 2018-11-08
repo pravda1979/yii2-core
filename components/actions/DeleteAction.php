@@ -11,6 +11,7 @@ namespace pravda1979\core\components\actions;
 use pravda1979\core\components\core\ActiveRecord;
 use Yii;
 use yii\base\InvalidConfigException;
+use yii\helpers\Html;
 use yii\web\NotFoundHttpException;
 
 class DeleteAction extends \pravda1979\core\components\core\Action
@@ -38,7 +39,9 @@ class DeleteAction extends \pravda1979\core\components\core\Action
             call_user_func($this->checkAccess, $this->id, $model);
         }
 
-        $model->delete();
+        if (!$model->delete()) {
+            Yii::$app->getSession()->addFlash('error', Html::errorSummary($model, ['header' => '']));
+        }
 
         return $this->controller->goBack(['index']);
     }

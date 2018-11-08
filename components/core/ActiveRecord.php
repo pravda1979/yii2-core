@@ -2,6 +2,7 @@
 
 namespace pravda1979\core\components\core;
 
+use pravda1979\core\components\behaviors\BackupBehavior;
 use Yii;
 use yii\db\Expression;
 use pravda1979\core\models\Status;
@@ -9,6 +10,7 @@ use yii\helpers\ArrayHelper;
 
 /**
  * @property string $fullName
+ * @property array $backupLabels
  */
 class ActiveRecord extends \yii\db\ActiveRecord
 {
@@ -17,7 +19,11 @@ class ActiveRecord extends \yii\db\ActiveRecord
      */
     public function behaviors()
     {
-        return [];
+        return array_merge(parent::behaviors(), [
+            'backup' => [
+                'class' => BackupBehavior::className(),
+            ],
+        ]);
     }
 
     /**
@@ -124,4 +130,27 @@ class ActiveRecord extends \yii\db\ActiveRecord
     {
         return new ActiveQuery(get_called_class());
     }
+
+    /**
+     * Возвращает значения для связанных полей вместо их id
+     * @return array
+     */
+    public function getBackupLabels()
+    {
+        return [
+            'user_id' => ArrayHelper::getValue($this, 'user.username'),
+            'status_id' => ArrayHelper::getValue($this, 'status.fullName'),
+        ];
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function scenarios()
+    {
+        $scenarios = parent::scenarios();
+        $scenarios['undo'] = $scenarios['backup'] = $scenarios['create'] = $scenarios['update'] = $scenarios['delete'] = $scenarios['view'] = $scenarios['default'];
+        return $scenarios;
+    }
+
 }

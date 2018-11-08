@@ -8,7 +8,7 @@ use Yii;
 use yii\helpers\Url;
 use yii\web\ForbiddenHttpException;
 
-class BackupController extends Controller
+class BackendController extends Controller
 {
 
     /**

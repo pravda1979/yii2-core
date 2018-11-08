@@ -23,3 +23,27 @@ table.detail-view th {
 .box-body .row{
     margin-right: 0;
 }
+
+
+.backup-changes .attribute .attribute-name {
+    font-style: italic;
+    color: #337ab7;
+}
+
+.backup-changes .attribute .attribute-name:after {
+    content: ":";
+}
+
+.backup-changes .attribute .attribute-value {
+
+}
+
+del {
+    background-color: #ffcccc;
+    text-decoration: underline;
+}
+
+ins {
+    background-color: #ccffcc;
+    text-decoration: none;
+}

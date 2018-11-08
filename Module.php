@@ -22,12 +22,17 @@ class Module extends \yii\base\Module
     public $useLteAdminTheme = true;
     public $skin = 'skin-blue';
 
-    public $urlRules = [
-        '<controller:(user|status|source-message|message|menu)>' => 'core/<controller>/index',
-        '<module>/<controller:(user|status|source-message|message|menu)>' => 'core/<controller>/index',
-        '<controller:(user|status|source-message|message|menu)>' => 'core/<controller>/index',
-        '<controller:(user|status|source-message|message|menu)>/<action>' => 'core/<controller>/<action>',
-    ];
+    public function getUrlRules()
+    {
+        $listControllers = 'default|user|status|source-message|message|menu|user-action-log|backup|backup-attribute';
+
+        return [
+            '<controller:(' . $listControllers . ')>' => 'core/<controller>/index',
+            '<module>/<controller:(' . $listControllers . ')>' => 'core/<controller>/index',
+            '<controller:(' . $listControllers . ')>' => 'core/<controller>/index',
+            '<controller:(' . $listControllers . ')>/<action>' => 'core/<controller>/<action>',
+        ];
+    }
 
     /**
      * {@inheritdoc}

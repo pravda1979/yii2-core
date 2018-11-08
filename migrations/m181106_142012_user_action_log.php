@@ -103,8 +103,8 @@ class m181106_142012_user_action_log extends Migration
 // $VISIBLE_CHECK_ACCESS = 1; $VISIBLE_GUEST = 10; $VISIBLE_AUTHORIZED = 20; $VISIBLE_ADMIN = 30;
 // $VISIBLE_ALWAYS = 40; $VISIBLE_NEVER = 50; $VISIBLE_HAS_CHILDREN = 60;
 // data=>1; dirs=>2; admin=>3; instruments=>8;
-            $this->batchInsert('{{%menu}}', ['use_url_helper', 'visible', 'menu_id', 'label', 'icon', 'url', 'parent_id', 'level', 'status_id', 'user_id'], [
-                [1, 1, 'menu.main', 'User Action Logs', null, '/core/user-action-log/index', 3, 1, 1, 1],
+            $this->batchInsert('{{%menu}}', ['use_url_helper', 'visible', 'position', 'menu_id', 'label', 'icon', 'url', 'parent_id', 'level', 'status_id', 'user_id', 'updated_at'], [
+                [1, 1, 1050, 'menu.main', 'User Action Logs', null, '/core/user-action-log/index', 3, 1, 1, 1, new \yii\db\Expression('NOW()')],
             ]);
 
         $this->createTranslates();

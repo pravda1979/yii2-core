@@ -2,14 +2,14 @@
 
 namespace pravda1979\core\controllers;
 
+use pravda1979\core\components\core\BackendController;
 use Yii;
-use pravda1979\core\components\core\BackupController;
 use yii\web\ForbiddenHttpException;
 
 /**
  * Default controller for the `core` module
  */
-class DefaultController extends BackupController
+class DefaultController extends BackendController
 {
     /**
      * Очищает весь кэш

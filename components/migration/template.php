@@ -86,19 +86,19 @@ class <?= $className ?> extends Migration
             $this->addForeignKey("{{%fk_" . "user_id" . "_$this->table_name}}", "{{%$this->table_name}}", "[[user_id]]", "{{%user}}", "[[id]]");
             $this->addForeignKey("{{%fk_" . "status_id" . "_$this->table_name}}", "{{%$this->table_name}}", "[[status_id]]", "{{%status}}", "[[id]]");
 
-//          $this->createIndex("{{%$this->table_name"."_"."fieldName"."}}", "{{%$this->table_name}}", "[[fieldName]]");
-//          $this->batchInsert('{{%' . $this->table_name . '}}', ['name', 'status_id', 'user_id'], [
-//                ['name1', 1, 1],
-//                ['name2', 1, 1],
-//          ]);
+//            $this->createIndex("{{%$this->table_name"."_"."fieldName"."}}", "{{%$this->table_name}}", "[[fieldName]]");
+//            $this->batchInsert('{{%' . $this->table_name . '}}', ['name', 'status_id', 'user_id'], [
+//                  ['name1', 1, 1],
+//                  ['name2', 1, 1],
+//            ]);
         }
 
 // $VISIBLE_CHECK_ACCESS = 1; $VISIBLE_GUEST = 10; $VISIBLE_AUTHORIZED = 20; $VISIBLE_ADMIN = 30;
 // $VISIBLE_ALWAYS = 40; $VISIBLE_NEVER = 50; $VISIBLE_HAS_CHILDREN = 60;
 // data=>1; dirs=>2; admin=>3; instruments=>8;
-//            $this->batchInsert('{{%menu}}', ['use_url_helper', 'visible', 'menu_id', 'label', 'icon', 'url', 'parent_id', 'level', 'status_id', 'user_id'], [
-//                [1, 1, 'menu.main', 'item name', null, null, null, 0, 1, 1],
-//            ]);
+//        $this->batchInsert('{{%menu}}', ['use_url_helper', 'visible', 'position', 'menu_id', 'label', 'icon', 'url', 'parent_id', 'level', 'status_id', 'user_id', 'updated_at'], [
+//            [1, 1, 1000, 'menu.main', 'itemName', null, null, null, 0, 1, 1, new \yii\db\Expression('NOW()')],
+//        ]);
 
         $this->createTranslates();
         $this->createRbac();
@@ -110,6 +110,6 @@ class <?= $className ?> extends Migration
             $this->dropTable("{{%$this->table_name}}");
         $this->deleteTranslates();
         $this->deleteRbac();
-//        $this->delete('{{%menu}}', ['menu_id' => 'menu.main', 'label' => 'item name']);
+//        $this->delete('{{%menu}}', ['menu_id' => 'menu.main', 'label' => 'itemName']);
     }
 }

@@ -67,7 +67,7 @@ use pravda1979\core\models\UserActionLog;
 
                     <?= $form->field($model, 'created_at')->textInput() ?>
 
-                    <?= $form->field($model, 'updated_at')->textInput() ?>
+                    <?php //echo $form->field($model, 'updated_at')->textInput() ?>
 
                 </div>
 
