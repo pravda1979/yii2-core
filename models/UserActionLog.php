@@ -135,7 +135,7 @@ class UserActionLog extends \pravda1979\core\components\core\ActiveRecord
 
     public static function getControllerList()
     {
-        $models = SourceMessage::find()->select('message')->where(['category' => 'models'])->asArray()->all();
+        $models = SourceMessage::find()->select('message')->where(['and', ['category' => 'models'], ['<>', 'message', 'models']])->asArray()->all();
         $models = ArrayHelper::getColumn($models, 'message');
 
         $result = [];

@@ -38,7 +38,7 @@ if (Yii::$app->controller->action->id === 'login') {
         <title><?= Html::encode($this->title) ?></title>
         <?php $this->head() ?>
     </head>
-    <body class="hold-transition sidebar-mini <?php echo \dmstr\helpers\AdminLteHelper::skinClass() ?>">
+    <body class="hold-transition sidebar-mini <?= Yii::$app->params['app_LTEAdminMenuState'] ? 'sidebar-collapse' : '' ?> <?php echo \dmstr\helpers\AdminLteHelper::skinClass() ?>">
     <!--sidebar-collapse-->
     <!--    style="height: auto; min-height: 100%;"-->
 

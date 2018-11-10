@@ -1,6 +1,6 @@
 <?php
 
-use yii\helpers\Html;
+use yii\bootstrap\Html;
 use yii\widgets\DetailView;
 use yii\helpers\ArrayHelper;
 use pravda1979\core\models\Status;
@@ -14,7 +14,18 @@ $this->params['breadcrumbs'][] = ['label' => Yii::t('Backup', 'Backups'), 'url' 
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 
-<?= \pravda1979\core\widgets\EntryMenu::widget(['template' => '{index}', 'model' => $model]); ?>
+<?= \pravda1979\core\widgets\EntryMenu::widget(['template' => '{index}{undo}', 'model' => $model, 'buttons' => [
+    'undo' => ['label' => Html::icon('floppy-remove'), 'url' => ['undo', 'id' => $model->id],
+        'linkOptions' => [
+            'title' => Yii::t('Backup', 'Undo changes'),
+            'data' => [
+                'confirm' => Yii::t('Backup', 'Are you sure you want to undo this changes?'),
+                'method' => 'post',
+                'data-pjax' => 0,
+            ],
+        ]
+    ],
+]]); ?>
 
 <div class="backup-view box box-primary">
     <div class="box-body table-responsive no-padding">
@@ -22,11 +33,27 @@ $this->params['breadcrumbs'][] = $this->title;
             'model' => $model,
             'attributes' => [
                 'id',
-                'action',
-                'record_short_class',
-                'record_class',
+                [
+                    'attribute' => 'action',
+                    'value' =>$model->actionT,
+                ],
+                [
+                    'attribute' => 'record_short_class',
+                    'value' =>$model->shortClassT,
+                ],
+//                'record_class',
                 'record_id',
-                'record_name',
+                [
+                    'attribute' => 'record_name',
+                    'value' => function ($model) {
+                        if ($model->parent === null)
+                            return Html::tag("del", $model->record_name, ['title' => Yii::t('Backup', 'Record deleted')]);
+                        $url = \yii\helpers\Url::to(['/' . \yii\helpers\Inflector::camel2id($model->record_short_class) . '/view', 'id' => $model->record_id]);
+                        return Html::a($model->record_name, $url, ['title' => Yii::t('Backup', 'Go to parent record'), 'data-pjax' => 0]);
+
+                    },
+                    'format' => 'html',
+                ],
                 'changes:html',
                 'note:ntext',
                 [

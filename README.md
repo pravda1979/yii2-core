@@ -67,8 +67,6 @@ Add to `backend/config/main.php`
         //...
         'core' => [
             'class' => 'pravda1979\core\Module',
-            'useLteAdminTheme' => true, // or false, if you want to use yii bootsrap theme
-            'skin' => 'skin-blue', // default
         ],
     ],
     'components' => [
@@ -154,8 +152,6 @@ Add to `config/web.php`
         //...
         'core' => [
             'class' => 'pravda1979\core\Module',
-            'useLteAdminTheme' => true, // or false, if you want to use yii bootsrap theme
-            'skin' => 'skin-blue', // default
         ],
     ],
     
@@ -183,8 +179,8 @@ Add to `config/console.php`
 
 
 
-For change view, add in config
------------------------------
+For changing existing view, add in config
+----------------------------------------
 
     'components' => [
         'view' => [
@@ -197,7 +193,7 @@ For change view, add in config
     ],
         
 
-For add Gii template, add in config
+For changing Gii template, add in config
 ------------------------------------
 
     $config['modules']['gii'] = [
@@ -215,6 +211,7 @@ For add Gii template, add in config
             ],
         ],
     ];
+    
 Base classes for Gii template:
 
 ```

@@ -164,4 +164,11 @@ class Backup extends \pravda1979\core\components\core\ActiveRecord
         return $result;
     }
 
+    /**
+     * @inheritdoc
+     */
+    public function getFullName()
+    {
+        return "$this->shortClassT \"$this->record_name\", $this->actionT";
+    }
 }

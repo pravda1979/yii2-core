@@ -4,6 +4,7 @@ namespace pravda1979\core\controllers;
 
 use pravda1979\core\components\core\BackendController;
 use Yii;
+use yii\helpers\Url;
 use yii\web\ForbiddenHttpException;
 
 /**
@@ -11,6 +12,13 @@ use yii\web\ForbiddenHttpException;
  */
 class DefaultController extends BackendController
 {
+    public function allowAction()
+    {
+        return [
+            '/core/default/delete-cache',
+        ];
+    }
+
     /**
      * Очищает весь кэш
      * @return \yii\web\Response
@@ -22,11 +30,7 @@ class DefaultController extends BackendController
             Yii::$app->cache->flush();
             Yii::$app->getSession()->addFlash('success', "Кэш очищен.");
 
-            if (Yii::$app->request->referrer == Yii::$app->request->absoluteUrl) {
-                return $this->goBack();
-            } else {
-                return $this->redirect(Yii::$app->request->referrer);
-            }
+            return $this->goBack(Yii::$app->homeUrl);
         } else {
             throw new ForbiddenHttpException(Yii::t('yii', 'You are not allowed to perform this action.'));
         }

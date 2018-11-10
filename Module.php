@@ -3,34 +3,22 @@
 namespace pravda1979\core;
 
 use Yii;
-use pravda1979\core\assets\CoreAsset;
-use yii\base\InvalidConfigException;
-use yii\rbac\DbManager;
-use yii\rbac\ManagerInterface;
-
 
 /**
  * core module definition class
  */
 class Module extends \yii\base\Module
 {
-    /**
-     * {@inheritdoc}
-     */
-    public $controllerNamespace = 'pravda1979\core\controllers';
-
-    public $useLteAdminTheme = true;
     public $skin = 'skin-blue';
 
     public function getUrlRules()
     {
-        $listControllers = 'default|user|status|source-message|message|menu|user-action-log|backup|backup-attribute';
+        $listControllers = 'default|user|status|source-message|message|menu|user-action-log|backup|backup-attribute|options';
 
         return [
             '<controller:(' . $listControllers . ')>' => 'core/<controller>/index',
-            '<module>/<controller:(' . $listControllers . ')>' => 'core/<controller>/index',
-            '<controller:(' . $listControllers . ')>' => 'core/<controller>/index',
             '<controller:(' . $listControllers . ')>/<action>' => 'core/<controller>/<action>',
+//            '<module>/<controller:(' . $listControllers . ')>' => 'core/<controller>/index',
         ];
     }
 
@@ -40,21 +28,6 @@ class Module extends \yii\base\Module
     public function init()
     {
         parent::init();
-
-        Yii::$app->user->loginUrl = ['/user/login'];
-
-        // Check AuthManager
-        $authManager = Yii::$app->get('authManager', false);
-        if (!$authManager) {
-            Yii::$app->set('authManager', [
-                'class' => DbManager::className(),
-                'cache' => 'cache',
-            ]);
-        } else if (!($authManager instanceof ManagerInterface)) {
-            throw new InvalidConfigException('You have wrong authManager configuration');
-        }
-
-        // Register assets
-        CoreAsset::register(Yii::$app->getView());
     }
+
 }

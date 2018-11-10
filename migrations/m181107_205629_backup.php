@@ -9,8 +9,8 @@ class m181107_205629_backup extends Migration
     public $parents = [
         'Backup: editor' => 'Backup: viewer',
         'Backup: admin' => 'Backup: editor',
-        'viewer' => 'Backup: viewer',
-        'editor' => 'Backup: editor',
+//        'viewer' => 'Backup: viewer',
+//        'editor' => 'Backup: editor',
         'admin' => 'Backup: admin',
     ];
     public $actions = [
@@ -18,6 +18,7 @@ class m181107_205629_backup extends Migration
             'index',
             'view',
             'autocomplete',
+            'history',
         ],
         'Backup: editor' => [
 //            'create',
@@ -54,10 +55,11 @@ class m181107_205629_backup extends Migration
                     'The backup "{caption}" was successfully reverted.' => 'Изменение "{caption}" успешно отменено.',
                     'Are you sure you want to undo this changes?' => 'Вы уверены, что хотите отменить эти изменения?',
                     'Undo changes' => 'Отменить изменения',
+                    'History' => 'Просмотреть историю изменений',
                 ],
                 'actions' => [
                     'undo' => 'Отмена изменений',
-                    'list' => 'Просмотр изменений',
+                    'history' => 'История изменений',
                 ],
             ],
         ];

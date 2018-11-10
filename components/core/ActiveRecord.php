@@ -19,11 +19,15 @@ class ActiveRecord extends \yii\db\ActiveRecord
      */
     public function behaviors()
     {
-        return array_merge(parent::behaviors(), [
-            'backup' => [
-                'class' => BackupBehavior::className(),
-            ],
-        ]);
+        if (Yii::$app->params['app_UseBackups']) {
+            $rules = [
+                'backup' => ['class' => BackupBehavior::className()],
+            ];
+        }else{
+            $rules = [];
+        }
+
+        return array_merge(parent::behaviors(), $rules);
     }
 
     /**

@@ -2,11 +2,11 @@
 
 namespace pravda1979\core\widgets;
 
+use pravda1979\core\models\Backup;
 use Yii;
 use yii\bootstrap\Html;
 use yii\bootstrap\Nav;
 use yii\bootstrap\NavBar;
-use yii\helpers\ArrayHelper;
 use yii\helpers\Inflector;
 
 class EntryMenu extends \yii\bootstrap\Widget
@@ -63,7 +63,7 @@ class EntryMenu extends \yii\bootstrap\Widget
         $name = 'create';
         if (!isset($this->buttons[$name]) && strpos($this->template, '{' . $name . '}') !== false) {
             $this->buttons[$name] = ['label' => Html::tag('span', Html::tag('span', ' ' . Yii::t($modelName, 'Create'), ['class' => 'visible-xs-inline text-muted']), ['class' => 'glyphicon glyphicon-plus text-green']), 'url' => ['create'],
-                'linkOptions' => ['title' => Yii::t($modelName, 'Create'), 'data-toggle' => 'tooltip']
+                'linkOptions' => ['title' => Yii::t($modelName, 'Create')]
             ];
         }
 
@@ -74,7 +74,6 @@ class EntryMenu extends \yii\bootstrap\Widget
                     'title' => Yii::t($modelName, 'Search'),
                     'style' => 'cursor: pointer',
                     'data-toggle' => 'modal',
-                    'rel' => 'tooltip',
                     'data-target' => '.' . $this->getClassName() . '-modal-dialog',
                 ]
             ];
@@ -85,7 +84,6 @@ class EntryMenu extends \yii\bootstrap\Widget
             $this->buttons[$name] = ['label' => Html::tag('span', Html::tag('span', ' ' . Yii::t('app', 'Reset filter'), ['class' => 'visible-xs-inline']), ['class' => 'glyphicon glyphicon-ban-circle']), 'url' => ['/' . Yii::$app->controller->route],
                 'linkOptions' => [
                     'title' => Yii::t('app', 'Reset filter'),
-                    'data-toggle' => 'tooltip',
                     'data-pjax' => 1,
                 ]
             ];
@@ -94,21 +92,21 @@ class EntryMenu extends \yii\bootstrap\Widget
         $name = 'view';
         if (!isset($this->buttons[$name]) && strpos($this->template, '{' . $name . '}') !== false) {
             $this->buttons[$name] = ['label' => Html::tag('span', Html::tag('span', ' ' . Yii::t($modelName, 'View'), ['class' => 'visible-xs-inline']), ['class' => 'glyphicon glyphicon-eye-open']), 'url' => ['view', 'id' => $this->model->id],
-                'linkOptions' => ['title' => Yii::t($modelName, 'View'), 'data-toggle' => 'tooltip']
+                'linkOptions' => ['title' => Yii::t($modelName, 'View')]
             ];
         }
 
         $name = 'index';
         if (!isset($this->buttons[$name]) && strpos($this->template, '{' . $name . '}') !== false) {
             $this->buttons[$name] = ['label' => Html::tag('span', Html::tag('span', ' ' . Yii::t($modelName, 'Index'), ['class' => 'visible-xs-inline']), ['class' => 'glyphicon glyphicon-list']), 'url' => ['index'],
-                'linkOptions' => ['title' => Yii::t($modelName, 'Index'), 'data-toggle' => 'tooltip']
+                'linkOptions' => ['title' => Yii::t($modelName, 'Index')]
             ];
         }
 
         $name = 'update';
         if (!isset($this->buttons[$name]) && strpos($this->template, '{' . $name . '}') !== false) {
             $this->buttons[$name] = ['label' => Html::tag('span', Html::tag('span', ' ' . Yii::t($modelName, 'Update'), ['class' => 'visible-xs-inline text-muted']), ['class' => 'glyphicon glyphicon-pencil text-blue']), 'url' => ['update', 'id' => $this->model->id],
-                'linkOptions' => ['title' => Yii::t($modelName, 'Update'), 'data-toggle' => 'tooltip']
+                'linkOptions' => ['title' => Yii::t($modelName, 'Update')]
             ];
         }
 
@@ -119,7 +117,6 @@ class EntryMenu extends \yii\bootstrap\Widget
                     'title' => Yii::t($modelName, 'Delete'),
                     'data' => [
                         'confirm' => Yii::t('yii', 'Are you sure you want to delete this item?'),
-                        'toggle' => 'tooltip',
                         'method' => 'post',
                     ],
                 ]
@@ -128,13 +125,12 @@ class EntryMenu extends \yii\bootstrap\Widget
 
         $name = 'backup';
         if (!isset($this->buttons[$name]) && strpos($this->template, '{' . $name . '}') !== false) {
-            if (Yii::$app->user->can('/backup/list')) {
-//                $countBackup = Backup::find()->where(['parent_id' => $this->model->id, 'parent_class' => $modelName])->count();
-                $countBackup = 222;
+            if (Yii::$app->user->can('/core/backup/history')) {
+                $countBackup = Backup::find()->where(['record_id' => $this->model->id, 'record_class' => $this->model->className()])->count();
 
-                $this->buttons[$name] = ['label' => Html::tag('span', Html::tag('span', ' ' . Yii::t($modelName, 'Backup'), ['class' => 'visible-xs-inline']), ['class' => 'glyphicon glyphicon-book']),
-                    'url' => ['/backup/list', 'BackupSearch' => ['parent_id' => $this->model->id, 'parent_class' => $modelName]],
-                    'linkOptions' => ['title' => Yii::t('Backup', 'Index') . " ($countBackup)", 'data-toggle' => 'tooltip']
+                $this->buttons[$name] = ['label' => Html::tag('span', Html::tag('span', ' ' . Yii::t('Backup', 'History'), ['class' => 'visible-xs-inline']), ['class' => 'glyphicon glyphicon-time']). " <span class=\"label label-primary\">$countBackup</span>",
+                    'url' => ['/core/backup/history', 'BackupSearch' => ['record_id' => $this->model->id, 'record_class' => $this->model->className()]],
+                    'linkOptions' => ['title' => Yii::t('Backup', 'History'), 'class' => ($countBackup ? '' : ' hidden')]
                 ];
             } else {
                 $this->buttons[$name] = ['label' => '', 'linkOptions' => ['class' => 'hidden']];
@@ -149,7 +145,6 @@ class EntryMenu extends \yii\bootstrap\Widget
 //                    'title' => Yii::t('app', 'Set Active'),
 //                    'data' => [
 //                        'confirm' => Yii::t('app', 'Are you sure you want to set active this item?'),
-//                        'toggle' => 'tooltip',
 //                        'method' => 'post',
 //                    ],
 //                ]

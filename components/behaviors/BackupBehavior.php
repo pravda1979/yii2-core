@@ -105,7 +105,7 @@ class BackupBehavior extends Behavior
 
     public function createBackup($changedAttributes = [])
     {
-        Yii::warning($changedAttributes);
+//        Yii::warning($changedAttributes);
         if (!empty($changedAttributes)) {
             /** @var \pravda1979\core\components\core\ActiveRecord $model */
             $model = $this->owner;

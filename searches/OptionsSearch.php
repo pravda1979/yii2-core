@@ -5,24 +5,22 @@ namespace pravda1979\core\searches;
 use Yii;
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
-use pravda1979\core\models\Backup;
+use pravda1979\core\models\Options;
 use yii\db\Expression;
 
 /**
- * BackupSearch represents the model behind the search form of `pravda1979\core\models\Backup`.
+ * OptionsSearch represents the model behind the search form of `pravda1979\core\models\Options`.
  */
-class BackupSearch extends Backup
+class OptionsSearch extends Options
 {
-    public $changes;
-
     /**
      * @inheritdoc
      */
     public function rules()
     {
         return [
-            [['id', 'record_id', 'status_id', 'user_id'], 'integer'],
-            [['changes', 'action', 'record_short_class', 'record_class', 'record_name', 'note', 'created_at', 'updated_at'], 'safe'],
+            [['id', 'status_id', 'user_id'], 'integer'],
+            [['category', 'name', 'value', 'note', 'created_at', 'updated_at'], 'safe'],
         ];
     }
 
@@ -44,9 +42,7 @@ class BackupSearch extends Backup
      */
     public function search($params)
     {
-        $query = Backup::find();
-
-        $query->with(['user', 'backupAttributes']);
+        $query = Options::find();
 
         // add conditions that should always apply here
 
@@ -66,28 +62,16 @@ class BackupSearch extends Backup
         // grid filtering conditions
         $query->andFilterWhere([
             'id' => $this->id,
-            'record_id' => $this->record_id,
             'status_id' => $this->status_id,
             'user_id' => $this->user_id,
-            'record_short_class' => $this->record_short_class,
         ]);
 
-        $query->andFilterWhere(['like', 'action', $this->action])
-            ->andFilterWhere(['like', 'record_class', $this->record_class])
-            ->andFilterWhere(['like', 'record_name', $this->record_name])
+        $query->andFilterWhere(['like', 'category', $this->category])
+            ->andFilterWhere(['like', 'name', $this->name])
+            ->andFilterWhere(['like', 'value', $this->value])
             ->andFilterWhere(['like', 'note', $this->note])
             ->andFilterWhere(['like', new Expression('DATE_FORMAT(created_at, "%d.%m.%Y %k:%i:%s")'), $this->created_at])
             ->andFilterWhere(['like', new Expression('DATE_FORMAT(updated_at, "%d.%m.%Y %k:%i:%s")'), $this->updated_at]);
-
-        if ($this->changes) {
-            $query->joinWith(['backupAttributes backupAttributes']);
-            $query->andFilterWhere(['or',
-                ['like', 'backupAttributes.old_value', $this->changes],
-                ['like', 'backupAttributes.new_value', $this->changes],
-                ['like', 'backupAttributes.old_label', $this->changes],
-                ['like', 'backupAttributes.new_label', $this->changes],
-            ]);
-        }
 
         return $dataProvider;
     }

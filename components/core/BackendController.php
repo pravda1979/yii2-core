@@ -10,19 +10,30 @@ use yii\web\ForbiddenHttpException;
 
 class BackendController extends Controller
 {
+    public function allowAction()
+    {
+        return [
+            '/site/error',
+            '/core/user/login',
+            '/core/user/logout',
+        ];
+    }
 
     /**
      * {@inheritdoc}
      */
     public function behaviors()
     {
-        return array_merge(parent::behaviors(), [
-            'userActionLog' => [
+        $result = [];
+        if (Yii::$app->params['app_UseUserActionLog']) {
+            $result['userActionLog'] = [
                 'class' => UserActionLogBehavior::className(),
                 // Disabling log for some actions
                 'excludeActions' => ['autocomplete'],
-            ]
-        ]);
+            ];
+        }
+
+        return array_merge(parent::behaviors(), $result);
     }
 
     /**
@@ -55,11 +66,17 @@ class BackendController extends Controller
      */
     public function checkAccess($action, $model = null, $params = [])
     {
-        $actionId = Yii::$app->requestedRoute;
-//        Yii::warning(Yii::$app->requestedRoute);
+        $actionId = '/' . Yii::$app->requestedRoute;
         $user = Yii::$app->user;
 
-        if ($user->can('/' . $actionId)) {
+//        Yii::warning($actionId);
+//        Yii::warning(Yii::$app->controller->allowAction());
+
+        if (Yii::$app->controller->hasMethod('allowAction') && in_array($actionId, Yii::$app->controller->allowAction())) {
+            return true;
+        }
+
+        if ($user->can($actionId)) {
             return true;
         }
 
@@ -68,17 +85,24 @@ class BackendController extends Controller
     }
 
     /**
+     * {@inheritdoc}
+     */
+    public function beforeAction($action)
+    {
+        if (parent::beforeAction($action)) {
+            return $this->checkAccess($action);
+        }
+
+        return false;
+    }
+
+    /**
      * @inheritdoc
      */
     public function afterAction($action, $result)
     {
-//        Yii::warning('afterAction', 'Controller');
-//        Yii::warning($action instanceof Action);
-//        Yii::warning(Url::current(),'Url::current()');
-//        Yii::warning(Yii::$app->getRequest()->getUrl(),'Yii::$app->getRequest()->getUrl()');
-
         // Remember current url for goBack() function after create/update/delete record
-        if (!$action instanceof Action && !in_array($action->id, ['delete-cache'])) {
+        if (!$action instanceof Action && !in_array($action->getUniqueId(), ['/core/default/delete-cache', 'core/options/index'])) {
             Url::remember();
         }
 

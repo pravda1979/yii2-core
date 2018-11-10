@@ -87,9 +87,9 @@ class <?= $className ?> extends Migration
             $this->addForeignKey("{{%fk_" . "status_id" . "_$this->table_name}}", "{{%$this->table_name}}", "[[status_id]]", "{{%status}}", "[[id]]");
 
 //            $this->createIndex("{{%$this->table_name"."_"."fieldName"."}}", "{{%$this->table_name}}", "[[fieldName]]");
-//            $this->batchInsert('{{%' . $this->table_name . '}}', ['name', 'status_id', 'user_id'], [
-//                  ['name1', 1, 1],
-//                  ['name2', 1, 1],
+//            $this->batchInsert('{{%' . $this->table_name . '}}', ['name', 'status_id', 'user_id', 'updated_at'], [
+//                  ['name1', 1, 1, new \yii\db\Expression('NOW()')],
+//                  ['name2', 1, 1, new \yii\db\Expression('NOW()')],
 //            ]);
         }
 

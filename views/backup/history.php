@@ -10,12 +10,23 @@ use pravda1979\core\models\UserActionLog;
 /* @var $this yii\web\View */
 /* @var $searchModel pravda1979\core\searches\BackupSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
+/* @var $model \pravda1979\core\components\core\ActiveRecord */
 
-$this->title = Yii::t('Backup', 'Backups');
+$modelClass = basename($model->className());
+$this->title = Yii::t('Backup', 'Index') . ': ' . Yii::t($modelClass, $modelClass) . " \"$model->fullName\"";
+$this->params['breadcrumbs'][] = ['label' => Yii::t('Backup', 'Backups'), 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
+
 ?>
 
-<?= \pravda1979\core\widgets\EntryMenu::widget(['template' => '{search}{reset}']); ?>
+<?= \pravda1979\core\widgets\EntryMenu::widget(['template' => '{view}', 'model' => $model, 'buttons' => [
+    'view' => [
+        'label' => Html::tag('span', Html::tag('span', ' ' . Yii::t($modelClass, 'View'), ['class' => 'visible-xs-inline']), ['class' => 'glyphicon glyphicon-eye-open']),
+        'url' => $url = \yii\helpers\Url::to(['/' . \yii\helpers\Inflector::camel2id($modelClass) . '/view', 'id' => $model->id]),
+        'linkOptions' => ['title' => Yii::t($modelClass, 'View')],
+    ],
+]]); ?>
+
 
 <div class="backup-index box box-primary">
     <?php Pjax::begin(); ?>
@@ -35,24 +46,24 @@ $this->params['breadcrumbs'][] = $this->title;
                     'value' => 'actionT',
                     'filter' => UserActionLog::getActionList(),
                 ],
-                [
-                    'attribute' => 'record_short_class',
-                    'value' => 'shortClassT',
-                    'filter' => UserActionLog::getControllerList(),
-                ],
-                [
-                    'attribute' => 'record_name',
-                    'value' => function ($data) {
-                        if ($data->parent === null)
-                            return Html::tag("del", $data->record_name, ['title' => Yii::t('Backup', 'Record deleted')]);
-                        $url = \yii\helpers\Url::to(['/' . \yii\helpers\Inflector::camel2id($data->record_short_class) . '/view', 'id' => $data->record_id]);
-                        if ($data->record_class == \pravda1979\core\models\Options::className())
-                            $url = ['/core/options/index'];
-                        return Html::a($data->record_name, $url, ['title' => Yii::t('Backup', 'Go to parent record'), 'data-pjax' => 0]);
-
-                    },
-                    'format' => 'html',
-                ],
+//                [
+//                    'attribute' => 'record_short_class',
+//                    'value' => 'shortClassT',
+//                    'filter' => UserActionLog::getControllerList(),
+//                ],
+//                [
+//                    'attribute' => 'record_name',
+//                    'value' => function ($data) {
+//                        if ($data->parent === null)
+//                            return Html::tag("del", $data->record_name, ['title' => Yii::t('Backup', 'Record deleted')]);
+//                        $url = \yii\helpers\Url::to(['/' . \yii\helpers\Inflector::camel2id($data->record_short_class) . '/view', 'id' => $data->record_id]);
+////                        if ($data->record_class == \pravda1979\core\models\Options::className())
+////                            $url = ['/core/options/all'];
+//                        return Html::a($data->record_name, $url, ['title' => Yii::t('Backup', 'Go to parent record'), 'data-pjax' => 0]);
+//
+//                    },
+//                    'format' => 'html',
+//                ],
 //                'record_id',
 //                'record_class',
                 'changes:html',
