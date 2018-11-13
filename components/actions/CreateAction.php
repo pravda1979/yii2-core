@@ -34,9 +34,9 @@ class CreateAction extends Action
         /** @var ActiveRecord $model */
         $model = new $this->modelClass;
 
-        if ($this->checkAccess) {
-            call_user_func($this->checkAccess, $this->id);
-        }
+//        if ($this->checkAccess) {
+//            call_user_func($this->checkAccess, $this->id);
+//        }
 
         if ($model->load(Yii::$app->request->post()) && $model->validate()) {
             if (!$model->save(false)) {

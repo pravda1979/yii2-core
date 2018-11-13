@@ -34,27 +34,27 @@ class DataController extends BackendController
             'index' => [
                 'class' => 'pravda1979\core\components\actions\IndexAction',
                 'searchModelClass' => $this::searchModelClass,
-                'checkAccess' => [$this, 'checkAccess'],
+//                'checkAccess' => [$this, 'checkAccess'],
             ],
             'create' => [
                 'class' => 'pravda1979\core\components\actions\CreateAction',
                 'modelClass' => $this::modelClass,
-                'checkAccess' => [$this, 'checkAccess'],
+//                'checkAccess' => [$this, 'checkAccess'],
             ],
             'update' => [
                 'class' => 'pravda1979\core\components\actions\UpdateAction',
                 'modelClass' => $this::modelClass,
-                'checkAccess' => [$this, 'checkAccess'],
+//                'checkAccess' => [$this, 'checkAccess'],
             ],
             'view' => [
                 'class' => 'pravda1979\core\components\actions\ViewAction',
                 'modelClass' => $this::modelClass,
-                'checkAccess' => [$this, 'checkAccess'],
+//                'checkAccess' => [$this, 'checkAccess'],
             ],
             'delete' => [
                 'class' => 'pravda1979\core\components\actions\DeleteAction',
                 'modelClass' => $this::modelClass,
-                'checkAccess' => [$this, 'checkAccess'],
+//                'checkAccess' => [$this, 'checkAccess'],
             ],
         ];
     }
