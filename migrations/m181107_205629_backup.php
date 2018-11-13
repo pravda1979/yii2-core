@@ -73,35 +73,36 @@ class m181107_205629_backup extends Migration
             $tableOptions = 'ENGINE=InnoDB DEFAULT CHARSET=utf8';
         }
 
-        if ($this->db->schema->getTableSchema("{{%$this->table_name}}", true) === null) {
-            $this->createTable("{{%$this->table_name}}", [
-                'id' => $this->primaryKey(),
+        /** @var \pravda1979\core\Module $module */
+        $module = Yii::$app->getModule('core');
 
-                'action' => $this->string(255),
-                'record_short_class' => $this->string(255),
-                'record_class' => $this->string(255),
-                'record_id' => $this->integer(),
-                'record_name' => $this->string(255),
+        $this->createTable("{{%" . $module->tableNames[$this->table_name] . "}}", [
+            'id' => $this->primaryKey(),
 
-                'note' => $this->text(),
-                'status_id' => $this->integer()->notNull(),
-                'user_id' => $this->integer()->notNull(),
-                'created_at' => $this->timestamp()->notNull()->defaultExpression('CURRENT_TIMESTAMP'),
-                'updated_at' => $this->timestamp()->defaultValue(null),
-            ], $tableOptions);
+            'action' => $this->string(255),
+            'record_short_class' => $this->string(255),
+            'record_class' => $this->string(255),
+            'record_id' => $this->integer(),
+            'record_name' => $this->string(255),
 
-            $this->addForeignKey("{{%fk_" . "user_id" . "_$this->table_name}}", "{{%$this->table_name}}", "[[user_id]]", "{{%user}}", "[[id]]");
-            $this->addForeignKey("{{%fk_" . "status_id" . "_$this->table_name}}", "{{%$this->table_name}}", "[[status_id]]", "{{%status}}", "[[id]]");
+            'note' => $this->text(),
+            'status_id' => $this->integer()->notNull(),
+            'user_id' => $this->integer()->notNull(),
+            'created_at' => $this->timestamp()->notNull()->defaultExpression('CURRENT_TIMESTAMP'),
+            'updated_at' => $this->timestamp()->defaultValue(null),
+        ], $tableOptions);
 
-            $this->createIndex("{{%$this->table_name" . "_" . "record_id" . "}}", "{{%$this->table_name}}", "[[record_id]]");
-            $this->createIndex("{{%$this->table_name" . "_" . "record_class" . "}}", "{{%$this->table_name}}", "[[record_class]]");
-            $this->createIndex("{{%$this->table_name" . "_" . "record_short_class" . "}}", "{{%$this->table_name}}", "[[record_short_class]]");
-        }
+        $this->addForeignKey("{{%fk_" . "user_id" . "_" . $module->tableNames[$this->table_name] . "}}", "{{%" . $module->tableNames[$this->table_name] . "}}", "[[user_id]]", "{{%" . $module->tableNames['user'] . "}}", "[[id]]");
+        $this->addForeignKey("{{%fk_" . "status_id" . "_" . $module->tableNames[$this->table_name] . "}}", "{{%" . $module->tableNames[$this->table_name] . "}}", "[[status_id]]", "{{%" . $module->tableNames['status'] . "}}", "[[id]]");
 
-// $VISIBLE_CHECK_ACCESS = 1; $VISIBLE_GUEST = 10; $VISIBLE_AUTHORIZED = 20; $VISIBLE_ADMIN = 30;
-// $VISIBLE_ALWAYS = 40; $VISIBLE_NEVER = 50; $VISIBLE_HAS_CHILDREN = 60;
-// data=>1; dirs=>2; admin=>3; instruments=>8;
-        $this->batchInsert('{{%menu}}', ['use_url_helper', 'visible', 'position', 'menu_id', 'label', 'icon', 'url', 'parent_id', 'level', 'status_id', 'user_id', 'updated_at'], [
+        $this->createIndex("{{%" . $module->tableNames[$this->table_name] . "_" . "record_id" . "}}", "{{%" . $module->tableNames[$this->table_name] . "}}", "[[record_id]]");
+        $this->createIndex("{{%" . $module->tableNames[$this->table_name] . "_" . "record_class" . "}}", "{{%" . $module->tableNames[$this->table_name] . "}}", "[[record_class]]");
+        $this->createIndex("{{%" . $module->tableNames[$this->table_name] . "_" . "record_short_class" . "}}", "{{%" . $module->tableNames[$this->table_name] . "}}", "[[record_short_class]]");
+
+        // $VISIBLE_CHECK_ACCESS = 1; $VISIBLE_GUEST = 10; $VISIBLE_AUTHORIZED = 20; $VISIBLE_ADMIN = 30;
+        // $VISIBLE_ALWAYS = 40; $VISIBLE_NEVER = 50; $VISIBLE_HAS_CHILDREN = 60;
+        // data=>1; dirs=>2; admin=>3; instruments=>8;
+        $this->batchInsert('{{%' . $module->tableNames['menu'] . '}}', ['use_url_helper', 'visible', 'position', 'menu_id', 'label', 'icon', 'url', 'parent_id', 'level', 'status_id', 'user_id', 'updated_at'], [
             [1, 1, 1060, 'menu.main', 'Backups', null, '/core/backup/index', 3, 0, 1, 1, new \yii\db\Expression('NOW()')],
         ]);
 
@@ -111,10 +112,11 @@ class m181107_205629_backup extends Migration
 
     public function safeDown()
     {
-        if ($this->db->schema->getTableSchema("{{%$this->table_name}}", true) != null)
-            $this->dropTable("{{%$this->table_name}}");
+        /** @var \pravda1979\core\Module $module */
+        $module = Yii::$app->getModule('core');
+        $this->dropTable("{{%" . $module->tableNames[$this->table_name] . "}}");
         $this->deleteTranslates();
         $this->deleteRbac();
-        $this->delete('{{%menu}}', ['menu_id' => 'menu.main', 'label' => 'Backups']);
+        $this->delete('{{%' . $module->tableNames['menu'] . '}}', ['menu_id' => 'menu.main', 'label' => 'Backups']);
     }
 }

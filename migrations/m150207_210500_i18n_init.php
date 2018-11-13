@@ -25,28 +25,34 @@ class m150207_210500_i18n_init extends Migration
             $tableOptions = 'CHARACTER SET utf8 COLLATE utf8_unicode_ci ENGINE=InnoDB';
         }
 
-        $this->createTable('{{%source_message}}', [
+        /** @var \pravda1979\core\Module $module */
+        $module = Yii::$app->getModule('core');
+
+        $this->createTable('{{%' . $module->tableNames['source_message'] . '}}', [
             'id' => $this->primaryKey(),
             'category' => $this->string(),
             'message' => $this->text(),
         ], $tableOptions);
 
-        $this->createTable('{{%message}}', [
+        $this->createTable('{{%' . $module->tableNames['message'] . '}}', [
             'id' => $this->integer()->notNull(),
             'language' => $this->string(16)->notNull(),
             'translation' => $this->text(),
         ], $tableOptions);
 
-        $this->addPrimaryKey('pk_message_id_language', '{{%message}}', ['id', 'language']);
-        $this->addForeignKey('fk_message_source_message', '{{%message}}', 'id', '{{%source_message}}', 'id', 'CASCADE', 'RESTRICT');
-        $this->createIndex('idx_source_message_category', '{{%source_message}}', 'category');
-        $this->createIndex('idx_message_language', '{{%message}}', 'language');
+        $this->addPrimaryKey('pk_' . $module->tableNames['message'] . '_id_language', '{{%' . $module->tableNames['message'] . '}}', ['id', 'language']);
+        $this->addForeignKey('fk_' . $module->tableNames['message'] . '_' . $module->tableNames['source_message'], '{{%' . $module->tableNames['message'] . '}}', 'id', '{{%' . $module->tableNames['source_message'] . '}}', 'id', 'CASCADE', 'RESTRICT');
+        $this->createIndex('idx_' . $module->tableNames['source_message'] . '_category', '{{%' . $module->tableNames['source_message'] . '}}', 'category');
+        $this->createIndex('idx_' . $module->tableNames['message'] . '_language', '{{%' . $module->tableNames['message'] . '}}', 'language');
     }
 
     public function down()
     {
-        $this->dropForeignKey('fk_message_source_message', '{{%message}}');
-        $this->dropTable('{{%message}}');
-        $this->dropTable('{{%source_message}}');
+        /** @var \pravda1979\core\Module $module */
+        $module = Yii::$app->getModule('core');
+
+        $this->dropForeignKey('fk_' . $module->tableNames['message'] . '_' . $module->tableNames['source_message'], '{{%' . $module->tableNames['message'] . '}}');
+        $this->dropTable('{{%' . $module->tableNames['message'] . '}}');
+        $this->dropTable('{{%' . $module->tableNames['source_message'] . '}}');
     }
 }

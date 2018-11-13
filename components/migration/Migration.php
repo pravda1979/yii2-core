@@ -4,6 +4,14 @@ namespace pravda1979\core\components\migration;
 
 use yii\helpers\ArrayHelper;
 use yii\helpers\Inflector;
+use Yii;
+
+/**
+ * Class Migration
+ * @package pravda1979\core\components\migration
+ *
+ * @property array $translates
+ */
 
 class Migration extends \yii\db\Migration
 {
@@ -83,34 +91,37 @@ class Migration extends \yii\db\Migration
      */
     public function createTranslates()
     {
+        /** @var \pravda1979\core\Module $module */
+        $module = Yii::$app->getModule('core');
+
         foreach ($this->translates as $languageName => $language) {
             foreach ($language as $categoryName => $category) {
                 foreach ($category as $message => $translation) {
 
                     //Ищем сохраненный исходник
-                    $itemId = (new \yii\db\Query())->select(['id'])->from('{{%source_message}}')
+                    $itemId = (new \yii\db\Query())->select(['id'])->from('{{%' . $module->tableNames['source_message'] . '}}')
                         ->where(['category' => $categoryName, 'message' => $message])->scalar();
 
                     //Если не найден сохраненный исходник, добавляем новый
                     if (empty($itemId)) {
-                        $this->insert('{{%source_message}}', ['category' => $categoryName, 'message' => $message]);
-                        $itemId = (new \yii\db\Query())->select(['id'])->from('{{%source_message}}')
+                        $this->insert('{{%' . $module->tableNames['source_message'] . '}}', ['category' => $categoryName, 'message' => $message]);
+                        $itemId = (new \yii\db\Query())->select(['id'])->from('{{%' . $module->tableNames['source_message'] . '}}')
                             ->where(['category' => $categoryName, 'message' => $message])->scalar();
                     }
 
                     //Ищем сохраненный перевод
-                    $translateId = (new \yii\db\Query())->select(['id'])->from('{{%message}}')
+                    $translateId = (new \yii\db\Query())->select(['id'])->from('{{%' . $module->tableNames['message'] . '}}')
                         ->where(['id' => $itemId, 'language' => $languageName])->scalar();
 
                     // Добавляем перевод
                     if (empty($translateId)) {
-                        $this->insert('{{%message}}', [
+                        $this->insert('{{%' . $module->tableNames['message'] . '}}', [
                             'id' => $itemId,
                             'language' => $languageName,
                             'translation' => $translation,
                         ]);
                     } else {
-                        $this->update('{{%message}}',
+                        $this->update('{{%' . $module->tableNames['message'] . '}}',
                             [
                                 'id' => $itemId,
                                 'language' => $languageName,
@@ -134,30 +145,33 @@ class Migration extends \yii\db\Migration
      */
     public function deleteTranslates()
     {
+        /** @var \pravda1979\core\Module $module */
+        $module = Yii::$app->getModule('core');
+
         foreach ($this->translates as $languageName => $language) {
             foreach ($language as $categoryName => $category) {
                 foreach ($category as $message => $translation) {
 
                     //Ищем сохраненный исходник
-                    $itemId = (new \yii\db\Query())->select(['id'])->from('{{%source_message}}')
+                    $itemId = (new \yii\db\Query())->select(['id'])->from('{{%' . $module->tableNames['source_message'] . '}}')
                         ->where(['category' => $categoryName, 'message' => $message])->scalar();
 
                     //Если не найден сохраненный исходник, добавляем новый
                     if (empty($itemId)) $itemId = -100;
 
                     // Удаляем перевод
-                    $this->delete('{{%message}}', [
+                    $this->delete('{{%' . $module->tableNames['message'] . '}}', [
                         'id' => $itemId,
                         'language' => $languageName,
 //                        'translation' => $translation,
                     ]);
 
-                    $countTranslates = (new \yii\db\Query())->from('{{%message}}')
+                    $countTranslates = (new \yii\db\Query())->from('{{%' . $module->tableNames['message'] . '}}')
                         ->where(['id' => $itemId])->count();
 
                     echo '$count' . ' ' . $countTranslates . "\n";
                     if ($countTranslates == 0) {
-                        $this->execute("delete from {{%source_message}} where id = $itemId");
+                        $this->execute("delete from {{%" . $module->tableNames['source_message'] . "}} where id = $itemId");
                     } else {
                         echo 'skip $source_message' . ' "$category" => "' . $message . "\"\n";
                     }

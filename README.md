@@ -4,7 +4,7 @@ Include:
 - Users
 - Messages Translates in database
 - Statuses of records
-- LTE Admin template
+- AdminLTE theme
 - Gii template
 - Migration template
 - Actions (index, create, update, view, delete)
@@ -14,6 +14,7 @@ Include:
 - Menus
 - Logging users actions
 - Backup/restore all changes
+- App options, saved in database
 
 Installation
 ------------
@@ -42,12 +43,6 @@ For Advanced Template
 
 Add to `console/config/main.php`
 
-    'components' => [
-        //...
-        'authManager' => [
-            'class' => 'yii\rbac\DbManager',
-        ],
-    ],
     'controllerMap' => [
         //...
         'migrate' => [
@@ -59,55 +54,51 @@ Add to `console/config/main.php`
                 '@yii/rbac/migrations',
             ],
         ],
+        //...
     ],    
 
 Add to `backend/config/main.php`
 
-    'modules' => [
-        //...
-        'core' => [
-            'class' => 'pravda1979\core\Module',
-        ],
-    ],
     'components' => [
         //...
         'user' => [
-            'identityClass' => 'pravda1979\core\models\User',
-            'enableAutoLogin' => true,
+            // 'identityClass' => 'pravda1979\core\models\User', //this value setted by default from Module, remove it in config or change
+            // 'enableAutoLogin' => true, //this value setted by default from Module, remove it in config or change
             'identityCookie' => ['name' => '_identity-backend', 'httpOnly' => true],
         ],
+        //...
     ],
+    //...
 
 Add to `common/config/main.php`
 
     'language' => 'ru-RU',
     'sourceLanguage' => 'en-US',
     //...
-    'components' => [
-        //...
-        'i18n' => [
-            'translations' => [
-                'app*' => [
-                    'class' => 'yii\i18n\DbMessageSource',
-                    'sourceMessageTable' => '{{%source_message}}',
-                    'messageTable' => '{{%message}}',
-                    // 'enableCaching' => true,
-                    // 'cachingDuration' => 60*60*24,
-                    'forceTranslation' => true,
-                    'on missingTranslation' => ['pravda1979\core\components\core\TranslationEventHandler', 'addMissingTranslation'],
-                ],
-                '*' => [
-                    'class' => 'yii\i18n\DbMessageSource',
-                    'sourceMessageTable' => '{{%source_message}}',
-                    'messageTable' => '{{%message}}',
-                    // 'enableCaching' => true,
-                    // 'cachingDuration' => 60*60*24,
-                    'forceTranslation' => true,
-                    'on missingTranslation' => ['pravda1979\core\components\core\TranslationEventHandler', 'addMissingTranslation'],
-                ],
-            ],
+    'modules' => [
+    //...
+        'core' => [
+            'class' => 'pravda1979\core\Module',
+            // Change table names if you need, by default = "core_(table_name)"
+            // 'tableNames' => [
+            //     'auth_item' => 'core_auth_item',
+            //     'auth_item_child' => 'core_auth_item_child',
+            //     'auth_assignment' => 'core_auth_assignment',
+            //     'auth_rule' => 'core_auth_rule',
+            //     'user' => 'core_user',
+            //     'status' => 'core_status',
+            //     'message' => 'core_message',
+            //     'source_message' => 'core_source_message',
+            //     'backup' => 'core_backup',
+            //     'backup_attribute' => 'core_backup_attribute',
+            //     'menu' => 'core_menu',
+            //     'options' => 'core_options',
+            //     'user_action_log' => 'core_user_action_log',
+            // ],
         ],
+    //...
     ],
+    //...
         
 
 For Basic Template
@@ -118,51 +109,33 @@ Add to `config/web.php`
     'language' => 'ru-RU',
     'sourceLanguage' => 'en-US',
     //...
-    'components' => [
-        //...
-        'user' => [
-            'identityClass' => 'pravda1979\core\models\User',
-            'enableAutoLogin' => true,
-        ],
-        //...
-        'i18n' => [
-            'translations' => [
-                'app*' => [
-                    'class' => 'yii\i18n\DbMessageSource',
-                    'sourceMessageTable' => '{{%source_message}}',
-                    'messageTable' => '{{%message}}',
-                    // 'enableCaching' => true,
-                    // 'cachingDuration' => 60*60*24,
-                    'forceTranslation' => true,
-                    'on missingTranslation' => ['pravda1979\core\components\core\TranslationEventHandler', 'addMissingTranslation'],
-                ],
-                '*' => [
-                    'class' => 'yii\i18n\DbMessageSource',
-                    'sourceMessageTable' => '{{%source_message}}',
-                    'messageTable' => '{{%message}}',
-                    // 'enableCaching' => true,
-                    // 'cachingDuration' => 60*60*24,
-                    'forceTranslation' => true,
-                    'on missingTranslation' => ['pravda1979\core\components\core\TranslationEventHandler', 'addMissingTranslation'],
-                ],
-            ],
-        ],
-    ],
     'modules' => [
-        //...
+    //...
         'core' => [
             'class' => 'pravda1979\core\Module',
+            // Change table names if you need, by default = "core_(table_name)"
+            // 'tableNames' => [
+            //     'auth_item' => 'core_auth_item',
+            //     'auth_item_child' => 'core_auth_item_child',
+            //     'auth_assignment' => 'core_auth_assignment',
+            //     'auth_rule' => 'core_auth_rule',
+            //     'user' => 'core_user',
+            //     'status' => 'core_status',
+            //     'message' => 'core_message',
+            //     'source_message' => 'core_source_message',
+            //     'backup' => 'core_backup',
+            //     'backup_attribute' => 'core_backup_attribute',
+            //     'menu' => 'core_menu',
+            //     'options' => 'core_options',
+            //     'user_action_log' => 'core_user_action_log',
+            // ],
         ],
+    //...
     ],
+    //...
     
 Add to `config/console.php`
 
-    'components' => [
-        //...
-        'authManager' => [
-            'class' => 'yii\rbac\DbManager',
-        ],
-    ],
     //...
     'controllerMap' => [
         //...
@@ -175,26 +148,14 @@ Add to `config/console.php`
                 '@yii/rbac/migrations',
             ],
         ],
+        //...
     ],    
+    //...
 
 
 
-For changing existing view, add in config
-----------------------------------------
-
-    'components' => [
-        'view' => [
-            'theme' => [
-                'pathMap' => [
-                    '@pravda1979/core/views' => '@app/views',
-                ],
-            ],
-        ],
-    ],
-        
-
-For changing Gii template, add in config
-------------------------------------
+For changing Gii template, add in `config/web.php`
+--------------------------------------------------
 
     $config['modules']['gii'] = [
         'class' => 'yii\gii\Module',
@@ -211,7 +172,22 @@ For changing Gii template, add in config
             ],
         ],
     ];
+
     
+For changing existing view, add in `config/web.php`
+----------------------------------------------------
+
+    'components' => [
+        'view' => [
+            'theme' => [
+                'pathMap' => [
+                    '@pravda1979/core/views' => '@app/views',
+                ],
+            ],
+        ],
+    ],
+        
+
 Base classes for Gii template:
 
 ```
@@ -224,7 +200,7 @@ Base classes for Gii template:
 Usage
 -----
 
-Getting menu items array:
+Getting main menu items array:
 ```
 $menuItems = \pravda1979\core\models\Menu::getMenu('menu.main');
 ```

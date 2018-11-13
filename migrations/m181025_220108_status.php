@@ -63,36 +63,37 @@ class m181025_220108_status extends Migration
             $tableOptions = 'ENGINE=InnoDB DEFAULT CHARSET=utf8';
         }
 
-        if ($this->db->schema->getTableSchema("{{%$this->table_name}}", true) === null) {
-            $this->createTable("{{%$this->table_name}}", [
-                'id' => $this->primaryKey(),
+        /** @var \pravda1979\core\Module $module */
+        $module = Yii::$app->getModule('core');
 
-                'name' => $this->string(255)->notNull()->unique(),
-                'fixed_status_id' => $this->integer()->notNull(),
-                'is_default' => $this->boolean()->notNull()->defaultValue(0),
+        $this->createTable("{{%" . $module->tableNames[$this->table_name] . "}}", [
+            'id' => $this->primaryKey(),
 
-                'note' => $this->text(),
-                'status_id' => $this->integer()->notNull(),
-                'user_id' => $this->integer()->notNull(),
-                'created_at' => $this->timestamp()->notNull()->defaultExpression('CURRENT_TIMESTAMP'),
-                'updated_at' => $this->timestamp()->defaultValue(null),
-            ], $tableOptions);
+            'name' => $this->string(255)->notNull()->unique(),
+            'fixed_status_id' => $this->integer()->notNull(),
+            'is_default' => $this->boolean()->notNull()->defaultValue(0),
 
-            $this->addForeignKey("{{%fk_" . "user_id" . "_$this->table_name}}", "{{%$this->table_name}}", "[[user_id]]", "{{%user}}", "[[id]]");
-            $this->addForeignKey("{{%fk_" . "status_id" . "_$this->table_name}}", "{{%$this->table_name}}", "[[status_id]]", "{{%status}}", "[[id]]");
+            'note' => $this->text(),
+            'status_id' => $this->integer()->notNull(),
+            'user_id' => $this->integer()->notNull(),
+            'created_at' => $this->timestamp()->notNull()->defaultExpression('CURRENT_TIMESTAMP'),
+            'updated_at' => $this->timestamp()->defaultValue(null),
+        ], $tableOptions);
 
-            $this->createIndex("{{%ix_" . "is_default" . "_$this->table_name}}", "{{%$this->table_name}}", "[[is_default]]");
-            $this->createIndex("{{%ix_" . "fixed_status_id" . "_$this->table_name}}", "{{%$this->table_name}}", "[[fixed_status_id]]");
+        $this->addForeignKey("{{%fk_" . "user_id" . "_" . $module->tableNames[$this->table_name] . "}}", "{{%" . $module->tableNames[$this->table_name] . "}}", "[[user_id]]", "{{%" . $module->tableNames['user'] . "}}", "[[id]]");
+        $this->addForeignKey("{{%fk_" . "status_id" . "_" . $module->tableNames[$this->table_name] . "}}", "{{%" . $module->tableNames[$this->table_name] . "}}", "[[status_id]]", "{{%" . $module->tableNames['status'] . "}}", "[[id]]");
 
-            $this->batchInsert('{{%' . $this->table_name . '}}', ['id', 'name', 'is_default', 'fixed_status_id', 'status_id', 'user_id', 'updated_at'], [
-                [1, 'Активная запись', 1, 100, 1, 1, new \yii\db\Expression('NOW()')],
-                [2, 'Черновик', 1, 10, 1, 1, new \yii\db\Expression('NOW()')],
-                [3, 'Запрещенная запись', 1, 1, 1, 1, new \yii\db\Expression('NOW()')],
-            ]);
+        $this->createIndex("{{%ix_" . "is_default" . "_" . $module->tableNames[$this->table_name] . "}}", "{{%" . $module->tableNames[$this->table_name] . "}}", "[[is_default]]");
+        $this->createIndex("{{%ix_" . "fixed_status_id" . "_" . $module->tableNames[$this->table_name] . "}}", "{{%" . $module->tableNames[$this->table_name] . "}}", "[[fixed_status_id]]");
 
-            // Добавляем связь для поля "status_id" в таблице "user"
-            $this->addForeignKey("{{%fk_" . "status_id" . "_user}}", "{{%user}}", "[[status_id]]", "{{%status}}", "[[id]]");
-        }
+        $this->batchInsert('{{%' . $module->tableNames[$this->table_name] . '}}', ['id', 'name', 'is_default', 'fixed_status_id', 'status_id', 'user_id', 'updated_at'], [
+            [1, 'Активная запись', 1, 100, 1, 1, new \yii\db\Expression('NOW()')],
+            [2, 'Черновик', 1, 10, 1, 1, new \yii\db\Expression('NOW()')],
+            [3, 'Запрещенная запись', 1, 1, 1, 1, new \yii\db\Expression('NOW()')],
+        ]);
+
+        // Добавляем связь для поля "status_id" в таблице "user"
+        $this->addForeignKey("{{%fk_" . "status_id" . "_" . $module->tableNames['user'] . "}}", "{{%" . $module->tableNames['user'] . "}}", "[[status_id]]", "{{%" . $module->tableNames['status'] . "}}", "[[id]]");
 
         $this->createTranslates();
         $this->createRbac();
@@ -100,11 +101,12 @@ class m181025_220108_status extends Migration
 
     public function safeDown()
     {
+        /** @var \pravda1979\core\Module $module */
+        $module = Yii::$app->getModule('core');
         // Удаляем связь для поля "status_id" в таблице "user"
-        $this->dropForeignKey("{{%fk_" . "status_id" . "_user}}", "{{%user}}");
+        $this->dropForeignKey("{{%fk_" . "status_id" . "_user}}", "{{%" . $module->tableNames['user'] . "}}");
 
-        if ($this->db->schema->getTableSchema("{{%$this->table_name}}", true) != null)
-            $this->dropTable("{{%$this->table_name}}");
+        $this->dropTable("{{%$this->table_name}}");
         $this->deleteTranslates();
         $this->deleteRbac();
     }

@@ -22,7 +22,9 @@ class SourceMessage extends \pravda1979\core\components\core\ActiveRecord
      */
     public static function tableName()
     {
-        return '{{%source_message}}';
+        /** @var \pravda1979\core\Module $module */
+        $module = Yii::$app->getModule('core');
+        return  "{{%" . $module->tableNames["source_message"] . "}}";
     }
 
     /**

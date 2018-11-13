@@ -39,10 +39,10 @@ use pravda1979\core\models\Menu;
                 <?= $form->field($model, 'url')->textInput(['maxlength' => true]) ?>
             </div>
             <div class="col-md-4">
-                <?= $form->field($model, 'visible')->dropDownList(Menu::getListVisible(), ['prompt' => '']) ?>
+                <?= $form->field($model, 'use_url_helper')->dropDownList([1 => "Да", 0 => "Нет"]) ?>
             </div>
             <div class="col-md-4">
-                <?= $form->field($model, 'use_url_helper')->checkbox() ?>
+                <?= $form->field($model, 'visible')->dropDownList(Menu::getListVisible(), ['prompt' => '']) ?>
             </div>
         </div>
 

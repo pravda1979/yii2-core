@@ -39,7 +39,7 @@ class m181106_142012_user_action_log extends Migration
      */
     public function getTranslates($translates = [])
     {
-        $translates =[
+        $translates = [
             'ru-RU' => [
                 'UserActionLog' => [
                     'Search' => 'Поиск в журнале действий',
@@ -74,38 +74,39 @@ class m181106_142012_user_action_log extends Migration
             $tableOptions = 'ENGINE=InnoDB DEFAULT CHARSET=utf8';
         }
 
-        if ($this->db->schema->getTableSchema("{{%$this->table_name}}", true) === null) {
-            $this->createTable("{{%$this->table_name}}", [
-                'id' => $this->primaryKey(),
+        /** @var \pravda1979\core\Module $module */
+        $module = Yii::$app->getModule('core');
 
-                'controller' => $this->string(255),
-                'action' => $this->string(255),
-                'route' => $this->string(255),
-                'method' => $this->string(255),
-                'user_ip' => $this->string(255),
-                'url' => $this->text(),
+        $this->createTable("{{%" . $module->tableNames[$this->table_name] . "}}", [
+            'id' => $this->primaryKey(),
 
-                'note' => $this->text(),
-                'status_id' => $this->integer()->notNull(),
-                'user_id' => $this->integer(),
-                'created_at' => $this->timestamp()->notNull()->defaultExpression('CURRENT_TIMESTAMP'),
-                'updated_at' => $this->timestamp()->defaultValue(null),
-            ], $tableOptions);
+            'controller' => $this->string(255),
+            'action' => $this->string(255),
+            'route' => $this->string(255),
+            'method' => $this->string(255),
+            'user_ip' => $this->string(255),
+            'url' => $this->text(),
 
-            $this->addForeignKey("{{%fk_" . "user_id" . "_$this->table_name}}", "{{%$this->table_name}}", "[[user_id]]", "{{%user}}", "[[id]]");
-            $this->addForeignKey("{{%fk_" . "status_id" . "_$this->table_name}}", "{{%$this->table_name}}", "[[status_id]]", "{{%status}}", "[[id]]");
+            'note' => $this->text(),
+            'status_id' => $this->integer()->notNull(),
+            'user_id' => $this->integer(),
+            'created_at' => $this->timestamp()->notNull()->defaultExpression('CURRENT_TIMESTAMP'),
+            'updated_at' => $this->timestamp()->defaultValue(null),
+        ], $tableOptions);
 
-            $this->createIndex("{{%ix_" . "controller" . "_$this->table_name}}", "{{%$this->table_name}}", "[[controller]]");
-            $this->createIndex("{{%ix_" . "action" . "_$this->table_name}}", "{{%$this->table_name}}", "[[action]]");
+        $this->addForeignKey("{{%fk_" . "user_id" . "_" . $module->tableNames[$this->table_name] . "}}", "{{%" . $module->tableNames[$this->table_name] . "}}", "[[user_id]]", "{{%" . $module->tableNames['user'] . "}}", "[[id]]");
+        $this->addForeignKey("{{%fk_" . "status_id" . "_" . $module->tableNames[$this->table_name] . "}}", "{{%" . $module->tableNames[$this->table_name] . "}}", "[[status_id]]", "{{%" . $module->tableNames['status'] . "}}", "[[id]]");
 
-        }
+        $this->createIndex("{{%ix_" . "controller" . "_" . $module->tableNames[$this->table_name] . "}}", "{{%" . $module->tableNames[$this->table_name] . "}}", "[[controller]]");
+        $this->createIndex("{{%ix_" . "action" . "_" . $module->tableNames[$this->table_name] . "}}", "{{%" . $module->tableNames[$this->table_name] . "}}", "[[action]]");
 
-// $VISIBLE_CHECK_ACCESS = 1; $VISIBLE_GUEST = 10; $VISIBLE_AUTHORIZED = 20; $VISIBLE_ADMIN = 30;
-// $VISIBLE_ALWAYS = 40; $VISIBLE_NEVER = 50; $VISIBLE_HAS_CHILDREN = 60;
-// data=>1; dirs=>2; admin=>3; instruments=>8;
-            $this->batchInsert('{{%menu}}', ['use_url_helper', 'visible', 'position', 'menu_id', 'label', 'icon', 'url', 'parent_id', 'level', 'status_id', 'user_id', 'updated_at'], [
-                [1, 1, 1050, 'menu.main', 'User Action Logs', null, '/core/user-action-log/index', 3, 1, 1, 1, new \yii\db\Expression('NOW()')],
-            ]);
+
+        // $VISIBLE_CHECK_ACCESS = 1; $VISIBLE_GUEST = 10; $VISIBLE_AUTHORIZED = 20; $VISIBLE_ADMIN = 30;
+        // $VISIBLE_ALWAYS = 40; $VISIBLE_NEVER = 50; $VISIBLE_HAS_CHILDREN = 60;
+        // data=>1; dirs=>2; admin=>3; instruments=>8;
+        $this->batchInsert('{{%' . $module->tableNames['menu'] . '}}', ['use_url_helper', 'visible', 'position', 'menu_id', 'label', 'icon', 'url', 'parent_id', 'level', 'status_id', 'user_id', 'updated_at'], [
+            [1, 1, 1050, 'menu.main', 'User Action Logs', null, '/core/user-action-log/index', 3, 1, 1, 1, new \yii\db\Expression('NOW()')],
+        ]);
 
         $this->createTranslates();
         $this->createRbac();
@@ -113,10 +114,11 @@ class m181106_142012_user_action_log extends Migration
 
     public function safeDown()
     {
-        if ($this->db->schema->getTableSchema("{{%$this->table_name}}", true) != null)
-            $this->dropTable("{{%$this->table_name}}");
+        /** @var \pravda1979\core\Module $module */
+        $module = Yii::$app->getModule('core');
+        $this->dropTable("{{%" . $module->tableNames[$this->table_name] . "}}");
         $this->deleteTranslates();
         $this->deleteRbac();
-        $this->delete('{{%menu}}', ['menu_id' => 'menu.main', 'label' => 'User Action Logs']);
+        $this->delete('{{%' . $module->tableNames['menu'] . '}}', ['menu_id' => 'menu.main', 'label' => 'User Action Logs']);
     }
 }

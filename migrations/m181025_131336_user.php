@@ -62,69 +62,70 @@ class m181025_131336_user extends Migration
             $tableOptions = 'ENGINE=InnoDB DEFAULT CHARSET=utf8';
         }
 
-        if ($this->db->schema->getTableSchema("{{%$this->table_name}}", true) === null) {
-            $this->createTable("{{%$this->table_name}}", [
-                'id' => $this->primaryKey(),
+        /** @var \pravda1979\core\Module $module */
+        $module = Yii::$app->getModule('core');
 
-                'username' => $this->string()->notNull()->unique(),
-                'auth_key' => $this->string(32)->notNull(),
-                'password_hash' => $this->string()->notNull(),
-                'password_reset_token' => $this->string()->unique(),
-                'email' => $this->string()->notNull()->unique(),
-                'name' => $this->string(255),
-                'user_state' => $this->integer()->notNull(),
+        $this->createTable("{{%" . $module->tableNames[$this->table_name] . "}}", [
+            'id' => $this->primaryKey(),
 
-                'note' => $this->text(),
-                'status_id' => $this->integer()->notNull(),
-                'user_id' => $this->integer()->notNull(),
-                'created_at' => $this->timestamp()->notNull()->defaultExpression('CURRENT_TIMESTAMP'),
-                'updated_at' => $this->timestamp()->defaultValue(null),
-            ], $tableOptions);
+            'username' => $this->string()->notNull()->unique(),
+            'auth_key' => $this->string(32)->notNull(),
+            'password_hash' => $this->string()->notNull(),
+            'password_reset_token' => $this->string()->unique(),
+            'email' => $this->string()->notNull()->unique(),
+            'name' => $this->string(255),
+            'user_state' => $this->integer()->notNull(),
 
-            $this->addForeignKey("{{%fk_" . "user_id" . "_$this->table_name}}", "{{%$this->table_name}}", "[[user_id]]", "{{%user}}", "[[id]]");
+            'note' => $this->text(),
+            'status_id' => $this->integer()->notNull(),
+            'user_id' => $this->integer()->notNull(),
+            'created_at' => $this->timestamp()->notNull()->defaultExpression('CURRENT_TIMESTAMP'),
+            'updated_at' => $this->timestamp()->defaultValue(null),
+        ], $tableOptions);
 
-            $this->batchInsert('{{%user}}', ['id', 'username', 'name', 'email', 'auth_key', 'password_hash', 'user_state', 'status_id', 'user_id', 'created_at', 'updated_at',], [
-                [
-                    1,
-                    'admin',
-                    'Администратор',
-                    'admin@example.com',
-                    Yii::$app->security->generateRandomString(),
-                    Yii::$app->security->generatePasswordHash('admin'),
-                    1,
-                    1,
-                    1,
-                    new \yii\db\Expression('NOW()'),
-                    new \yii\db\Expression('NOW()'),
-                ],
-                [
-                    2,
-                    'editor',
-                    'Редактор',
-                    'editor@example.com',
-                    Yii::$app->security->generateRandomString(),
-                    Yii::$app->security->generatePasswordHash('editor'),
-                    1,
-                    1,
-                    1,
-                    new \yii\db\Expression('NOW()'),
-                    new \yii\db\Expression('NOW()'),
-                ],
-                [
-                    3,
-                    'viewer',
-                    'Зритель',
-                    'viewer@example.com',
-                    Yii::$app->security->generateRandomString(),
-                    Yii::$app->security->generatePasswordHash('viewer'),
-                    1,
-                    1,
-                    1,
-                    new \yii\db\Expression('NOW()'),
-                    new \yii\db\Expression('NOW()'),
-                ],
-            ]);
-        }
+        $this->addForeignKey("{{%fk_" . "user_id" . "_" . $module->tableNames[$this->table_name] . "}}", "{{%" . $module->tableNames[$this->table_name] . "}}", "[[user_id]]", "{{%" . $module->tableNames['user'] . "}}", "[[id]]");
+
+        $this->batchInsert('{{%' . $module->tableNames['user'] . '}}', ['id', 'username', 'name', 'email', 'auth_key', 'password_hash', 'user_state', 'status_id', 'user_id', 'created_at', 'updated_at',], [
+            [
+                1,
+                'admin',
+                'Администратор',
+                'admin@example.com',
+                Yii::$app->security->generateRandomString(),
+                Yii::$app->security->generatePasswordHash('admin'),
+                1,
+                1,
+                1,
+                new \yii\db\Expression('NOW()'),
+                new \yii\db\Expression('NOW()'),
+            ],
+            [
+                2,
+                'editor',
+                'Редактор',
+                'editor@example.com',
+                Yii::$app->security->generateRandomString(),
+                Yii::$app->security->generatePasswordHash('editor'),
+                1,
+                1,
+                1,
+                new \yii\db\Expression('NOW()'),
+                new \yii\db\Expression('NOW()'),
+            ],
+            [
+                3,
+                'viewer',
+                'Зритель',
+                'viewer@example.com',
+                Yii::$app->security->generateRandomString(),
+                Yii::$app->security->generatePasswordHash('viewer'),
+                1,
+                1,
+                1,
+                new \yii\db\Expression('NOW()'),
+                new \yii\db\Expression('NOW()'),
+            ],
+        ]);
 
         $admin = $this->getRole('admin');
         $editor = $this->getRole('editor');
@@ -145,8 +146,9 @@ class m181025_131336_user extends Migration
 
     public function safeDown()
     {
-        if ($this->db->schema->getTableSchema("{{%$this->table_name}}", true) != null)
-            $this->dropTable("{{%$this->table_name}}");
+        /** @var \pravda1979\core\Module $module */
+        $module = Yii::$app->getModule('core');
+        $this->dropTable("{{%" . $module->tableNames[$this->table_name] . "}}");
         $this->deleteTranslates();
         $this->deleteRbac();
     }

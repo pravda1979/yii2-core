@@ -3,13 +3,15 @@
 namespace pravda1979\core;
 
 use Yii;
+use yii\helpers\ArrayHelper;
 
 /**
  * core module definition class
+ * @property  array $tableNames
  */
 class Module extends \yii\base\Module
 {
-    public $skin = 'skin-blue';
+    public $tableNames = [];
 
     public function getUrlRules()
     {
