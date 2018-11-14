@@ -347,15 +347,23 @@ class User extends \pravda1979\core\components\core\ActiveRecord implements Iden
         if (!parent::beforeSave($insert))
             return false;
 
-        // If password was changed, need re-login
-        if (!empty($this->password)) {
-            if (!Yii::$app->security->validatePassword($this->password, $this->password_hash)) {
-                $this->password_hash = Yii::$app->security->generatePasswordHash($this->password);
-                $this->generateAuthKey();
-                // Delete user session
-                if (Yii::$app->session instanceof DbSession)
-                    Yii::$app->db->createCommand()->delete(Yii::$app->session->sessionTable, ['user_id' => $this->id])->execute();
-            }
+        $requireReLogin = false;
+
+        if (!empty($this->password) && !Yii::$app->security->validatePassword($this->password, $this->password_hash)) {
+            $this->password_hash = Yii::$app->security->generatePasswordHash($this->password);
+            $requireReLogin = true;
+        }
+        if (array_key_exists('username', $this->dirtyAttributes))
+            $requireReLogin = true;
+        if (array_key_exists('user_state', $this->dirtyAttributes))
+            $requireReLogin = true;
+
+        // If need re-login
+        if ($requireReLogin) {
+            $this->generateAuthKey();
+            // Delete user session
+            if (Yii::$app->session instanceof DbSession)
+                Yii::$app->db->createCommand()->delete(Yii::$app->session->sessionTable, ['user_id' => $this->id])->execute();
         }
 
         return true;
