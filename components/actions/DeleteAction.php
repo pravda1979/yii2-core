@@ -43,7 +43,7 @@ class DeleteAction extends \pravda1979\core\components\core\Action
             Yii::$app->getSession()->addFlash('error', Html::errorSummary($model, ['header' => '']));
         }
 
-        return $this->controller->goBack(['index']);
+        return $this->controller->goBack(\yii\helpers\Url::to(['index']));
     }
 
 }

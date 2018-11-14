@@ -20,7 +20,7 @@ use pravda1979\core\models\User;
 
         <?= $form->field($model, 'is_default')->checkbox() ?>
 
-        <?= $form->field($model, 'note')->textInput(['rows' => 6]) ?>
+        <?= $form->field($model, 'note')->textarea(['rows' => 6]) ?>
 
         <?= $form->field($model, 'status_id')->dropDownList(Status::getListWithGroup(), ['prompt' => '']) ?>
 

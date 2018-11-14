@@ -23,7 +23,7 @@ class ActiveRecord extends \yii\db\ActiveRecord
             $rules = [
                 'backup' => ['class' => BackupBehavior::className()],
             ];
-        }else{
+        } else {
             $rules = [];
         }
 

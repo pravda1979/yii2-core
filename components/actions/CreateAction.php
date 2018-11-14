@@ -41,8 +41,8 @@ class CreateAction extends Action
         if ($model->load(Yii::$app->request->post()) && $model->validate()) {
             if (!$model->save(false)) {
                 Yii::$app->getSession()->addFlash('error', Html::errorSummary($model, ['header' => '']));
-            }else{
-                return $this->controller->goBack(['view', 'id' => $model->id]);
+            } else {
+                return $this->controller->goBack(\yii\helpers\Url::to(['view', 'id' => $model->id]));
             }
         }
 

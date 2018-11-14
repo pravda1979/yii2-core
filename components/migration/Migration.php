@@ -12,7 +12,6 @@ use Yii;
  *
  * @property array $translates
  */
-
 class Migration extends \yii\db\Migration
 {
     public $route = '';
@@ -215,10 +214,12 @@ class Migration extends \yii\db\Migration
 
     public function deleteRbac()
     {
+        /** @var \pravda1979\core\Module $module */
+        $module = Yii::$app->getModule('core');
         foreach ($this->actions as $roleName => $role) {
             foreach ($role as $action) {
                 $route = (empty($this->route) ? "" : "/" . $this->route) . "/$action";
-                $this->execute("delete from {{%auth_item}} where name = '$route'");
+                $this->execute("delete from {{%" . $module->tableNames['auth_item'] . "}} where name = '$route'");
             }
         }
 
@@ -227,16 +228,18 @@ class Migration extends \yii\db\Migration
 
     public function deleteRoles($roles = null)
     {
+        /** @var \pravda1979\core\Module $module */
+        $module = Yii::$app->getModule('core');
         foreach ($roles as $parentName => $childName) {
             if (is_array($childName)) {
                 $this->deleteRoles($childName);
             } else {
                 $parentName = $this->getDbRoleName($parentName);
                 $childName = $this->getDbRoleName($childName);
-                $countChild = $this->db->createCommand("select count(*) from {{%auth_item_child}} where parent='$childName'")->queryScalar();
+                $countChild = $this->db->createCommand("select count(*) from {{%".$module->tableNames['auth_item_child'] ."}} where parent='$childName'")->queryScalar();
                 echo '$countChild' . ' ' . $countChild . "\n";
                 if ($countChild == 0) {
-                    $this->execute("delete from {{%auth_item}} where name = '$childName'");
+                    $this->execute("delete from {{%".$module->tableNames['auth_item'] ."}} where name = '$childName'");
                 } else {
                     echo 'skip deleting $childName' . ' ' . $parentName . "\n";
                 }
@@ -246,10 +249,10 @@ class Migration extends \yii\db\Migration
                     continue;
                 } else {
                     // Удаляем неиспользуемы роли
-                    $countParent = $this->db->createCommand("select count(*) from {{%auth_item_child}} where parent='$parentName'")->queryScalar();
+                    $countParent = $this->db->createCommand("select count(*) from {{%".$module->tableNames['auth_item_child'] ."}} where parent='$parentName'")->queryScalar();
                     echo '$countParent' . ' ' . $countParent . "\n";
                     if ($countParent == 0) {
-                        $this->execute("delete from {{%auth_item}} where name = '$parentName'");
+                        $this->execute("delete from {{%".$module->tableNames['auth_item'] ."}} where name = '$parentName'");
                     } else {
                         echo 'skip deleting $parentName' . ' ' . $parentName . "\n";
                     }

@@ -108,9 +108,11 @@ class <?= $className ?> extends Migration
 
     public function safeDown()
     {
+        /** @var \pravda1979\core\Module $module */
+        $module = Yii::$app->getModule('core');
         $this->dropTable("{{%$this->table_name}}");
         $this->deleteTranslates();
         $this->deleteRbac();
-//        $this->delete('{{% . $module->tableNames['menu'] . }}', ['menu_id' => 'menu.main', 'label' => 'itemName']);
+//        $this->delete('{{%' . $module->tableNames['menu'] . '}}', ['menu_id' => 'menu.main', 'label' => 'itemName']);
     }
 }

@@ -16,6 +16,15 @@ use pravda1979\core\models\User;
 
         <?= $form->field($model, 'username')->textInput(['maxlength' => true]) ?>
 
+        <div class="row">
+            <div class="col-md-6">
+                <?= $form->field($model, 'password', ['enableClientValidation' => false])->passwordInput() ?>
+            </div>
+            <div class="col-md-6">
+                <?= $form->field($model, 'password_repeat', ['enableClientValidation' => false])->passwordInput() ?>
+            </div>
+        </div>
+
         <?php //echo $form->field($model, 'auth_key')->textInput(['maxlength' => true]) ?>
 
         <?php //echo $form->field($model, 'password_hash')->textInput(['maxlength' => true]) ?>
@@ -32,7 +41,7 @@ use pravda1979\core\models\User;
 
         <?= $form->field($model, 'status_id')->dropDownList(Status::getListWithGroup(), ['prompt' => '']) ?>
 
-        <?= $form->field($model, 'userRights')->dropDownList(User::getListUserRights(), ['size' => 10, 'multiple'=>'multiple', 'prompt' => '']) ?>
+        <?= $form->field($model, 'userRights')->dropDownList(User::getListUserRights(), ['size' => 10, 'multiple' => 'multiple', 'prompt' => '']) ?>
 
     </div>
     <div class="box-footer">

@@ -4,6 +4,7 @@ namespace pravda1979\core\components\core;
 
 use pravda1979\core\components\behaviors\UserActionLogBehavior;
 use Yii;
+use yii\helpers\ArrayHelper;
 use yii\helpers\Url;
 
 class BackendController extends Controller
@@ -16,7 +17,11 @@ class BackendController extends Controller
         $result = [
             'as access' => [
                 'class' => 'pravda1979\core\components\core\AccessControl',
-                'allowActions' => ['/core/user/login', '/core/user/logout', 'site/error']
+                'allowActions' => [
+                    '/core/user/login',
+                    '/core/user/logout',
+                    'site/error',
+                ]
             ]
         ];
 
@@ -28,7 +33,7 @@ class BackendController extends Controller
             ];
         }
 
-        return array_merge(parent::behaviors(), $result);
+        return ArrayHelper::merge(parent::behaviors(), $result);
     }
 
 
@@ -38,7 +43,7 @@ class BackendController extends Controller
     public function afterAction($action, $result)
     {
         // Remember current url for goBack() function after create/update/delete record
-        if (!$action instanceof Action && !in_array($action->getUniqueId(), ['/core/default/delete-cache', 'core/options/index'])) {
+        if (!$action instanceof Action && !in_array($action->getUniqueId(), ['core/default/delete-cache', 'core/options/index'])) {
             Url::remember();
         }
 

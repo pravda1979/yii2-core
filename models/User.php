@@ -6,6 +6,8 @@ use Yii;
 use pravda1979\core\components\validators\StringFilter;
 use yii\base\NotSupportedException;
 use yii\helpers\ArrayHelper;
+use yii\helpers\Html;
+use yii\web\DbSession;
 use yii\web\IdentityInterface;
 
 /**
@@ -37,6 +39,9 @@ class User extends \pravda1979\core\components\core\ActiveRecord implements Iden
 
     private $_userRights = [];
 
+    public $password;
+    public $password_repeat;
+
     /**
      * {@inheritdoc}
      */
@@ -44,7 +49,7 @@ class User extends \pravda1979\core\components\core\ActiveRecord implements Iden
     {
         /** @var \pravda1979\core\Module $module */
         $module = Yii::$app->getModule('core');
-        return  "{{%" . $module->tableNames["user"] . "}}";
+        return "{{%" . $module->tableNames["user"] . "}}";
     }
 
     /**
@@ -68,6 +73,9 @@ class User extends \pravda1979\core\components\core\ActiveRecord implements Iden
             [['status_id'], 'exist', 'skipOnError' => true, 'targetClass' => Status::className(), 'targetAttribute' => ['status_id' => 'id']],
             [['user_id'], 'exist', 'skipOnError' => true, 'targetClass' => User::className(), 'targetAttribute' => ['user_id' => 'id']],
             [['userRights'], 'safe'],
+            [['password', 'password_repeat'], 'safe'],
+            ['password', 'compare', 'on' => ['create', 'update'], 'compareAttribute' => 'password_repeat'],
+            ['password_repeat', 'compare', 'on' => ['create', 'update'], 'compareAttribute' => 'password'],
         ];
     }
 
@@ -329,6 +337,28 @@ class User extends \pravda1979\core\components\core\ActiveRecord implements Iden
     {
         $this->assignUserRights();
         parent::afterSave($insert, $changedAttributes);
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function beforeSave($insert)
+    {
+        if (!parent::beforeSave($insert))
+            return false;
+
+        // If password was changed, need re-login
+        if (!empty($this->password)) {
+            if (!Yii::$app->security->validatePassword($this->password, $this->password_hash)) {
+                $this->password_hash = Yii::$app->security->generatePasswordHash($this->password);
+                $this->generateAuthKey();
+                // Delete user session
+                if (Yii::$app->session instanceof DbSession)
+                    Yii::$app->db->createCommand()->delete(Yii::$app->session->sessionTable, ['user_id' => $this->id])->execute();
+            }
+        }
+
+        return true;
     }
 
 }

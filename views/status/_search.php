@@ -52,7 +52,7 @@ use pravda1979\core\models\User;
 
                     <?= $form->field($model, 'is_default')->dropDownList(['1' => 'Да', '0' => 'Нет'], ['prompt' => '']) ?>
 
-                    <?= $form->field($model, 'note')->textInput(['rows' => 6]) ?>
+                    <?= $form->field($model, 'note')->textInput() ?>
 
                     <?= $form->field($model, 'status_id')->dropDownList(Status::getListWithGroup(), ['prompt' => '']) ?>
 

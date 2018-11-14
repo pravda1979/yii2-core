@@ -4,6 +4,7 @@ namespace pravda1979\core\controllers;
 
 use pravda1979\core\components\core\BackendController;
 use Yii;
+use yii\helpers\ArrayHelper;
 use yii\helpers\Url;
 use yii\web\ForbiddenHttpException;
 
@@ -12,11 +13,19 @@ use yii\web\ForbiddenHttpException;
  */
 class DefaultController extends BackendController
 {
-    public function allowAction()
+    /**
+     * {@inheritdoc}
+     */
+    public function behaviors()
     {
-        return [
-            '/core/default/delete-cache',
+        $result = [
+            'as access' => [
+                'allowActions' => [
+                    '/core/default/delete-cache',
+                ]
+            ]
         ];
+        return ArrayHelper::merge(parent::behaviors(), $result);
     }
 
     /**

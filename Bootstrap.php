@@ -32,6 +32,7 @@ class Bootstrap implements BootstrapInterface
         'menu' => 'core_menu',
         'options' => 'core_options',
         'user_action_log' => 'core_user_action_log',
+        'session' => 'core_session',
     ];
 
     public function getTableNames()
@@ -104,6 +105,16 @@ class Bootstrap implements BootstrapInterface
                     'enableAutoLogin' => true,
                     'loginUrl' => ['/core/user/login'],
                     'identityClass' => 'pravda1979\core\models\User',
+                ]);
+
+                Yii::$app->set('session', [
+                    'class' => 'yii\web\DbSession',
+                    'useTransparentSessionID' => true,
+                    'sessionTable' => '{{%' . $module->tableNames['session'] . '}}',
+                    'writeCallback' => function ($session) {
+                        return ['user_id' => Yii::$app->user->id];
+                    },
+                    // 'db' => 'mydb',  // ID компонента для взаимодействия с БД. По умолчанию 'db'.
                 ]);
 
                 // Register assets

@@ -94,6 +94,7 @@ Add to `common/config/main.php`
             //     'menu' => 'core_menu',
             //     'options' => 'core_options',
             //     'user_action_log' => 'core_user_action_log',
+            //     'session' => 'core_session',
             // ],
         ],
     //...
@@ -128,6 +129,7 @@ Add to `config/web.php`
             //     'menu' => 'core_menu',
             //     'options' => 'core_options',
             //     'user_action_log' => 'core_user_action_log',
+            //     'session' => 'core_session',
             // ],
         ],
     //...

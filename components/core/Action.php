@@ -38,6 +38,7 @@ class Action extends \yii\base\Action
     protected function findModel($id)
     {
         if (($model = ($this->modelClass)::findOne($id)) !== null) {
+            $model->scenario = $this->controller->action->id;
             return $model;
         }
 
