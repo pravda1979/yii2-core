@@ -297,6 +297,7 @@ class User extends \pravda1979\core\components\core\ActiveRecord implements Iden
      */
     public function setUserRights($rights)
     {
+        $rights = is_array($rights) ? $rights : [$rights];
         $this->_userRights = $rights;
     }
 

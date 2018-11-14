@@ -4,6 +4,7 @@ use yii\helpers\Html;
 use yii\widgets\ActiveForm;
 use pravda1979\core\models\Status;
 use pravda1979\core\models\User;
+use kartik\select2\Select2;
 
 /* @var $this yii\web\View */
 /* @var $model pravda1979\core\models\User */
@@ -41,7 +42,17 @@ use pravda1979\core\models\User;
 
         <?= $form->field($model, 'status_id')->dropDownList(Status::getListWithGroup(), ['prompt' => '']) ?>
 
-        <?= $form->field($model, 'userRights')->dropDownList(User::getListUserRights(), ['size' => 10, 'multiple' => 'multiple', 'prompt' => '', 'style' => 'display: block', 'id' => 'hidden_input_user_rights']) ?>
+        <?php //echo $form->field($model, 'userRights')->dropDownList(User::getListUserRights(), ['size' => 10, 'multiple' => 'multiple', 'prompt' => '', 'style' => 'display: block', 'id' => 'hidden_input_user_rights']) ?>
+
+        <?= $form->field($model, 'userRights')->widget(Select2::classname(), [
+            'data' => User::getListUserRights(),
+            'options' => ['placeholder' => 'Выберите роли...'],
+            'pluginOptions' => [
+                'allowClear' => true,
+                'multiple' => true,
+
+            ],
+        ]);?>
 
     </div>
     <div class="box-footer">

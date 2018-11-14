@@ -12,7 +12,8 @@
     ],
     "require": {
         "yiisoft/yii2": "*",
-        "dmstr/yii2-adminlte-asset": "2.6.2"
+        "dmstr/yii2-adminlte-asset": "2.6.2",
+        "kartik-v/yii2-widget-select2": "dev-master"
     },
     "extra": {
         "bootstrap": "pravda1979\\core\\Bootstrap"
