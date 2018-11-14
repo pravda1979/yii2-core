@@ -22,9 +22,9 @@ class <?= $className ?> extends Migration
     public $parents = [
         '$route: editor' => '$route: viewer',
         '$route: admin' => '$route: editor',
-        '::viewer' => '$route: viewer',
-        '::editor' => '$route: editor',
-        '::admin' => '$route: admin',
+        'viewer' => '$route: viewer',
+        'editor' => '$route: editor',
+        'admin' => '$route: admin',
     ];
     public $actions = [
         '$route: viewer' => [

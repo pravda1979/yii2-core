@@ -14,7 +14,6 @@ class CoreAsset extends AssetBundle
         'css/core.css',
     ];
     public $js = [
-        'js/user.js',
     ];
     public $depends = [
         'yii\web\YiiAsset',

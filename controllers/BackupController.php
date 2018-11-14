@@ -34,7 +34,7 @@ class BackupController extends DataController
      */
     public function actionUndo($id)
     {
-        if (Yii::$app->user->can('::admin')) {
+        if (Yii::$app->user->can('admin')) {
             BackupBehavior::undoChanges(Backup::findOne($id));
             $this->goBack();
         } else {

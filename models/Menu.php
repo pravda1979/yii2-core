@@ -162,7 +162,7 @@ class Menu extends \pravda1979\core\components\core\ActiveRecord
         /** @var Menu $item */
         foreach ($items as $item) {
             if ($item->visible == static::$VISIBLE_ADMIN) {
-                $visible = Yii::$app->user->can('::admin');
+                $visible = Yii::$app->user->can('admin');
 
             } elseif ($item->visible == static::$VISIBLE_ALWAYS) {
                 $visible = true;

@@ -11,9 +11,9 @@ class m181109_144432_options extends Migration
     public $parents = [
 //        'Options: editor' => 'Options: viewer',
         'Options: admin' => 'Options: editor',
-//        '::viewer' => 'Options: viewer',
-//        '::editor' => 'Options: editor',
-        '::admin' => 'Options: admin',
+//        'viewer' => 'Options: viewer',
+//        'editor' => 'Options: editor',
+        'admin' => 'Options: admin',
     ];
     public $actions = [
         'Options: viewer' => [

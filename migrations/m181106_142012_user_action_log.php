@@ -9,9 +9,9 @@ class m181106_142012_user_action_log extends Migration
     public $parents = [
         'UserActionLog: editor' => 'UserActionLog: viewer',
         'UserActionLog: admin' => 'UserActionLog: editor',
-        '::viewer' => 'UserActionLog: viewer',
-        '::editor' => 'UserActionLog: editor',
-        '::admin' => 'UserActionLog: admin',
+        'viewer' => 'UserActionLog: viewer',
+        'editor' => 'UserActionLog: editor',
+        'admin' => 'UserActionLog: admin',
     ];
     public $actions = [
         'UserActionLog: viewer' => [

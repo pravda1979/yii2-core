@@ -9,8 +9,8 @@ class m181025_131336_user extends Migration
     public $parents = [
         'User: editor' => 'User: viewer',
         'User: admin' => 'User: editor',
-        '::admin' => ['::editor', 'User: admin'],
-        '::editor' => ['::viewer'],
+        'admin' => ['editor', 'User: admin'],
+        'editor' => ['viewer'],
     ];
     public $actions = [
         'User: viewer' => [
@@ -128,17 +128,17 @@ class m181025_131336_user extends Migration
             ],
         ]);
 
-        $admin = $this->getRole('::admin');
-        $editor = $this->getRole('::editor');
-        $viewer = $this->getRole('::viewer');
+        $admin = $this->getRole('admin');
+        $editor = $this->getRole('editor');
+        $viewer = $this->getRole('viewer');
 
         $authManager = Yii::$app->authManager;
 
-        if ($authManager->getAssignment('::admin', 1) === null)
+        if ($authManager->getAssignment('admin', 1) === null)
             $authManager->assign($admin, 1);
-        if ($authManager->getAssignment('::editor', 2) === null)
+        if ($authManager->getAssignment('editor', 2) === null)
             $authManager->assign($editor, 2);
-        if ($authManager->getAssignment('::viewer', 3) === null)
+        if ($authManager->getAssignment('viewer', 3) === null)
             $authManager->assign($viewer, 3);
 
         $this->createTranslates();

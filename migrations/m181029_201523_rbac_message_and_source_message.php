@@ -12,9 +12,9 @@ class m181029_201523_rbac_message_and_source_message extends Migration
         'SourceMessage: editor' => 'SourceMessage: viewer',
         'SourceMessage: admin' => 'SourceMessage: editor',
 
-        '::viewer' => ['SourceMessage: viewer', 'Message: viewer'],
-        '::editor' => ['SourceMessage: editor', 'Message: editor'],
-        '::admin' => ['SourceMessage: admin', 'Message: admin'],
+        'viewer' => ['SourceMessage: viewer', 'Message: viewer'],
+        'editor' => ['SourceMessage: editor', 'Message: editor'],
+        'admin' => ['SourceMessage: admin', 'Message: admin'],
 
     ];
     public $actions = [
