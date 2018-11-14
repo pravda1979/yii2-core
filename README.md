@@ -33,6 +33,12 @@ or add
 "pravda1979/yii2-core": "dev-master"
 ```
 
+change minimum stability to:
+```
+"minimum-stability": "dev",
+"prefer-stable": true,
+```
+
 to the require section of your `composer.json` file.
 
 Add to project config:
