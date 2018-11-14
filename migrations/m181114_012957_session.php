@@ -9,9 +9,9 @@ class m181114_012957_session extends Migration
     public $parents = [
         'Session: editor' => 'Session: viewer',
         'Session: admin' => 'Session: editor',
-        'viewer' => 'Session: viewer',
-        'editor' => 'Session: editor',
-        'admin' => 'Session: admin',
+        '::viewer' => 'Session: viewer',
+        '::editor' => 'Session: editor',
+        '::admin' => 'Session: admin',
     ];
     public $actions = [
         'Session: viewer' => [

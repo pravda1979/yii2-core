@@ -35,7 +35,7 @@ class DefaultController extends BackendController
      */
     public function actionDeleteCache()
     {
-        if (Yii::$app->user->can('admin')) {
+        if (Yii::$app->user->can('::admin')) {
             Yii::$app->cache->flush();
             Yii::$app->getSession()->addFlash('success', "Кэш очищен.");
 

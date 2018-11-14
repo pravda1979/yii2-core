@@ -41,7 +41,34 @@ use pravda1979\core\models\User;
 
         <?= $form->field($model, 'status_id')->dropDownList(Status::getListWithGroup(), ['prompt' => '']) ?>
 
-        <?= $form->field($model, 'userRights')->dropDownList(User::getListUserRights(), ['size' => 10, 'multiple' => 'multiple', 'prompt' => '']) ?>
+        <?php echo $form->field($model, 'userRights')->dropDownList(User::getListUserRights(), ['size' => 10, 'multiple' => 'multiple', 'prompt' => '', 'style' => 'display: block', 'id' => 'hidden_input_user_rights']) ?>
+
+        <?= \lesha724\bootstraptree\TreeView::widget([
+            'htmlOptions' => [
+                'id' => 'tree_input_user_rights',
+            ],
+            'options' => [
+                'data' => User::getRbacRules($model->id),
+                'multiSelect' => true,
+//                'levels' => 2
+            ],
+            'events' => [
+                'onNodeSelected' => 'function(event, data) {selectRbacItem(data.itemId);}',
+                'onNodeUnselected' => 'function(event, data) {unselectRbacItem(data.itemId);}',
+                'onRendered' => 'function(event, data) {updateRbacInfo("#rbacInDb"); updateRbacInfo();}',
+            ]
+        ]); ?>
+
+        <div class="row">
+            <div class="col-md-6">
+                <div style="text-align: center"><?= Html::label('Было') ?></div>
+                <div id="rbacInDb"></div>
+            </div>
+            <div class="col-md-6">
+                <div style="text-align: center"><?= Html::label('Текущий выбор') ?></div>
+                <div id="rbacInForm"></div>
+            </div>
+        </div>
 
     </div>
     <div class="box-footer">

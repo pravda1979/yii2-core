@@ -9,9 +9,9 @@ class m181030_164117_menu extends Migration
     public $parents = [
         'Menu: editor' => 'Menu: viewer',
         'Menu: admin' => 'Menu: editor',
-        'viewer' => 'Menu: viewer',
-        'editor' => 'Menu: editor',
-        'admin' => 'Menu: admin',
+        '::viewer' => 'Menu: viewer',
+        '::editor' => 'Menu: editor',
+        '::admin' => 'Menu: admin',
     ];
     public $actions = [
         'Menu: viewer' => [
@@ -62,7 +62,7 @@ class m181030_164117_menu extends Migration
                     'VISIBLE_HAS_CHILDREN' => 'Если имеются видимые дочерние элементы',
                 ],
                 'menu.main' => [
-                    'admin' => 'Администрирование',
+                    '::admin' => 'Администрирование',
                     'dirs' => 'Справочники',
                     'data' => 'Данные',
                     'instruments' => 'Инструменты',
@@ -114,7 +114,7 @@ class m181030_164117_menu extends Migration
         $this->batchInsert('{{%' . $module->tableNames[$this->table_name] . '}}', ['id', 'use_url_helper', 'visible', 'position', 'menu_id', 'label', 'icon', 'url', 'parent_id', 'level', 'status_id', 'user_id', 'updated_at'], [
             [1, 1, 60, 100, 'menu.main', 'data', 'files-o', null, null, 0, 1, 1, new \yii\db\Expression('NOW()')],
             [2, 1, 60, 200, 'menu.main', 'dirs', 'book', null, null, 0, 1, 1, new \yii\db\Expression('NOW()')],
-            [3, 1, 60, 300, 'menu.main', 'admin', 'key', null, null, 0, 1, 1, new \yii\db\Expression('NOW()')],
+            [3, 1, 60, 300, 'menu.main', '::admin', 'key', null, null, 0, 1, 1, new \yii\db\Expression('NOW()')],
             [4, 1, 1, 400, 'menu.main', 'Users', 'users', '/core/user/index', 3, 1, 1, 1, new \yii\db\Expression('NOW()')],
             [5, 1, 1, 500, 'menu.main', 'Statuses', null, '/core/status/index', 3, 1, 1, 1, new \yii\db\Expression('NOW()')],
             [6, 1, 1, 600, 'menu.main', 'Messages', null, '/core/message/index', 3, 1, 1, 1, new \yii\db\Expression('NOW()')],

@@ -9,9 +9,9 @@ class m181025_220108_status extends Migration
     public $parents = [
         'Status: editor' => 'Status: viewer',
         'Status: admin' => 'Status: editor',
-        'viewer' => 'Status: viewer',
-        'editor' => 'Status: editor',
-        'admin' => 'Status: admin',
+        '::viewer' => 'Status: viewer',
+        '::editor' => 'Status: editor',
+        '::admin' => 'Status: admin',
     ];
     public $actions = [
         'Status: viewer' => [

@@ -24,13 +24,13 @@ The preferred way to install this extension is through [composer](http://getcomp
 Either run
 
 ```
-php composer.phar require --prefer-dist pravda1979/yii2-core "*"
+php composer.phar require --prefer-dist pravda1979/yii2-core "dev-master"
 ```
 
 or add
 
 ```
-"pravda1979/yii2-core": "*"
+"pravda1979/yii2-core": "dev-master"
 ```
 
 to the require section of your `composer.json` file.

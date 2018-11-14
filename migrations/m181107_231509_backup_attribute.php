@@ -9,9 +9,9 @@ class m181107_231509_backup_attribute extends Migration
     public $parents = [
         'BackupAttribute: editor' => 'BackupAttribute: viewer',
         'BackupAttribute: admin' => 'BackupAttribute: editor',
-        'viewer' => 'BackupAttribute: viewer',
-        'editor' => 'BackupAttribute: editor',
-        'admin' => 'BackupAttribute: admin',
+        '::viewer' => 'BackupAttribute: viewer',
+        '::editor' => 'BackupAttribute: editor',
+        '::admin' => 'BackupAttribute: admin',
     ];
     public $actions = [
 //        'BackupAttribute: viewer' => [

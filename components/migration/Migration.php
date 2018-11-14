@@ -244,7 +244,7 @@ class Migration extends \yii\db\Migration
                     echo 'skip deleting $childName' . ' ' . $parentName . "\n";
                 }
 
-                if (in_array($parentName, ['viewer', 'editor', 'admin'])) {
+                if (in_array($parentName, ['::viewer', '::editor', '::admin'])) {
                     // Не удаляем 3 основные роли
                     continue;
                 } else {

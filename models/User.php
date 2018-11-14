@@ -6,7 +6,6 @@ use Yii;
 use pravda1979\core\components\validators\StringFilter;
 use yii\base\NotSupportedException;
 use yii\helpers\ArrayHelper;
-use yii\helpers\Html;
 use yii\web\DbSession;
 use yii\web\IdentityInterface;
 
@@ -274,45 +273,62 @@ class User extends \pravda1979\core\components\core\ActiveRecord implements Iden
         $this->password_reset_token = null;
     }
 
-    public function getUserRights($fromDB = false)
+    /**
+     * Возвращает присвоенные пользователю роли ($assignedOnly = true) или список всех доступных ролей для присвоения ($assignedOnly = false)
+     *
+     * @param bool $assignedOnly
+     * @return array
+     */
+    public function getUserRights($assignedOnly = false)
     {
         $result = $this->_userRights;
-        if (empty($result) || $fromDB == true) {
+        if (empty($result) || $assignedOnly == true) {
             $authManager = Yii::$app->authManager;
             $roles = $authManager->getRolesByUser($this->id);
             $result = ArrayHelper::getColumn($roles, 'name');
-            if ($fromDB == false)
+            if ($assignedOnly == false)
                 $this->_userRights = $result;
         }
         return $result;
     }
 
+    /**
+     * @param $rights
+     */
     public function setUserRights($rights)
     {
         $this->_userRights = $rights;
     }
 
+    /**
+     * Возвращает список всех ролей
+     * @return array
+     */
     public static function getListUserRights()
     {
         $result = [];
         $authManager = Yii::$app->authManager;
         $roles = $authManager->getRoles();
-        foreach ($roles as $role) {
-            $result[$role->name] = Yii::t('role', $role->name);
+        foreach ($roles as $key => $role) {
+            $result[$role->name] = $role->name;
         }
-        asort($result);
         return $result;
     }
 
+    /**
+     * Сохранение присвоенных ролей в БД
+     * @return array
+     */
     public function assignUserRights()
     {
         $authManager = Yii::$app->authManager;
 
-        // Delete old from post
+        // Delete unused from post
         foreach ($this->getUserRights(true) as $right) {
             if (!in_array($right, $this->_userRights) && $authManager->getAssignment($right, $this->id) != null) {
                 $role = $authManager->getRole($right);
-                $authManager->revoke($role, $this->id);
+                if ($role !== null)
+                    $authManager->revoke($role, $this->id);
             }
         }
 
@@ -325,7 +341,7 @@ class User extends \pravda1979\core\components\core\ActiveRecord implements Iden
             }
         }
 
-        return $this->getListUserRights();
+        return $this->getUserRights();
     }
 
     /**
@@ -367,6 +383,59 @@ class User extends \pravda1979\core\components\core\ActiveRecord implements Iden
         }
 
         return true;
+    }
+
+    /**
+     * Список присвоенных пользователю ролей в формате tree
+     * @param null $user_id
+     * @return array
+     */
+    public static function getRbacRules($user_id = null)
+    {
+        $authManager = Yii::$app->authManager;
+        $admin = $authManager->getRole('::admin');
+
+        Yii::warning($user_id, '$user_id_11');
+
+        $result = [
+            static::getRbacWithChildRules($admin, $user_id),
+        ];
+        return $result;
+    }
+
+    /**
+     * @param $rule
+     * @param null $user_id
+     * @return array
+     */
+    public static function getRbacWithChildRules($rule, $user_id = null)
+    {
+        $authManager = Yii::$app->authManager;
+        $roles = $permissions = [];
+
+        foreach ($authManager->getChildren($rule->name) as $item => $child) {
+            if ($child->type == 1)
+                $roles[] = static::getRbacWithChildRules($child, $user_id);
+            elseif ($child->type == 2)
+                $permissions[] = [
+                    'text' => $child->name,
+                    'itemId' => $child->name,
+                    'selectable' => false,
+                    'state' => ['disabled' => true],
+                ];
+        }
+
+        $nodes = ArrayHelper::merge($roles, $permissions);
+        $is_selected = ($authManager->getAssignment($rule->name, $user_id) !== null);
+        $result = [
+//            'selectedIcon' => 'glyphicon glyphicon-ok',
+            'text' => Yii::t('role', $rule->name),
+            'itemId' => $rule->name,
+            'nodes' => $nodes,
+            'state' => ['selected' => $is_selected],
+        ];
+
+        return $result;
     }
 
 }

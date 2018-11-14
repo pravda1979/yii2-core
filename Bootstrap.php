@@ -58,7 +58,7 @@ class Bootstrap implements BootstrapInterface
             if (!$authManager) {
                 Yii::$app->set('authManager', [
                     'class' => DbManager::className(),
-                    'cache' => 'cache',
+//                    'cache' => 'cache',
                     'ruleTable' => $module->tableNames['auth_rule'],
                     'itemTable' => $module->tableNames['auth_item'],
                     'itemChildTable' => $module->tableNames['auth_item_child'],
@@ -76,10 +76,7 @@ class Bootstrap implements BootstrapInterface
             }
 
             if (Yii::$app instanceof ConsoleApplication) {
-                // Отключаем кеш
-                Yii::$app->set('cache', [
-                    'class' => 'yii\caching\DummyCache',
-                ]);
+
             } else {
                 $this->loadParams();
 

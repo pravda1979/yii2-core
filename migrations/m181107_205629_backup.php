@@ -9,9 +9,9 @@ class m181107_205629_backup extends Migration
     public $parents = [
         'Backup: editor' => 'Backup: viewer',
         'Backup: admin' => 'Backup: editor',
-//        'viewer' => 'Backup: viewer',
-//        'editor' => 'Backup: editor',
-        'admin' => 'Backup: admin',
+//        '::viewer' => 'Backup: viewer',
+//        '::editor' => 'Backup: editor',
+        '::admin' => 'Backup: admin',
     ];
     public $actions = [
         'Backup: viewer' => [
