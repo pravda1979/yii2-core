@@ -117,7 +117,7 @@ class m181030_164117_menu extends Migration
             [5, 1, 1, 500, 'menu.main', 'Statuses', null, '/core/status/index', 3, 1, 1, 1, new \yii\db\Expression('NOW()')],
             [6, 1, 1, 600, 'menu.main', 'Messages', null, '/core/message/index', 3, 1, 1, 1, new \yii\db\Expression('NOW()')],
             [7, 1, 1, 700, 'menu.main', 'Menus', null, '/core/menu/index', 3, 1, 1, 1, new \yii\db\Expression('NOW()')],
-            [8, 1, 60, 800, 'menu.main', 'instruments', 'wrench', null, 3, 1, 1, 1, new \yii\db\Expression('NOW()')],
+            [8, 1, 60, 9999, 'menu.main', 'instruments', 'wrench', null, 3, 1, 1, 1, new \yii\db\Expression('NOW()')],
             [9, 1, 30, 900, 'menu.main', 'Gii', null, '/gii', 8, 2, 1, 1, new \yii\db\Expression('NOW()')],
             [10, 0, 30, 1000, 'menu.main', 'phpMyAdmin', null, '/tools/phpMyAdmin', 8, 2, 1, 1, new \yii\db\Expression('NOW()')],
             [11, 1, 30, 1100, 'menu.main', 'Delete cache', 'trash', '/core/default/delete-cache', 3, 2, 1, 1, new \yii\db\Expression('NOW()')],
