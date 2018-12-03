@@ -40,6 +40,7 @@ class User extends \pravda1979\core\components\core\ActiveRecord implements Iden
 
     public $password;
     public $password_repeat;
+    public $current_password;
 
     /**
      * {@inheritdoc}
@@ -56,6 +57,7 @@ class User extends \pravda1979\core\components\core\ActiveRecord implements Iden
      */
     public function rules()
     {
+        Yii::warning($this->scenario);
         return [
             [['username', 'auth_key', 'password_hash', 'password_reset_token', 'email', 'name', 'note'], StringFilter::className()],
             [['password_reset_token', 'name', 'note', 'updated_at'], 'default', 'value' => null],
@@ -71,11 +73,28 @@ class User extends \pravda1979\core\components\core\ActiveRecord implements Iden
             [['password_reset_token'], 'unique'],
             [['status_id'], 'exist', 'skipOnError' => true, 'targetClass' => Status::className(), 'targetAttribute' => ['status_id' => 'id']],
             [['user_id'], 'exist', 'skipOnError' => true, 'targetClass' => User::className(), 'targetAttribute' => ['user_id' => 'id']],
-            [['userRights'], 'safe'],
-            [['password', 'password_repeat'], 'safe'],
-            ['password', 'compare', 'on' => ['create', 'update'], 'compareAttribute' => 'password_repeat'],
+
+            [['userRights'], 'safe', 'on' => ['create', 'update']],
+            [['password', 'password_repeat', 'current_password'], 'safe'],
+            ['password', 'compare', 'on' => ['create', 'update', 'profile'], 'compareAttribute' => 'password_repeat'],
             ['password_repeat', 'compare', 'on' => ['create', 'update'], 'compareAttribute' => 'password'],
+            ['current_password', 'validateCurrentPassword', 'on' => 'profile'],
+            [['name', 'email', 'current_password'], 'required', 'on' => 'profile'],
         ];
+    }
+
+    /**
+     * Validates the current password.
+     * This method serves as the inline validation for password.
+     *
+     * @param string $attribute the attribute currently being validated
+     * @param array $params the additional name-value pairs given in the rule
+     */
+    public function validateCurrentPassword($attribute, $params)
+    {
+        if (!$this->validatePassword($this->current_password)) {
+            $this->addError($attribute, Yii::t('User', 'Incorrect current password'));
+        }
     }
 
     /**
@@ -98,6 +117,9 @@ class User extends \pravda1979\core\components\core\ActiveRecord implements Iden
             'created_at' => Yii::t('User', 'Created At'),
             'updated_at' => Yii::t('User', 'Updated At'),
             'userRights' => Yii::t('User', 'User Rights'),
+            'password' => Yii::t('User', 'Password'),
+            'password_repeat' => Yii::t('User', 'Password Repeat'),
+            'current_password' => Yii::t('User', 'Current Password'),
         ];
     }
 
@@ -353,7 +375,8 @@ class User extends \pravda1979\core\components\core\ActiveRecord implements Iden
      */
     public function afterSave($insert, $changedAttributes)
     {
-        $this->assignUserRights();
+        if ($this->scenario != 'profile')
+            $this->assignUserRights();
         parent::afterSave($insert, $changedAttributes);
     }
 

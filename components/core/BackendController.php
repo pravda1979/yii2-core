@@ -20,6 +20,7 @@ class BackendController extends Controller
                 'allowActions' => [
                     '/core/user/login',
                     '/core/user/logout',
+                    '/core/user/profile',
                     'site/error',
                 ]
             ]
@@ -43,7 +44,8 @@ class BackendController extends Controller
     public function afterAction($action, $result)
     {
         // Remember current url for goBack() function after create/update/delete record
-        if (!$action instanceof Action && !in_array($action->getUniqueId(), ['core/default/delete-cache', 'core/options/index'])) {
+        if (!$action instanceof Action && !in_array($action->getUniqueId(), ['core/default/delete-cache', 'core/options/index', 'core/user/profile'])) {
+            Yii::warning($action->getUniqueId());
             Url::remember();
         }
 

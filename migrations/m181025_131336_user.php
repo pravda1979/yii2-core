@@ -52,6 +52,12 @@ class m181025_131336_user extends Migration
                     'User Rights' => 'Права доступа',
                     'Profile' => 'Профиль',
                     'Registered {date}' => 'Дата регистрации: {date}',
+                    'Password' => 'Пароль',
+                    'Password Repeat' => 'Подтверждение пароля',
+                    'Current Password' => 'Текущий пароль',
+                    'Incorrect current password' => 'Неверно указан Ваш текущий пароль',
+                    'Updating profile' => 'Редактирование профиля',
+                    'Save profile' => 'Сохранить профиль',
                 ],
             ],
         ];
