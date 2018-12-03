@@ -140,10 +140,13 @@ class ActiveRecord extends \yii\db\ActiveRecord
      */
     public function getBackupLabels()
     {
-        return [
-            'user_id' => ArrayHelper::getValue($this, 'user.username'),
-            'status_id' => ArrayHelper::getValue($this, 'status.fullName'),
-        ];
+        $result = [];
+        if ($this->hasAttribute('user_id'))
+            $result['user_id'] = ArrayHelper::getValue($this, 'user.fullName');
+        if ($this->hasAttribute('user_id'))
+            $result['status_id'] = ArrayHelper::getValue($this, 'status.fullName');
+
+        return $result;
     }
 
     /**
