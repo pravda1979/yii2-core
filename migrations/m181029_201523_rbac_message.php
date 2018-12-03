@@ -2,7 +2,7 @@
 
 use pravda1979\core\components\migration\Migration;
 
-class m181029_201523_rbac_message_and_source_message extends Migration
+class m181029_201523_rbac_message extends Migration
 {
     public $table_name = '';
     public $route = '';

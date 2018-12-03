@@ -26,13 +26,12 @@ $this->params['breadcrumbs'][] = Yii::t('User', 'Updating profile');
 
             <div class="row">
                 <div class="col-md-6">
-                    <?= $form->field($model, 'password', ['enableClientValidation' => false])->passwordInput() ?>
+                    <?= $form->field($model, 'password', ['enableClientValidation' => false])->passwordInput()->label(Yii::t('User', 'New Password')) ?>
                 </div>
                 <div class="col-md-6">
-                    <?= $form->field($model, 'password_repeat', ['enableClientValidation' => false])->passwordInput() ?>
+                    <?= $form->field($model, 'password_repeat', ['enableClientValidation' => false])->passwordInput()->label(Yii::t('User', 'Repeat New Password')) ?>
                 </div>
             </div>
-
 
             <?= $form->field($model, 'note')->textarea(['rows' => 6]) ?>
 

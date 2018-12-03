@@ -30,6 +30,8 @@ use yii\web\IdentityInterface;
  * @property Status $status
  * @property User $user
  * @property User[] $users
+ * @property array $userRights
+ * @property string $userRightsAsString
  */
 class User extends \pravda1979\core\components\core\ActiveRecord implements IdentityInterface
 {
@@ -57,7 +59,6 @@ class User extends \pravda1979\core\components\core\ActiveRecord implements Iden
      */
     public function rules()
     {
-        Yii::warning($this->scenario);
         return [
             [['username', 'auth_key', 'password_hash', 'password_reset_token', 'email', 'name', 'note'], StringFilter::className()],
             [['password_reset_token', 'name', 'note', 'updated_at'], 'default', 'value' => null],
@@ -74,8 +75,7 @@ class User extends \pravda1979\core\components\core\ActiveRecord implements Iden
             [['status_id'], 'exist', 'skipOnError' => true, 'targetClass' => Status::className(), 'targetAttribute' => ['status_id' => 'id']],
             [['user_id'], 'exist', 'skipOnError' => true, 'targetClass' => User::className(), 'targetAttribute' => ['user_id' => 'id']],
 
-            [['userRights'], 'safe', 'on' => ['create', 'update']],
-            [['password', 'password_repeat', 'current_password'], 'safe'],
+            [['password', 'password_repeat', 'current_password', 'userRights'], 'safe'],
             ['password', 'compare', 'on' => ['create', 'update', 'profile'], 'compareAttribute' => 'password_repeat'],
             ['password_repeat', 'compare', 'on' => ['create', 'update'], 'compareAttribute' => 'password'],
             ['current_password', 'validateCurrentPassword', 'on' => 'profile'],
@@ -188,7 +188,7 @@ class User extends \pravda1979\core\components\core\ActiveRecord implements Iden
      */
     public static function findByUsername($username)
     {
-        return static::findOne(['username' => $username, 'user_state' => self::STATE_ACTIVE]);
+        return static::find()->where(['username' => $username, 'user_state' => self::STATE_ACTIVE])->real()->one();
     }
 
     /**
@@ -307,9 +307,11 @@ class User extends \pravda1979\core\components\core\ActiveRecord implements Iden
         if (empty($result) || $assignedOnly == true) {
             $authManager = Yii::$app->authManager;
             $roles = $authManager->getRolesByUser($this->id);
-            $result = ArrayHelper::getColumn($roles, 'name');
-            if ($assignedOnly == false)
+            $result = ArrayHelper::getColumn($roles, 'name', false);
+            if ($assignedOnly == false) {
+                sort($result);
                 $this->_userRights = $result;
+            }
         }
         return $result;
     }
@@ -320,6 +322,7 @@ class User extends \pravda1979\core\components\core\ActiveRecord implements Iden
     public function setUserRights($rights)
     {
         $rights = is_array($rights) ? $rights : [$rights];
+        sort($rights);
         $this->_userRights = $rights;
     }
 
@@ -375,9 +378,10 @@ class User extends \pravda1979\core\components\core\ActiveRecord implements Iden
      */
     public function afterSave($insert, $changedAttributes)
     {
+        parent::afterSave($insert, $changedAttributes);
+
         if ($this->scenario != 'profile')
             $this->assignUserRights();
-        parent::afterSave($insert, $changedAttributes);
     }
 
     /**
@@ -388,6 +392,16 @@ class User extends \pravda1979\core\components\core\ActiveRecord implements Iden
         if (!parent::beforeSave($insert))
             return false;
 
+        $this->forceReLogin();
+
+        return true;
+    }
+
+    /**
+     * Generating new authKey and delete user session, if need it
+     */
+    public function forceReLogin()
+    {
         $requireReLogin = false;
 
         if (!empty($this->password) && !Yii::$app->security->validatePassword($this->password, $this->password_hash)) {
@@ -398,6 +412,8 @@ class User extends \pravda1979\core\components\core\ActiveRecord implements Iden
             $requireReLogin = true;
         if (array_key_exists('user_state', $this->dirtyAttributes))
             $requireReLogin = true;
+        if (array_key_exists('fixed_status_id', $this->dirtyAttributes))
+            $requireReLogin = true;
 
         // If need re-login
         if ($requireReLogin) {
@@ -406,7 +422,35 @@ class User extends \pravda1979\core\components\core\ActiveRecord implements Iden
             if (Yii::$app->session instanceof DbSession)
                 Yii::$app->db->createCommand()->delete(Yii::$app->session->sessionTable, ['user_id' => $this->id])->execute();
         }
+    }
 
-        return true;
+    /**
+     * @inheritdoc
+     */
+    public function getBackupLabels()
+    {
+        return array_merge(parent::getBackupLabels(), [
+            'user_state' => Yii::$app->formatter->asBoolean($this->user_state),
+            'userRights' => $this->userRightsAsString
+        ]);
+    }
+
+    public function getUserRightsAsString()
+    {
+        $rightsArray = [];
+        foreach ($this->userRights as $right) {
+            $rightsArray[] = Yii::t('role', $right);
+        }
+        return implode(', ', $rightsArray);
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function scenarios()
+    {
+        $scenarios = parent::scenarios();
+        $scenarios['profile'] = ['name', 'email', 'password', 'password_repeat', 'note', 'current_password'];
+        return $scenarios;
     }
 }

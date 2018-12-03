@@ -16,6 +16,7 @@ use Yii;
 use yii\base\Behavior;
 use yii\base\ErrorException;
 use yii\base\Exception;
+use yii\helpers\ArrayHelper;
 use yii\helpers\Html;
 use yii\helpers\Inflector;
 
@@ -25,7 +26,6 @@ use yii\helpers\Inflector;
 class BackupBehavior extends Behavior
 {
     private $_oldModel = [];
-    private $_dirtyAttributes = [];
     private $_backupAttributes = [];
     public $id_field = 'id';
     public $name_field = 'fullName';
@@ -45,7 +45,8 @@ class BackupBehavior extends Behavior
         /** @var ActiveRecord $model */
         $model = $this->owner;
         $this->_oldModel = $model::findOne($model->{$this->id_field});
-        $this->getBackupAttributes($model->dirtyAttributes);
+        $dirtyAttributes = array_merge($model->dirtyAttributes, array_diff_key($model->backupLabels, $model->attributes));
+        $this->getBackupAttributes($dirtyAttributes);
     }
 
     public function beforeDelete($event)
@@ -81,12 +82,22 @@ class BackupBehavior extends Behavior
                 }
             }
 
-            $result[$attribute] = [
-                'old_value' => $this->_oldModel->$attribute,
-                'new_value' => $model->$attribute,
-                'old_label' => $oldLabel,
-                'new_label' => $newLabel,
-            ];
+            $oldValue = $this->_oldModel->canGetProperty($attribute) ?
+                (is_array($this->_oldModel->$attribute) ? serialize($this->_oldModel->$attribute) : $this->_oldModel->$attribute) :
+                $oldLabel;
+
+            $newValue = $model->canGetProperty($attribute) ?
+                (is_array($model->$attribute) ? serialize($model->$attribute) : $model->$attribute) :
+                $newLabel;
+
+            if ($newValue != $oldValue) {
+                $result[$attribute] = [
+                    'old_value' => $oldValue,
+                    'new_value' => $newValue,
+                    'old_label' => $oldLabel,
+                    'new_label' => $newLabel,
+                ];
+            }
         }
 
         $this->_backupAttributes = $result;
@@ -105,7 +116,6 @@ class BackupBehavior extends Behavior
 
     public function createBackup($changedAttributes = [])
     {
-//        Yii::warning($changedAttributes);
         if (!empty($changedAttributes)) {
             /** @var \pravda1979\core\components\core\ActiveRecord $model */
             $model = $this->owner;
@@ -139,6 +149,12 @@ class BackupBehavior extends Behavior
         $model = $backup->getParentModel();
 
         foreach ($backup->getOldValues() as $attribute => $value) {
+            if (!$model->canSetProperty($attribute))
+                continue;
+
+            if ((($unserializedValue = @unserialize($value)) !== false || $value == 'b:0;'))
+                $value = $unserializedValue;
+
             $model->$attribute = $value;
         }
 

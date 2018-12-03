@@ -45,7 +45,6 @@ class BackendController extends Controller
     {
         // Remember current url for goBack() function after create/update/delete record
         if (!$action instanceof Action && !in_array($action->getUniqueId(), ['core/default/delete-cache', 'core/options/index', 'core/user/profile'])) {
-            Yii::warning($action->getUniqueId());
             Url::remember();
         }
 

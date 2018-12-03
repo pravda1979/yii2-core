@@ -69,7 +69,6 @@ class ActiveRecord extends \yii\db\ActiveRecord
                 if ($this->hasAttribute('user_id'))
                     $this->user_id = Yii::$app->user->id;
             } else {
-//                Yii::warning($this->dirtyAttributes,'$this->dirtyAttributes');
                 if (count($this->dirtyAttributes) > 0 && $this->hasAttribute('updated_at')) {
                     $this->updated_at = new Expression('Now()');
                 }

@@ -54,10 +54,15 @@ class m181025_131336_user extends Migration
                     'Registered {date}' => 'Дата регистрации: {date}',
                     'Password' => 'Пароль',
                     'Password Repeat' => 'Подтверждение пароля',
+                    'New Password' => 'Новый пароль',
+                    'Repeat New Password' => 'Подтверждение нового пароля',
                     'Current Password' => 'Текущий пароль',
                     'Incorrect current password' => 'Неверно указан Ваш текущий пароль',
                     'Updating profile' => 'Редактирование профиля',
                     'Save profile' => 'Сохранить профиль',
+                ],
+                'actions' => [
+                    'profile' => 'Профайл',
                 ],
             ],
         ];
@@ -124,7 +129,7 @@ class m181025_131336_user extends Migration
             [
                 3,
                 'viewer',
-                'Зритель',
+                'Наблюдатель',
                 'viewer@example.com',
                 Yii::$app->security->generateRandomString(),
                 Yii::$app->security->generatePasswordHash('123'),

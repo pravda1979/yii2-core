@@ -35,6 +35,10 @@ $this->params['breadcrumbs'][] = $this->title;
                     'value' => ArrayHelper::getValue($model, 'status.fullName'),
                 ],
                 [
+                    'attribute' => 'userRights',
+                    'value' =>  ArrayHelper::getValue($model, 'userRightsAsString'),
+                ],
+                [
                     'attribute' => 'user_id',
                     'value' =>  ArrayHelper::getValue($model, 'user.fullName'),
                 ],

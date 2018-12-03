@@ -65,7 +65,6 @@ class AccessControl extends ActionFilter
     {
         $actionId = '/' . $action->getUniqueId();
         $user = $this->getUser();
-//        Yii::warning($user->can($actionId), 'AccessControl: '.$actionId);
         if ($user->can($actionId))
             return true;
 
@@ -99,9 +98,6 @@ class AccessControl extends ActionFilter
             return false;
         }
 
-//        Yii::warning($uniqueId);
-//        Yii::warning($action->controller->hasProperty('allowActions'));
-//        Yii::warning($action->controller->allowActions);
         if ($action->controller->hasProperty('allowActions') && in_array($uniqueId, $action->controller->allowActions)) {
             return false;
         }
