@@ -50,6 +50,8 @@ class m181025_131336_user extends Migration
                     'Password Hash' => 'Хэш пароля',
                     'Password Reset Token' => 'Токен сброса пароля',
                     'User Rights' => 'Права доступа',
+                    'Profile' => 'Профиль',
+                    'Registered {date}' => 'Дата регистрации: {date}',
                 ],
             ],
         ];

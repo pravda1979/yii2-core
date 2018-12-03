@@ -9,7 +9,7 @@ use yii\helpers\Html;
 
 <header class="main-header">
 
-    <?= Html::a('<span class="logo-mini"><i class="fa fa-home"></i></span><span class="logo-lg">' .Yii::t('app','App Name') . '</span>', Yii::$app->homeUrl, ['class' => 'logo']) ?>
+    <?= Html::a('<span class="logo-mini"><i class="fa fa-home"></i></span><span class="logo-lg">' . Yii::t('app', 'App Name') . '</span>', Yii::$app->homeUrl, ['class' => 'logo']) ?>
 
     <nav class="navbar navbar-static-top" role="navigation">
 
@@ -107,7 +107,7 @@ use yii\helpers\Html;
                 <li class="dropdown user user-menu">
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown">
                         <img src="<?= $directoryAsset ?>/img/user2-160x160.jpg" class="user-image" alt="User Image"/>
-                        <span class="hidden-xs"><?= Yii::$app->user->isGuest?'Гость':Yii::$app->user->identity->name ?></span>
+                        <span class="hidden-xs"><?= Yii::$app->user->isGuest ? Yii::t('app', 'Guest') : Yii::$app->user->identity->name ?></span>
                     </a>
                     <ul class="dropdown-menu">
                         <!-- User image -->
@@ -116,30 +116,22 @@ use yii\helpers\Html;
                                  alt="User Image"/>
 
                             <p>
-                                <?= Yii::$app->user->isGuest?'Гость':Yii::$app->user->identity->name ?> - Web Developer
-                                <small>Member since Nov. 2012</small>
+                                <?= Yii::$app->user->isGuest ? Yii::t('app', 'Guest') : Yii::$app->user->identity->name ?>
+                                <small><?= Yii::t('User', 'Registered {date}', ['date' => Yii::$app->formatter->asDate(Yii::$app->user->identity->created_at)]) ?></small>
                             </p>
-                        </li>
-                        <!-- Menu Body -->
-                        <li class="user-body">
-                            <div class="col-xs-4 text-center">
-                                <a href="#">Followers</a>
-                            </div>
-                            <div class="col-xs-4 text-center">
-                                <a href="#">Sales</a>
-                            </div>
-                            <div class="col-xs-4 text-center">
-                                <a href="#">Friends</a>
-                            </div>
                         </li>
                         <!-- Menu Footer-->
                         <li class="user-footer">
                             <div class="pull-left">
-                                <a href="#" class="btn btn-default btn-flat">Profile</a>
+                                <?= Html::a(
+                                    Yii::t('User', 'Profile'),
+                                    ['/core/user/profile'],
+                                    ['class' => 'btn btn-default btn-flat']
+                                ) ?>
                             </div>
                             <div class="pull-right">
                                 <?= Html::a(
-                                    'Sign out',
+                                    Yii::t('LoginForm', 'Sign Out'),
                                     ['/core/user/logout'],
                                     ['data-method' => 'post', 'class' => 'btn btn-default btn-flat']
                                 ) ?>

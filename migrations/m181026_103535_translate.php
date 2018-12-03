@@ -44,6 +44,7 @@ class m181026_103535_translate extends Migration
                     'Remember Me' => 'Запомнить меня',
                     'Login' => 'Вход в систему',
                     'Sign In' => 'Войти',
+                    'Sign Out' => 'Выход',
                     'Sign in to start your session' => 'Укажите свои данные для входа',
                     'Incorrect username or password' => 'Неверно введены логин и/или пароль',
                 ],

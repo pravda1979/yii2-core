@@ -10,6 +10,7 @@ use yii\bootstrap\ActiveForm;
 $this->title = Yii::t('LoginForm', 'Login');
 
 $fieldOptions1 = [
+    'inputOptions' => ['autofocus' => 'autofocus'],
     'options' => ['class' => 'form-group has-feedback'],
     'inputTemplate' => "{input}<span class='glyphicon glyphicon-envelope form-control-feedback'></span>"
 ];
@@ -22,7 +23,7 @@ $fieldOptions2 = [
 
 <div class="login-box">
     <div class="login-logo">
-        <a href="#"><b><?= Yii::t('app', 'App Name') ?></b></a>
+        <b><?= Yii::t('app', 'App Name') ?></b>
     </div>
     <!-- /.login-logo -->
     <div class="login-box-body">
