@@ -7,11 +7,11 @@ class m181107_231509_backup_attribute extends Migration
     public $table_name = 'backup_attribute';
     public $route = 'core/backup-attribute';
     public $parents = [
-        'BackupAttribute: editor' => 'BackupAttribute: viewer',
-        'BackupAttribute: admin' => 'BackupAttribute: editor',
-        'viewer' => 'BackupAttribute: viewer',
-        'editor' => 'BackupAttribute: editor',
-        'admin' => 'BackupAttribute: admin',
+//        'BackupAttribute: editor' => 'BackupAttribute: viewer',
+//        'BackupAttribute: admin' => 'BackupAttribute: editor',
+//        'viewer' => 'BackupAttribute: viewer',
+//        'editor' => 'BackupAttribute: editor',
+//        'admin' => 'BackupAttribute: admin',
     ];
     public $actions = [
 //        'BackupAttribute: viewer' => [
@@ -33,31 +33,6 @@ class m181107_231509_backup_attribute extends Migration
         'accusative' => 'бэкап аттрибута', // Винительный падеж (кого, что)
         'genitive' => 'бэкап аттрибута', // Родительный падеж (кого, чего)
     ];
-
-    /**
-     * @inheritdoc
-     */
-    public function getTranslates($translates = [])
-    {
-        $translates = [
-            'ru-RU' => [
-                'BackupAttribute' => [
-                    'Index' => 'Список измененных аттрибутов',
-                    'Backup ID' => 'ID бекапа',
-                    'Attribute' => 'Поле',
-                    'Attribute Name' => 'Поле',
-                    'Old Value' => 'Старое значение',
-                    'New Value' => 'Новое значение',
-                    'Old Label' => 'Старый текст',
-                    'New Label' => 'Новый текст',
-                    'Old' => 'Старое значение',
-                    'New' => 'Новое значение',
-                    'Changes' => 'Изменения',
-                ],
-            ],
-        ];
-        return parent::getTranslates($translates);
-    }
 
     public function safeUp()
     {
@@ -89,17 +64,12 @@ class m181107_231509_backup_attribute extends Migration
         $this->addForeignKey("{{%fk_" . "user_id" . "_" . $module->tableNames[$this->table_name] . "}}", "{{%" . $module->tableNames[$this->table_name] . "}}", "[[user_id]]", "{{%" . $module->tableNames['user'] . "}}", "[[id]]");
         $this->addForeignKey("{{%fk_" . "status_id" . "_" . $module->tableNames[$this->table_name] . "}}", "{{%" . $module->tableNames[$this->table_name] . "}}", "[[status_id]]", "{{%" . $module->tableNames['status'] . "}}", "[[id]]");
         $this->addForeignKey("{{%fk_" . "backup_id" . "_" . $module->tableNames[$this->table_name] . "}}", "{{%" . $module->tableNames[$this->table_name] . "}}", "[[backup_id]]", "{{%" . $module->tableNames['backup'] . "}}", "[[id]]", 'CASCADE');
-
-        $this->createTranslates();
-        $this->createRbac();
-    }
+   }
 
     public function safeDown()
     {
         /** @var \pravda1979\core\Module $module */
         $module = Yii::$app->getModule('core');
         $this->dropTable("{{%" . $module->tableNames[$this->table_name] . "}}");
-        $this->deleteTranslates();
-        $this->deleteRbac();
     }
 }

@@ -7,10 +7,7 @@ class m181106_142012_user_action_log extends Migration
     public $table_name = 'user_action_log';
     public $route = 'core/user-action-log';
     public $parents = [
-        'UserActionLog: editor' => 'UserActionLog: viewer',
-        'UserActionLog: admin' => 'UserActionLog: editor',
-        'viewer' => 'UserActionLog: viewer',
-        'editor' => 'UserActionLog: editor',
+        'UserActionLog: admin' => 'UserActionLog: viewer',
         'admin' => 'UserActionLog: admin',
     ];
     public $actions = [
@@ -18,10 +15,6 @@ class m181106_142012_user_action_log extends Migration
             'index',
             'view',
             'autocomplete',
-        ],
-        'UserActionLog: editor' => [
-            'create',
-            'update',
         ],
         'UserActionLog: admin' => [
             'delete',

@@ -9,8 +9,6 @@ class m181030_164117_menu extends Migration
     public $parents = [
         'Menu: editor' => 'Menu: viewer',
         'Menu: admin' => 'Menu: editor',
-        'viewer' => 'Menu: viewer',
-        'editor' => 'Menu: editor',
         'admin' => 'Menu: admin',
     ];
     public $actions = [

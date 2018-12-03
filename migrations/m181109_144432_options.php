@@ -9,24 +9,11 @@ class m181109_144432_options extends Migration
     public $table_name = 'options';
     public $route = 'core/options';
     public $parents = [
-//        'Options: editor' => 'Options: viewer',
-        'Options: admin' => 'Options: editor',
-//        'viewer' => 'Options: viewer',
-//        'editor' => 'Options: editor',
         'admin' => 'Options: admin',
     ];
     public $actions = [
-        'Options: viewer' => [
-        ],
-        'Options: editor' => [
-        ],
         'Options: admin' => [
             'index',
-//            'view',
-//            'autocomplete',
-//            'create',
-//            'update',
-//            'delete',
         ],
     ];
     public $modelNames = [

@@ -19,7 +19,7 @@ class m181026_103535_translate extends Migration
                 ],
                 'role' => [
                     'role' => 'Роль',
-                    'viewer' => ':: Зритель',
+                    'viewer' => ':: Наблюдатель',
                     'editor' => ':: Редактор',
                     'admin' => ':: Администратор',
                 ],

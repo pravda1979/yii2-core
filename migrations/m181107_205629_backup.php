@@ -7,10 +7,7 @@ class m181107_205629_backup extends Migration
     public $table_name = 'backup';
     public $route = 'core/backup';
     public $parents = [
-        'Backup: editor' => 'Backup: viewer',
-        'Backup: admin' => 'Backup: editor',
-//        'viewer' => 'Backup: viewer',
-//        'editor' => 'Backup: editor',
+        'Backup: admin' => 'Backup: viewer',
         'admin' => 'Backup: admin',
     ];
     public $actions = [
@@ -20,12 +17,8 @@ class m181107_205629_backup extends Migration
             'autocomplete',
             'history',
         ],
-        'Backup: editor' => [
-//            'create',
-//            'update',
-        ],
         'Backup: admin' => [
-//            'delete',
+            'undo',
         ],
     ];
     public $modelNames = [

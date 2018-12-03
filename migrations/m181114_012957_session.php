@@ -7,25 +7,8 @@ class m181114_012957_session extends Migration
     public $table_name = 'session';
     public $route = 'core/session';
     public $parents = [
-        'Session: editor' => 'Session: viewer',
-        'Session: admin' => 'Session: editor',
-        'viewer' => 'Session: viewer',
-        'editor' => 'Session: editor',
-        'admin' => 'Session: admin',
     ];
     public $actions = [
-        'Session: viewer' => [
-        ],
-        'Session: editor' => [
-        ],
-        'Session: admin' => [
-            'index',
-            'view',
-            'autocomplete',
-            'create',
-            'update',
-            'delete',
-        ],
     ];
     public $modelNames = [
         'singular' => 'Сессия',
@@ -33,23 +16,6 @@ class m181114_012957_session extends Migration
         'accusative' => 'сессию', // Винительный падеж (кого, что)
         'genitive' => 'сесии', // Родительный падеж (кого, чего)
     ];
-
-    /**
-     * @inheritdoc
-     */
-    public function getTranslates($translates = [])
-    {
-        $translates = [
-            'ru-RU' => [
-                'Session' => [
-                    'Index' => 'Список сессий',
-                    'Expire' => 'Истекает',
-                    'data' => 'Данные',
-                ],
-            ],
-        ];
-        return parent::getTranslates($translates);
-    }
 
     public function safeUp()
     {
@@ -84,8 +50,6 @@ class m181114_012957_session extends Migration
 //            [1, 1, 1500, 'menu.main', 'Sessions', null, '/core/session/index', 3, 1, 1, 1, new \yii\db\Expression('NOW()')],
 //        ]);
 
-        $this->createTranslates();
-        $this->createRbac();
     }
 
     public function safeDown()
@@ -93,8 +57,6 @@ class m181114_012957_session extends Migration
         /** @var \pravda1979\core\Module $module */
         $module = Yii::$app->getModule('core');
         $this->dropTable("{{%" . $module->tableNames[$this->table_name] . "}}");
-        $this->deleteTranslates();
-        $this->deleteRbac();
 //        $this->delete('{{%' . $module->tableNames['menu'] . '}}', ['menu_id' => 'menu.main', 'label' => 'Sessions']);
     }
 }

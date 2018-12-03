@@ -26,6 +26,7 @@ use pravda1979\core\models\User;
             <?= "<?php " ?>$form = ActiveForm::begin([
                 'action' => ['index'],
                 'method' => 'get',
+                'action' => ['/' . Yii::$app->requestedRoute],
                 'layout' => 'horizontal',
                 'fieldConfig' => [
                     'template' => "{label}\n{beginWrapper}\n{input}\n{hint}\n{error}\n{endWrapper}",
