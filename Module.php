@@ -15,7 +15,7 @@ class Module extends \yii\base\Module
 
     public function getUrlRules()
     {
-        $listControllers = 'default|user|status|source-message|message|menu|user-action-log|backup|backup-attribute|options';
+        $listControllers = 'default|user|status|source-message|message|menu|user-action-log|backup|backup-attribute|options|auth-item';
 
         return [
             '<controller:(' . $listControllers . ')>' => 'core/<controller>/index',

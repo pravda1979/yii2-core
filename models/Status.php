@@ -140,7 +140,7 @@ class Status extends \pravda1979\core\components\core\ActiveRecord
      */
     public function getFixedStatusName()
     {
-        $types = $this->getListFixedStatus();
+        $types = static::getListFixedStatus();
         return $types[$this->fixed_status_id];
     }
 

@@ -45,9 +45,9 @@ class ActiveRecord extends \yii\db\ActiveRecord
     {
         if ($this->hasAttribute('name'))
             return $this->name;
-        if ($this->hasAttribute('id'))
-            return $this->id;
-        return 'Не указан аттрибут для fullName!';
+        if ($this->hasAttribute(static::primaryKey()))
+            return $this->{static::primaryKey()};
+        return 'Attribute name for "fullName" property not set!';
     }
 
     /**

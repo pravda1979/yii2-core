@@ -42,7 +42,7 @@ class CreateAction extends Action
             if (!$model->save(false)) {
                 Yii::$app->getSession()->addFlash('error', Html::errorSummary($model, ['header' => '']));
             } else {
-                return $this->controller->goBack(\yii\helpers\Url::to(['view', 'id' => $model->id]));
+                return $this->controller->goBack(\yii\helpers\Url::to(['view', 'id' => $model->primaryKey()]));
             }
         }
 

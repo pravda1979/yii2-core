@@ -82,12 +82,40 @@ class BackupBehavior extends Behavior
                 }
             }
 
+//            if ($model->canGetProperty($attribute)) {
+//                if (is_array($model->$attribute)) {
+//                    if (empty($model->$attribute)) {
+//                        $newValue = null;
+//                    } else {
+//                        $newValue = serialize($model->$attribute);
+//                    }
+//                } else {
+//                    $newValue = $model->$attribute;
+//                }
+//            } else {
+//                $newValue = $newLabel;
+//            }
+//
+//            if ($this->_oldModel->canGetProperty($attribute)) {
+//                if (is_array($this->_oldModel->$attribute)) {
+//                    if (empty($this->_oldModel->$attribute)) {
+//                        $oldValue = null;
+//                    } else {
+//                        $oldValue = serialize($this->_oldModel->$attribute);
+//                    }
+//                } else {
+//                    $oldValue = $this->_oldModel->$attribute;
+//                }
+//            } else {
+//                $oldValue = $oldLabel;
+//            }
+
             $oldValue = $this->_oldModel->canGetProperty($attribute) ?
-                (is_array($this->_oldModel->$attribute) ? serialize($this->_oldModel->$attribute) : $this->_oldModel->$attribute) :
+                ((is_array($this->_oldModel->$attribute) && !empty($this->_oldModel->$attribute)) ? serialize($this->_oldModel->$attribute) : $this->_oldModel->$attribute) :
                 $oldLabel;
 
             $newValue = $model->canGetProperty($attribute) ?
-                (is_array($model->$attribute) ? serialize($model->$attribute) : $model->$attribute) :
+                ((is_array($model->$attribute) && !empty($model->$attribute)) ? serialize($model->$attribute) : $model->$attribute) :
                 $newLabel;
 
             if ($newValue != $oldValue) {

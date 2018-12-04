@@ -10,7 +10,6 @@ class m181029_201523_rbac_message extends Migration
         'Message: editor' => 'Message: viewer',
         'Message: admin' => 'Message: editor',
         'admin' => 'Message: admin',
-
     ];
     public $actions = [
         'Message: viewer' => [

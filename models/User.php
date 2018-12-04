@@ -38,7 +38,7 @@ class User extends \pravda1979\core\components\core\ActiveRecord implements Iden
     const STATE_DELETED = 0;
     const STATE_ACTIVE = 1;
 
-    private $_userRights = [];
+    private $_userRights = null;
 
     public $password;
     public $password_repeat;
@@ -304,7 +304,7 @@ class User extends \pravda1979\core\components\core\ActiveRecord implements Iden
     public function getUserRights($assignedOnly = false)
     {
         $result = $this->_userRights;
-        if (empty($result) || $assignedOnly == true) {
+        if ($result === null || $assignedOnly == true) {
             $authManager = Yii::$app->authManager;
             $roles = $authManager->getRolesByUser($this->id);
             $result = ArrayHelper::getColumn($roles, 'name', false);
@@ -321,6 +321,8 @@ class User extends \pravda1979\core\components\core\ActiveRecord implements Iden
      */
     public function setUserRights($rights)
     {
+        if (empty($rights))
+            $rights = [];
         $rights = is_array($rights) ? $rights : [$rights];
         sort($rights);
         $this->_userRights = $rights;
