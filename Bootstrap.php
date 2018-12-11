@@ -58,7 +58,7 @@ class Bootstrap implements BootstrapInterface
             if (!$authManager) {
                 Yii::$app->set('authManager', [
                     'class' => DbManager::className(),
-//                    'cache' => 'cache',
+                    'cache' => 'cache',
                     'ruleTable' => $module->tableNames['auth_rule'],
                     'itemTable' => $module->tableNames['auth_item'],
                     'itemChildTable' => $module->tableNames['auth_item_child'],
