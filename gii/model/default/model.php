@@ -21,6 +21,8 @@ namespace <?= $generator->ns ?>;
 
 use Yii;
 use pravda1979\core\components\validators\StringFilter;
+use pravda1979\core\models\Status;
+use pravda1979\core\models\User;
 
 /**
  * This is the model class for table "<?= $generator->generateTableName($tableName) ?>".

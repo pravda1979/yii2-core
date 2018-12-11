@@ -9,6 +9,7 @@ use yii\bootstrap\Html;
 use yii\bootstrap\Nav;
 use yii\bootstrap\NavBar;
 use yii\helpers\Inflector;
+use yii\helpers\Url;
 
 class EntryMenu extends \yii\bootstrap\Widget
 {
@@ -60,9 +61,8 @@ class EntryMenu extends \yii\bootstrap\Widget
     protected function initDefaultButtons()
     {
         $modelName = Inflector::id2camel($this->getClassName());
-//        $modelName = 'app';
 
-        $idField = empty($this->model) ? 'id' : implode('', $this->model->primaryKey());
+        $idParams = empty($this->model) ? 'id' : $this->model->getPrimaryKey();
 
         $name = 'create';
         if (!isset($this->buttons[$name]) && strpos($this->template, '{' . $name . '}') !== false) {
@@ -95,7 +95,7 @@ class EntryMenu extends \yii\bootstrap\Widget
 
         $name = 'view';
         if (!isset($this->buttons[$name]) && strpos($this->template, '{' . $name . '}') !== false) {
-            $this->buttons[$name] = ['label' => Html::tag('span', Html::tag('span', ' ' . Yii::t($modelName, 'View'), ['class' => 'visible-xs-inline']), ['class' => 'glyphicon glyphicon-eye-open']), 'url' => ['view', 'id' => $this->model->$idField],
+            $this->buttons[$name] = ['label' => Html::tag('span', Html::tag('span', ' ' . Yii::t($modelName, 'View'), ['class' => 'visible-xs-inline']), ['class' => 'glyphicon glyphicon-eye-open']), 'url' => $this->createUrl('view', $idParams),
                 'linkOptions' => ['title' => Yii::t($modelName, 'View')]
             ];
         }
@@ -109,14 +109,14 @@ class EntryMenu extends \yii\bootstrap\Widget
 
         $name = 'update';
         if (!isset($this->buttons[$name]) && strpos($this->template, '{' . $name . '}') !== false) {
-            $this->buttons[$name] = ['label' => Html::tag('span', Html::tag('span', ' ' . Yii::t($modelName, 'Update'), ['class' => 'visible-xs-inline text-muted']), ['class' => 'glyphicon glyphicon-pencil text-blue']), 'url' => ['update', 'id' => $this->model->$idField],
+            $this->buttons[$name] = ['label' => Html::tag('span', Html::tag('span', ' ' . Yii::t($modelName, 'Update'), ['class' => 'visible-xs-inline text-muted']), ['class' => 'glyphicon glyphicon-pencil text-blue']), 'url' => $this->createUrl('update', $idParams),
                 'linkOptions' => ['title' => Yii::t($modelName, 'Update')]
             ];
         }
 
         $name = 'delete';
         if (!isset($this->buttons[$name]) && strpos($this->template, '{' . $name . '}') !== false) {
-            $this->buttons[$name] = ['label' => Html::tag('span', Html::tag('span', ' ' . Yii::t($modelName, 'Delete'), ['class' => 'visible-xs-inline text-muted']), ['class' => 'glyphicon glyphicon-trash text-red']), 'url' => ['delete', 'id' => $this->model->$idField],
+            $this->buttons[$name] = ['label' => Html::tag('span', Html::tag('span', ' ' . Yii::t($modelName, 'Delete'), ['class' => 'visible-xs-inline text-muted']), ['class' => 'glyphicon glyphicon-trash text-red']), 'url' => $this->createUrl('delete', $idParams),
                 'linkOptions' => [
                     'title' => Yii::t($modelName, 'Delete'),
                     'data' => [
@@ -129,11 +129,11 @@ class EntryMenu extends \yii\bootstrap\Widget
 
         $name = 'backup';
         if (!isset($this->buttons[$name]) && strpos($this->template, '{' . $name . '}') !== false) {
-            if (Yii::$app->user->can('/core/backup/history')) {
-                $countBackup = Backup::find()->where(['record_id' => $this->model->$idField, 'record_class' => $this->model->className()])->count();
+            if (Yii::$app->user->can('/core/backup/history') && $this->model->hasAttribute('id')) {
+                $countBackup = Backup::find()->where(['record_id' => $this->model->id, 'record_class' => $this->model->className()])->count();
 
                 $this->buttons[$name] = ['label' => Html::tag('span', Html::tag('span', ' ' . Yii::t('Backup', 'History'), ['class' => 'visible-xs-inline']), ['class' => 'glyphicon glyphicon-time']) . " <span class=\"label label-primary\">$countBackup</span>",
-                    'url' => ['/core/backup/history', 'BackupSearch' => ['record_id' => $this->model->$idField, 'record_class' => $this->model->className()]],
+                    'url' => ['/core/backup/history', 'BackupSearch' => ['record_id' => $this->model->id, 'record_class' => $this->model->className()]],
                     'linkOptions' => ['title' => Yii::t('Backup', 'History'), 'class' => ($countBackup ? '' : ' hidden')]
                 ];
             } else {
@@ -163,4 +163,18 @@ class EntryMenu extends \yii\bootstrap\Widget
 
         $this->buttons = $new_btn;
     }
+
+    /**
+     * @param $action
+     * @param $key
+     * @return string
+     */
+    public function createUrl($action, $key)
+    {
+        $params = is_array($key) ? $key : ['id' => (string) $key];
+        $params[0] = $this->controller ? $this->controller . '/' . $action : $action;
+
+        return Url::toRoute($params);
+    }
+
 }
