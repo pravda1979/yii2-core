@@ -19,6 +19,7 @@ use yii\base\Exception;
 use yii\helpers\ArrayHelper;
 use yii\helpers\Html;
 use yii\helpers\Inflector;
+use yii\helpers\StringHelper;
 
 /**
  * @property \pravda1979\core\components\core\ActiveRecord $_oldModel
@@ -153,7 +154,7 @@ class BackupBehavior extends Behavior
             $backup->record_id = $model->{$this->id_field};
             $backup->record_name = $model->{$this->name_field};
             $backup->record_class = $model::className();
-            $backup->record_short_class = Inflector::id2camel(basename($model::className()));
+            $backup->record_short_class = Inflector::id2camel(StringHelper::basename($model::className()));
             $backup->save();
 
             foreach ($changedAttributes as $attribute => $fields) {

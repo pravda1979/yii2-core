@@ -6,13 +6,14 @@ use yii\widgets\Pjax;
 use pravda1979\core\models\Status;
 use pravda1979\core\models\User;
 use pravda1979\core\models\UserActionLog;
+use yii\helpers\StringHelper;
 
 /* @var $this yii\web\View */
 /* @var $searchModel pravda1979\core\searches\BackupSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 /* @var $model \pravda1979\core\components\core\ActiveRecord */
 
-$modelClass = basename($model->className());
+$modelClass = StringHelper::basename($model->className());
 $this->title = Yii::t('Backup', 'Index') . ': ' . Yii::t($modelClass, $modelClass) . " \"$model->fullName\"";
 $this->params['breadcrumbs'][] = ['label' => Yii::t('Backup', 'Backups'), 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
