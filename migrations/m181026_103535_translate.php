@@ -36,6 +36,7 @@ class m181026_103535_translate extends Migration
                     'Draft record' => 'Черновик',
                     'Active record' => 'Активная запись',
                     'The requested page does not exist.' => 'Запрашиваемая Вами страница не найдена.',
+                    '... shown {count} items from {total} ...' => '... показано {count} записей из {total} ...',
                 ],
                 'LoginForm' => [
                     'LoginForm' => 'Форма входа',

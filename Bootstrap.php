@@ -136,10 +136,8 @@ class Bootstrap implements BootstrapInterface
 //                        'baseUrl' => '@web/../themes/' . $theme,
                         ]]);
 
-                    Yii::$app->assetManager->bundles = [
-                        'dmstr\web\AdminLteAsset' => [
-                            'skin' => ArrayHelper::getValue(Yii::$app->params, 'app_LTEAdminSkin', 'skin-blue'),
-                        ],
+                    Yii::$app->assetManager->bundles['dmstr\web\AdminLteAsset'] = [
+                        'skin' => ArrayHelper::getValue(Yii::$app->params, 'app_LTEAdminSkin', 'skin-blue'),
                     ];
                 }
             }
