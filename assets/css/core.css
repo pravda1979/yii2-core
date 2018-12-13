@@ -47,3 +47,20 @@ ins {
     background-color: #ccffcc;
     text-decoration: none;
 }
+
+/* FIX for Split Dropdown Buttons (wrap)*/
+.split-dropdown-buttons {
+    white-space: normal !important;
+}
+.split-button {
+    margin: 5px;
+    display: inline-block;
+    white-space: nowrap;
+}
+.split-button > .btn-group {
+    font-size: 0;
+}
+.split-button > .btn-group-vertical>.btn, .btn-group>.btn {
+    display:inline-block;
+    float:none;
+}

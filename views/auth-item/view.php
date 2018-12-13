@@ -24,8 +24,8 @@ $this->params['breadcrumbs'][] = $this->title;
             'attributes' => [
                 [
                     'attribute' => 'parentItems',
-                    'value' => $this->render('_related_items', ['items' => $model->parents]),
-                    'format' => 'raw'
+                    'value' => $this->render('_related_items', ['items' => $model->getParents()->orderBy(['type' => SORT_ASC])->all()]),
+                    'format' => 'raw',
                 ],
                 [
                     'attribute' => 'type',
@@ -34,15 +34,15 @@ $this->params['breadcrumbs'][] = $this->title;
                 [
                     'attribute' => 'name',
                     'value' => $model->nameT,
-                    'format' => 'html'
+                    'format' => 'html',
                 ],
                 'description:ntext',
                 'rule_name',
                 'data',
                 [
                     'attribute' => 'childrenItems',
-                    'value' => $this->render('_related_items', ['items' => $model->children]),
-                    'format' => 'raw'
+                    'value' => $this->render('_related_items', ['items' => $model->getChildren()->orderBy(['type' => SORT_ASC])->all()]),
+                    'format' => 'raw',
                 ],
                 'created_at:datetime',
                 'updated_at:datetime',
