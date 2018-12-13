@@ -78,6 +78,7 @@ class AuthItem extends \pravda1979\core\components\core\ActiveRecord
             'created_at' => Yii::t('AuthItem', 'Created At'),
             'updated_at' => Yii::t('AuthItem', 'Updated At'),
             'childrenItems' => Yii::t('AuthItem', 'Children Items'),
+            'parentItems' => Yii::t('AuthItem', 'Parent Items'),
         ];
     }
 

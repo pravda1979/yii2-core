@@ -49,6 +49,7 @@ class m181203_205202_rbac_and_translates_auth_item extends Migration
                     'TYPE_ROLE' => 'Роль',
                     'TYPE_ROUTE' => 'Маршрут',
                     'Children Items' => 'Дочерние элементы',
+                    'Parent Items' => 'Родительские элементы',
                 ],
             ],
         ];

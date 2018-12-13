@@ -28,7 +28,7 @@ use pravda1979\core\models\AuthItem;
 
         <?= $form->field($model, 'childrenItems', ['options' => ['id' => 'children_items', 'style' => $model->type == 1 ? '' : 'display:none']])->widget(Select2::classname(), [
             'data' => AuthItem::getList(),
-            'options' => ['placeholder' => 'Выберите дочерние элементы...'],
+            'options' => ['placeholder' => ''],
             'pluginOptions' => [
                 'allowClear' => true,
                 'multiple' => true,

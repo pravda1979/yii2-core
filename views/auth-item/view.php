@@ -5,6 +5,7 @@ use yii\widgets\DetailView;
 use yii\helpers\ArrayHelper;
 use pravda1979\core\models\Status;
 use pravda1979\core\models\User;
+use pravda1979\core\models\AuthItem;
 
 /* @var $this yii\web\View */
 /* @var $model pravda1979\core\models\AuthItem */
@@ -22,16 +23,27 @@ $this->params['breadcrumbs'][] = $this->title;
             'model' => $model,
             'attributes' => [
                 [
-                    'attribute' => 'name',
-                    'value' => $model->nameT,
+                    'attribute' => 'parentItems',
+                    'value' => $this->render('_related_items', ['items' => $model->parents]),
+                    'format' => 'raw'
                 ],
                 [
                     'attribute' => 'type',
                     'value' => $model->typeName,
                 ],
+                [
+                    'attribute' => 'name',
+                    'value' => $model->nameT,
+                    'format' => 'html'
+                ],
                 'description:ntext',
                 'rule_name',
                 'data',
+                [
+                    'attribute' => 'childrenItems',
+                    'value' => $this->render('_related_items', ['items' => $model->children]),
+                    'format' => 'raw'
+                ],
                 'created_at:datetime',
                 'updated_at:datetime',
             ],
