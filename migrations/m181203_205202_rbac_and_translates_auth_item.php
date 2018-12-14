@@ -5,7 +5,7 @@ use pravda1979\core\components\migration\Migration;
 class m181203_205202_rbac_and_translates_auth_item extends Migration
 {
     public $table_name = '';
-    public $route = '';
+    public $route = 'core/auth-item';
     public $parents = [
         'AuthItem: editor' => 'AuthItem: viewer',
         'AuthItem: admin' => 'AuthItem: editor',
@@ -13,16 +13,16 @@ class m181203_205202_rbac_and_translates_auth_item extends Migration
     ];
     public $actions = [
         'AuthItem: viewer' => [
-            'core/auth-item/index',
-            'core/auth-item/view',
-            'core/auth-item/autocomplete',
+            'index',
+            'view',
+            'autocomplete',
         ],
         'AuthItem: editor' => [
-            'core/auth-item/create',
-            'core/auth-item/update',
+            'create',
+            'update',
         ],
         'AuthItem: admin' => [
-            'core/auth-item/delete',
+            'delete',
         ],
     ];
     public $modelNames = [
@@ -40,7 +40,7 @@ class m181203_205202_rbac_and_translates_auth_item extends Migration
         $translates = [
             'ru-RU' => [
                 'AuthItem' => [
-                    'Index' => 'Список меню',
+                    'Index' => 'Список прав доступа',
                     'Name' => 'Наименование',
                     'Type' => 'Тип',
                     'Description' => 'Описание',
