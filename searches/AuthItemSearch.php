@@ -2,6 +2,7 @@
 
 namespace pravda1979\core\searches;
 
+use pravda1979\core\models\Message;
 use Yii;
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
@@ -47,7 +48,9 @@ class AuthItemSearch extends AuthItem
         // add conditions that should always apply here
 
         $dataProvider = new ActiveDataProvider([
-            'query' => $query,        ]);
+            'query' => $query,
+            'sort' => ['defaultOrder' => ['type' => SORT_ASC, 'name' => SORT_ASC]]
+        ]);
 
         $this->load($params);
 
@@ -64,8 +67,24 @@ class AuthItemSearch extends AuthItem
             'updated_at' => $this->updated_at,
         ]);
 
-        $query->andFilterWhere(['like', 'name', $this->name])
-            ->andFilterWhere(['like', 'description', $this->description])
+        // Get translations for roles, which like $this->name
+        if (!empty($this->name)) {
+            $nameT = Message::find()
+                ->alias('t')
+                ->joinWith('sourceMessage sourceMessage', false)
+                ->andFilterWhere(['sourceMessage.category' => 'role'])
+                ->andFilterWhere(['like', 't.translation', $this->name])
+                ->select('sourceMessage.message')
+                ->column();
+
+            $query->andFilterWhere([
+                'or',
+                ['name' => $nameT],
+                ['like', 'name', $this->name],
+            ]);
+        }
+
+        $query->andFilterWhere(['like', 'description', $this->description])
             ->andFilterWhere(['like', 'rule_name', $this->rule_name])
             ->andFilterWhere(['like', 'data', $this->data]);
 

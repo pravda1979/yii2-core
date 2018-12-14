@@ -34,7 +34,6 @@ $this->params['breadcrumbs'][] = $this->title;
                 [
                     'attribute' => 'name',
                     'value' => $model->nameT,
-                    'format' => 'html',
                 ],
                 'description:ntext',
                 'rule_name',
