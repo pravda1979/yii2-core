@@ -4,6 +4,8 @@ namespace pravda1979\core\models;
 
 use Yii;
 use pravda1979\core\components\validators\StringFilter;
+use yii\caching\DbDependency;
+use yii\db\Query;
 use yii\helpers\ArrayHelper;
 use yii\helpers\Url;
 
@@ -49,7 +51,7 @@ class Menu extends \pravda1979\core\components\core\ActiveRecord
     {
         /** @var \pravda1979\core\Module $module */
         $module = Yii::$app->getModule('core');
-        return  "{{%" . $module->tableNames["menu"] . "}}";
+        return "{{%" . $module->tableNames["menu"] . "}}";
     }
 
     /**
@@ -95,6 +97,7 @@ class Menu extends \pravda1979\core\components\core\ActiveRecord
             'user_id' => Yii::t('Menu', 'User ID'),
             'created_at' => Yii::t('Menu', 'Created At'),
             'updated_at' => Yii::t('Menu', 'Updated At'),
+            'childrenItems' => Yii::t('Menu', 'Children Items'),
         ];
     }
 
@@ -207,9 +210,10 @@ class Menu extends \pravda1979\core\components\core\ActiveRecord
     public static function getMenu($menu_id)
     {
         $key = 'user' . Yii::$app->user->id . ".Menu." . $menu_id;
+        $dependency = new DbDependency(['sql' => 'select max(updated_at) from ' . static::tableName()]);
         $result = Yii::$app->cache->getOrSet($key, function () use ($menu_id) {
             return static::getMenuItems(['and', ['=', 'menu_id', $menu_id], ['is', 'parent_id', new \yii\db\Expression('null')]]);
-        });
+        }, null, $dependency);
         static::setActive($result);
         return $result;
     }
@@ -257,7 +261,7 @@ class Menu extends \pravda1979\core\components\core\ActiveRecord
 
     public function getFullName()
     {
-        return $this->label;
+        return Yii::t('menu.main', $this->label);
     }
 
     /**

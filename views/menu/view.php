@@ -23,7 +23,15 @@ $this->params['breadcrumbs'][] = $this->title;
             'attributes' => [
                 'id',
                 'menu_id',
-                'label',
+                [
+                    'attribute' => 'parent_id',
+                    'value' => $model->parent ? $this->render('_related_items', ['items' => [$model->parent]]) : null,
+                    'format' => 'raw',
+                ],
+                [
+                    'attribute' => 'label',
+                    'value' => $model->fullName,
+                ],
                 [
                     'attribute' => 'icon',
                     'format' => 'html',
@@ -38,11 +46,12 @@ $this->params['breadcrumbs'][] = $this->title;
                 'linkOptions:ntext',
                 'position',
                 'level',
-                [
-                    'attribute' => 'parent_id',
-                    'value' => $model->getParentLabel(),
-                ],
                 'note:ntext',
+                [
+                    'attribute' => 'childrenItems',
+                    'value' => $this->render('_related_items', ['items' => $model->children]),
+                    'format' => 'raw',
+                ],
                 [
                     'attribute' => 'status_id',
                     'value' => ArrayHelper::getValue($model, 'status.fullName'),

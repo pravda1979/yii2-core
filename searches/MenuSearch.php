@@ -2,6 +2,7 @@
 
 namespace pravda1979\core\searches;
 
+use pravda1979\core\models\Message;
 use Yii;
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
@@ -43,7 +44,7 @@ class MenuSearch extends Menu
     public function search($params)
     {
         $query = Menu::find();
-        $query->with(['parent']);
+        $query->with(['parent', 'children']);
 
         // add conditions that should always apply here
 
@@ -72,8 +73,24 @@ class MenuSearch extends Menu
             'user_id' => $this->user_id,
         ]);
 
+        // Get translations for menu items, which like $this->label
+        if (!empty($this->label)) {
+            $labelT = Message::find()
+                ->alias('t')
+                ->joinWith('sourceMessage sourceMessage', false)
+                ->andFilterWhere(['sourceMessage.category' => 'menu.main'])
+                ->andFilterWhere(['like', 't.translation', $this->label])
+                ->select('sourceMessage.message')
+                ->column();
+
+            $query->andFilterWhere([
+                'or',
+                ['label' => $labelT],
+                ['like', 'label', $this->label],
+            ]);
+        }
+
         $query->andFilterWhere(['like', 'menu_id', $this->menu_id])
-            ->andFilterWhere(['like', 'label', $this->label])
             ->andFilterWhere(['like', 'icon', $this->icon])
             ->andFilterWhere(['like', 'url', $this->url])
             ->andFilterWhere(['like', 'linkOptions', $this->linkOptions])

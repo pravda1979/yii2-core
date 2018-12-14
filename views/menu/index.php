@@ -41,7 +41,12 @@ $this->params['breadcrumbs'][] = $this->title;
                     'value' => 'visibleName',
                     'filter' => Menu::getListVisible(),
                 ],
-                'label',
+                [
+                    'attribute' => 'label',
+                    'value' => function ($data) {
+                        return Yii::t('menu.main', $data->label);
+                    },
+                ],
                 [
                     'attribute' => 'icon',
                     'format' => 'html',

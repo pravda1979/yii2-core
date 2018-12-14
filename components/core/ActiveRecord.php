@@ -88,7 +88,11 @@ class ActiveRecord extends \yii\db\ActiveRecord
     public static function getList($params = [], $select = [], $order = [])
     {
         $result = static::getListNoMap($params, $select, $order);
-        return ArrayHelper::map($result, 'id', 'label');
+        $result = ArrayHelper::map($result, 'id', 'label');
+        foreach ($result as $id => &$label) {
+            $label = Yii::t('menu.main', $label);
+        }
+        return $result;
     }
 
     /**
