@@ -170,4 +170,26 @@ class ActiveRecord extends \yii\db\ActiveRecord
         return $scenarios;
     }
 
+    public function afterDelete()
+    {
+        parent::afterDelete();
+        $this->deleteCachedList();
+    }
+
+    /**
+     * Delete all cached lists by key names
+     * @param array $keys
+     */
+    public function deleteCachedList($keys = ['getList'])
+    {
+        if (!is_array($keys))
+            $keys = [$keys];
+
+        foreach ($keys as $key) {
+            $key = static::className() . "." . $key;
+            Yii::warning(Yii::$app->cache->exists($key), $key);
+            if (Yii::$app->cache->exists($key))
+                Yii::$app->cache->delete($key);
+        }
+    }
 }

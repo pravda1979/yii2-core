@@ -55,10 +55,10 @@ class BackupBehavior extends Behavior
         /** @var ActiveRecord $model */
         $model = $this->owner;
         $this->_oldModel = $model::findOne($model->{$this->id_field});
-        $this->getBackupAttributes($model->attributes);
+        $this->getBackupAttributes($model->attributes, true);
     }
 
-    public function getBackupAttributes($changedAttributes = [])
+    public function getBackupAttributes($changedAttributes = [], $isDeleting = false)
     {
         $result = [];
         /** @var ActiveRecord $model */
@@ -119,7 +119,7 @@ class BackupBehavior extends Behavior
                 ((is_array($model->$attribute) && !empty($model->$attribute)) ? serialize($model->$attribute) : $model->$attribute) :
                 $newLabel;
 
-            if ($newValue != $oldValue) {
+            if ($newValue != $oldValue || $isDeleting) {
                 $result[$attribute] = [
                     'old_value' => $oldValue,
                     'new_value' => $newValue,

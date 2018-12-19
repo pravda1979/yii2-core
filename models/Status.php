@@ -253,4 +253,12 @@ class Status extends \pravda1979\core\components\core\ActiveRecord
             return ArrayHelper::map($sqlQuery->all(), 'id', 'label', 'group');
         }
     }
+
+    /**
+     * @inheritdoc
+     */
+    public function deleteCachedList($keys = ['getList', 'getListWithGroup'])
+    {
+        parent::deleteCachedList($keys);
+    }
 }
