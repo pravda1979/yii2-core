@@ -187,7 +187,6 @@ class ActiveRecord extends \yii\db\ActiveRecord
 
         foreach ($keys as $key) {
             $key = static::className() . "." . $key;
-            Yii::warning(Yii::$app->cache->exists($key), $key);
             if (Yii::$app->cache->exists($key))
                 Yii::$app->cache->delete($key);
         }
