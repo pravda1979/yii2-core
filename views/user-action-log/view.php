@@ -9,7 +9,7 @@ use pravda1979\core\models\User;
 /* @var $this yii\web\View */
 /* @var $model pravda1979\core\models\UserActionLog */
 
-$this->title = Yii::t('UserActionLog', 'Viewing')  . ': '.  $model->fullName;
+$this->title = Yii::t('UserActionLog', 'Viewing') . ': ' . $model->fullName;
 $this->params['breadcrumbs'][] = ['label' => Yii::t('UserActionLog', 'User Action Logs'), 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 ?>
@@ -33,7 +33,11 @@ $this->params['breadcrumbs'][] = $this->title;
                 'route',
                 'method',
                 'user_ip',
-                'url:ntext',
+                [
+                    'attribute' => 'url',
+                    'value' => \yii\helpers\Url::to($model->url, true),
+                    'format' => 'url',
+                ],
                 'note:ntext',
                 [
                     'attribute' => 'status_id',
@@ -41,7 +45,7 @@ $this->params['breadcrumbs'][] = $this->title;
                 ],
                 [
                     'attribute' => 'user_id',
-                    'value' =>  ArrayHelper::getValue($model, 'user.fullName'),
+                    'value' => ArrayHelper::getValue($model, 'user.fullName'),
                 ],
                 'created_at:datetime',
                 'updated_at:datetime',
