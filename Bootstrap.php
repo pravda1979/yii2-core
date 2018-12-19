@@ -86,6 +86,7 @@ class Bootstrap implements BootstrapInterface
                     'messageTable' => '{{%' . $module->tableNames['message'] . '}}',
                     'forceTranslation' => true,
                     'on missingTranslation' => ['pravda1979\core\components\core\TranslationEventHandler', 'addMissingTranslation'],
+                    'enableCaching' => true,
                 ];
 
                 if (!isset($app->get('i18n')->translations['*'])) {
@@ -95,6 +96,7 @@ class Bootstrap implements BootstrapInterface
                         'messageTable' => '{{%' . $module->tableNames['message'] . '}}',
                         'forceTranslation' => true,
                         'on missingTranslation' => ['pravda1979\core\components\core\TranslationEventHandler', 'addMissingTranslation'],
+                        'enableCaching' => true,
                     ];
                 }
 

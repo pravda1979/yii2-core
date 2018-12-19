@@ -41,7 +41,7 @@ class Status extends \pravda1979\core\components\core\ActiveRecord
     {
         /** @var \pravda1979\core\Module $module */
         $module = Yii::$app->getModule('core');
-        return  "{{%" . $module->tableNames["status"] . "}}";
+        return "{{%" . $module->tableNames["status"] . "}}";
     }
 
     /**
@@ -227,20 +227,30 @@ class Status extends \pravda1979\core\components\core\ActiveRecord
 
     public static function getListWithGroup($params = [])
     {
-        $key = 'Status.getListWithGroup';
-        $result = Yii::$app->cache->getOrSet($key, function () use ($params) {
-            $select = ['id', 'label' => 'name', 'group' => new Expression('CASE fixed_status_id when ' . static::$FIXED_STATUS_REAL . ' then "Активно" else "Не активно" END')];
-            $order = ['fixed_status_id' => SORT_DESC, 'name' => SORT_ASC];
+        $select = ['id', 'label' => 'name', 'group' => new Expression('CASE fixed_status_id when ' . static::$FIXED_STATUS_REAL . ' then "Активно" else "Не активно" END')];
+        $order = ['fixed_status_id' => SORT_DESC, 'name' => SORT_ASC];
 
+        if (empty($params)) {
+            $key = static::className() . ".getListWithGroup";
+            $dependency = new DbDependency(['sql' => 'select max(updated_at) from ' . static::tableName()]);
+            $result = Yii::$app->cache->getOrSet($key, function () use ($params, $select, $order) {
+                $sqlQuery = self::find()
+                    ->orderBy($order)
+                    ->andFilterWhere($params)
+                    ->select($select)
+                    ->real()
+                    ->asArray();
+                return ArrayHelper::map($sqlQuery->all(), 'id', 'label', 'group');
+            }, null, $dependency);
+            return $result;
+        } else {
             $sqlQuery = self::find()
                 ->orderBy($order)
                 ->andFilterWhere($params)
                 ->select($select)
                 ->real()
                 ->asArray();
-
             return ArrayHelper::map($sqlQuery->all(), 'id', 'label', 'group');
-        });
-        return $result;
+        }
     }
 }

@@ -4,6 +4,7 @@ namespace pravda1979\core\components\core;
 
 use pravda1979\core\components\behaviors\BackupBehavior;
 use Yii;
+use yii\caching\DbDependency;
 use yii\db\Expression;
 use pravda1979\core\models\Status;
 use yii\helpers\ArrayHelper;
@@ -87,12 +88,18 @@ class ActiveRecord extends \yii\db\ActiveRecord
      */
     public static function getList($params = [], $select = [], $order = [])
     {
-        $result = static::getListNoMap($params, $select, $order);
-        $result = ArrayHelper::map($result, 'id', 'label');
-        foreach ($result as $id => &$label) {
-            $label = Yii::t('menu.main', $label);
+        if (empty($params) && empty($select) && empty($order)) {
+            $key = static::className() . ".getList";
+            $dependency = new DbDependency(['sql' => 'select max(updated_at) from ' . static::tableName()]);
+            $result = Yii::$app->cache->getOrSet($key, function () use ($params, $select, $order) {
+                $result = static::getListNoMap($params, $select, $order);
+                return ArrayHelper::map($result, 'id', 'label');
+            }, null, $dependency);
+            return $result;
+        } else {
+            $result = static::getListNoMap($params, $select, $order);
+            return ArrayHelper::map($result, 'id', 'label');
         }
-        return $result;
     }
 
     /**

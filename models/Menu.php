@@ -286,4 +286,28 @@ class Menu extends \pravda1979\core\components\core\ActiveRecord
         return $types[$this->visible];
     }
 
+    /**
+     * @inheritdoc
+     */
+    public static function getList($params = [], $select = [], $order = [])
+    {
+        if (empty($params) && empty($select) && empty($order)) {
+            $key = static::className() . ".getList";
+            $dependency = new DbDependency(['sql' => 'select max(updated_at) from ' . static::tableName()]);
+            $result = Yii::$app->cache->getOrSet($key, function () use ($params, $select, $order) {
+                $result = parent::getList($params, $select, $order);
+                foreach ($result as $id => &$label) {
+                    $label = Yii::t('menu.main', $label);
+                }
+                return $result;
+            }, null, $dependency);
+            return $result;
+        } else {
+            $result = parent::getList($params, $select, $order);
+            foreach ($result as $id => &$label) {
+                $label = Yii::t('menu.main', $label);
+            }
+            return $result;
+        }
+    }
 }

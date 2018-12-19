@@ -36,7 +36,6 @@ class AutocompleteAction extends Action
         /** @var ActiveRecord $className */
         $className = $this->modelClass;
 
-        Yii::warning($params,'$params');
         if (Yii::$app->request->isAjax) {
             $term = trim(preg_replace('/\s+/', ' ', $term));
 
