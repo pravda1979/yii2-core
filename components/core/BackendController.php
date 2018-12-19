@@ -21,7 +21,7 @@ class BackendController extends Controller
                     '/core/user/login',
                     '/core/user/logout',
                     '/core/user/profile',
-                    'site/error',
+                    '/site/error',
                 ]
             ]
         ];
