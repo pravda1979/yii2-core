@@ -12,6 +12,7 @@ use pravda1979\core\components\core\ActiveRecord;
 use Yii;
 use yii\base\InvalidConfigException;
 use yii\helpers\Html;
+use yii\helpers\Url;
 use yii\web\NotFoundHttpException;
 
 class DeleteAction extends \pravda1979\core\components\core\Action
@@ -42,6 +43,9 @@ class DeleteAction extends \pravda1979\core\components\core\Action
         if (!$model->delete()) {
             Yii::$app->getSession()->addFlash('error', Html::errorSummary($model, ['header' => '']));
         }
+
+        if (Yii::$app->getUser()->getReturnUrl() == Url::to(['view', 'id' => $id]))
+            Url::remember(['index']);
 
         return $this->controller->goBack(\yii\helpers\Url::to(['index']));
     }

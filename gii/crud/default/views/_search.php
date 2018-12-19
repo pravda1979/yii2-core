@@ -24,7 +24,6 @@ use pravda1979\core\models\User;
         <div class="modal-dialog modal-lg">
 
             <?= "<?php " ?>$form = ActiveForm::begin([
-                'action' => ['index'],
                 'method' => 'get',
                 'action' => ['/' . Yii::$app->requestedRoute],
                 'layout' => 'horizontal',

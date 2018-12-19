@@ -61,7 +61,8 @@ class Menu extends \pravda1979\core\components\core\ActiveRecord
     {
         return [
             [['menu_id', 'label', 'icon', 'url', 'linkOptions', 'note'], StringFilter::className()],
-            [['menu_id', 'label', 'icon', 'url', 'use_url_helper', 'visible', 'linkOptions', 'position', 'level', 'parent_id', 'note', 'updated_at'], 'default', 'value' => null],
+            [['menu_id', 'label', 'icon', 'use_url_helper', 'visible', 'linkOptions', 'position', 'level', 'parent_id', 'note', 'updated_at'], 'default', 'value' => null],
+            ['url', 'default', 'value' => '#'],
             [['use_url_helper', 'visible', 'position', 'level', 'parent_id', 'status_id', 'user_id'], 'integer'],
             [['label'], 'required'],
             [['linkOptions', 'note'], 'string'],
@@ -309,5 +310,53 @@ class Menu extends \pravda1979\core\components\core\ActiveRecord
             }
             return $result;
         }
+    }
+
+    /**
+     * Delete cached menu for all users
+     */
+    public function deleteCachedUserMenu()
+    {
+        $keys = [];
+        $users = User::find()->select('id')->column();
+        foreach ($users as $id) {
+            $key = 'user' . $id . ".Menu." . $this->menu_id;
+            if (Yii::$app->cache->exists($key))
+                Yii::$app->cache->delete($key);
+        }
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function beforeDelete()
+    {
+        if (!parent::beforeDelete()) {
+            return false;
+        } else {
+            $this->deleteCachedUserMenu();
+            return true;
+        }
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function afterSave($insert, $changedAttributes)
+    {
+        parent::afterSave($insert, $changedAttributes);
+        $this->deleteCachedUserMenu();
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function getBackupLabels()
+    {
+        return array_merge(parent::getBackupLabels(), [
+            'visible' => $this->getVisibleName(),
+            'parent_id' => $this->getParentLabel(),
+            'use_url_helper' => Yii::$app->formatter->asBoolean($this->use_url_helper),
+        ]);
     }
 }
