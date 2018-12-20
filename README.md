@@ -2,16 +2,16 @@ Core Module
 ===========
 Include:
 - Users
+- RBAC
 - Messages Translates in database
 - Statuses of records
 - AdminLTE theme
 - Gii template
 - Migration template
-- Actions (index, create, update, view, delete)
+- Actions (index, create, update, view, delete, autocomplete)
 - StringValidator
 - EntryMenu widget
-- checkAccess
-- Menus
+- Menu
 - Logging users actions
 - Backup/restore all changes
 - App options, saved in database
