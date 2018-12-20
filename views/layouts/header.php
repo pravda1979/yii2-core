@@ -33,7 +33,11 @@ use yii\helpers\Html;
 
                             <p>
                                 <?= Yii::$app->user->isGuest ? Yii::t('app', 'Guest') : Yii::$app->user->identity->name ?>
-                                <small><?= Yii::t('User', 'Registered {date}', ['date' => Yii::$app->formatter->asDate(Yii::$app->user->identity->created_at)]) ?></small>
+                                <small>
+                                    <?= Yii::$app->user->isGuest ?
+                                        Yii::t('User', 'Registered {date}', ['date' => Yii::$app->formatter->asDate(Yii::$app->user->identity->created_at)])
+                                        : '' ?>
+                                </small>
                             </p>
                         </li>
                         <!-- Menu Footer-->

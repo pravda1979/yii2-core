@@ -145,6 +145,12 @@ Add to `config/web.php`
 Add to `config/console.php`
 
     //...
+    'modules' => [
+        'core' => [
+            'class' => 'pravda1979\core\Module',
+        ],
+    ],
+    //...
     'controllerMap' => [
         //...
         'migrate' => [
@@ -223,3 +229,19 @@ Logout url:
 '/core/user/logout'
 ```
 
+By default, added 3 users:
+```
+Login: admin
+Password: admin
+Role: admin
+```
+```
+Login: editor
+Password: 123
+Role: editor
+```
+```
+Login: viewer
+Password: 123
+Role: viewer
+```
