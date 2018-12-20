@@ -35,27 +35,38 @@ use yii\helpers\Html;
                                 <?= Yii::$app->user->isGuest ? Yii::t('app', 'Guest') : Yii::$app->user->identity->name ?>
                                 <small>
                                     <?= Yii::$app->user->isGuest ?
+                                        '' :
                                         Yii::t('User', 'Registered {date}', ['date' => Yii::$app->formatter->asDate(Yii::$app->user->identity->created_at)])
-                                        : '' ?>
+                                    ?>
                                 </small>
                             </p>
                         </li>
                         <!-- Menu Footer-->
                         <li class="user-footer">
-                            <div class="pull-left">
-                                <?= Html::a(
-                                    Yii::t('User', 'Profile'),
-                                    ['/core/user/profile'],
-                                    ['class' => 'btn btn-default btn-flat']
-                                ) ?>
-                            </div>
-                            <div class="pull-right">
-                                <?= Html::a(
-                                    Yii::t('LoginForm', 'Sign Out'),
-                                    ['/core/user/logout'],
-                                    ['data-method' => 'post', 'class' => 'btn btn-default btn-flat']
-                                ) ?>
-                            </div>
+                            <?php if (Yii::$app->user->isGuest) { ?>
+                                <div class="pull-right">
+                                    <?= Html::a(
+                                        Yii::t('LoginForm', 'Sign In'),
+                                        ['/core/user/login'],
+                                        ['class' => 'btn btn-default btn-flat']
+                                    ) ?>
+                                </div>
+                            <?php } else { ?>
+                                <div class="pull-left">
+                                    <?= Html::a(
+                                        Yii::t('User', 'Profile'),
+                                        ['/core/user/profile'],
+                                        ['class' => 'btn btn-default btn-flat']
+                                    ) ?>
+                                </div>
+                                <div class="pull-right">
+                                    <?= Html::a(
+                                        Yii::t('LoginForm', 'Sign Out'),
+                                        ['/core/user/logout'],
+                                        ['data-method' => 'post', 'class' => 'btn btn-default btn-flat']
+                                    ) ?>
+                                </div>
+                            <?php } ?>
                         </li>
                     </ul>
                 </li>
