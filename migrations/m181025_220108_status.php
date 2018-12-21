@@ -102,9 +102,9 @@ class m181025_220108_status extends Migration
         /** @var \pravda1979\core\Module $module */
         $module = Yii::$app->getModule('core');
         // Удаляем связь для поля "status_id" в таблице "user"
-        $this->dropForeignKey("{{%fk_" . "status_id" . "_user}}", "{{%" . $module->tableNames['user'] . "}}");
+        $this->dropForeignKey("{{%fk_" . "status_id" . "_" . $module->tableNames['user'] . "}}", "{{%" . $module->tableNames['user'] . "}}");
 
-        $this->dropTable("{{%$this->table_name}}");
+        $this->dropTable("{{%" . $module->tableNames[$this->table_name] . "}}");
         $this->deleteTranslates();
         $this->deleteRbac();
     }
