@@ -8,22 +8,21 @@ table.detail-view th {
     width: 25%;
 }
 
-.text-green{
+.text-green {
     color: #00a65a !important;
 }
 
-.text-blue{
+.text-blue {
     color: #0073b7 !important;
 }
 
-.text-red{
+.text-red {
     color: #dd4b39 !important;
 }
 
-.box-body .row{
+.box-body .row {
     margin-right: 0;
 }
-
 
 .backup-changes .attribute .attribute-name {
     font-style: italic;
@@ -52,15 +51,27 @@ ins {
 .split-dropdown-buttons {
     white-space: normal !important;
 }
+
 .split-button {
     margin: 5px;
     display: inline-block;
     white-space: nowrap;
 }
+
 .split-button > .btn-group {
     font-size: 0;
 }
-.split-button > .btn-group-vertical>.btn, .btn-group>.btn {
-    display:inline-block;
-    float:none;
+
+.split-button > .btn-group-vertical > .btn, .btn-group > .btn {
+    display: inline-block;
+    float: none;
+}
+
+.entry-menu-label {
+    margin-left: 10px;
+}
+
+.entry-menu-label2 {
+    font-size: 100%;
+    margin-left: 10px;
 }
