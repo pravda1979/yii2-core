@@ -4,8 +4,7 @@ use yii\bootstrap\Html;
 use pravda1979\core\models\AuthItem;
 use yii\bootstrap\ButtonDropdown;
 
-/* @var $items[] \pravda1979\core\models\Menu*/
-/** @var \pravda1979\core\models\Menu $model */
+/* @var $items \pravda1979\core\models\Menu[] */
 ?>
 
 <div class="split-dropdown-buttons">
