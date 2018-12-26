@@ -37,7 +37,7 @@ class DefaultController extends BackendController
     {
         if (Yii::$app->user->can('admin')) {
             Yii::$app->cache->flush();
-            Yii::$app->getSession()->addFlash('success', "Кэш очищен.");
+            Yii::$app->getSession()->addFlash('success', Yii::t('app', 'Cache has been deleted successfully.'));
 
             return $this->goBack(Yii::$app->homeUrl);
         } else {

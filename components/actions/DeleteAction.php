@@ -40,8 +40,12 @@ class DeleteAction extends \pravda1979\core\components\core\Action
 //            call_user_func($this->checkAccess, $this->id, $model);
 //        }
 
+        $label = $model->fullName;
+
         if (!$model->delete()) {
             Yii::$app->getSession()->addFlash('error', Html::errorSummary($model, ['header' => '']));
+        } else {
+            Yii::$app->getSession()->addFlash('success', Yii::t('app', 'Record "{label}" has been deleted successfully.', ['label' => $label]));
         }
 
         if (Yii::$app->getUser()->getReturnUrl() == Url::to(['view', 'id' => $id]))

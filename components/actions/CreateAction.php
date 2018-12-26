@@ -42,6 +42,8 @@ class CreateAction extends Action
             if (!$model->save(false)) {
                 Yii::$app->getSession()->addFlash('error', Html::errorSummary($model, ['header' => '']));
             } else {
+                $label = Html::a($model->fullName, ['view', 'id' => $model->primaryKey]);
+                Yii::$app->getSession()->addFlash('success', Yii::t('app', 'Record "{label}" has been created successfully.', ['label' => $label]));
                 return $this->controller->goBack(\yii\helpers\Url::to(['view', 'id' => $model->primaryKey()]));
             }
         }

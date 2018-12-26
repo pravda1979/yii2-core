@@ -37,6 +37,10 @@ class m181026_103535_translate extends Migration
                     'Active record' => 'Активная запись',
                     'The requested page does not exist.' => 'Запрашиваемая Вами страница не найдена.',
                     '... shown {count} items from {total} ...' => '... показано {count} записей из {total} ...',
+                    'Record "{label}" has been created successfully.' => 'Запись "{label}" была успешно создана.',
+                    'Record "{label}" has been updated successfully.' => 'Запись "{label}" была успешно отредактирована.',
+                    'Record "{label}" has been deleted successfully.' => 'Запись "{label}" была успешно удалена.',
+                    'Cache has been deleted successfully.' => 'Кэш был успешно очищен.',
                 ],
                 'LoginForm' => [
                     'LoginForm' => 'Форма входа',

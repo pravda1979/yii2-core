@@ -43,7 +43,9 @@ class UpdateAction extends \pravda1979\core\components\core\Action
             if (!$model->save(false)) {
                 Yii::$app->getSession()->addFlash('error', Html::errorSummary($model, ['header' => '']));
             } else {
-                return $this->controller->goBack(\yii\helpers\Url::to(['view', 'id' => $model->primaryKey()]));
+                $label = Html::a($model->fullName, ['view', 'id' => $model->primaryKey]);
+                Yii::$app->getSession()->addFlash('success', Yii::t('app', 'Record "{label}" has been updated successfully.', ['label' => $label]));
+                return $this->controller->goBack(\yii\helpers\Url::to(['view', 'id' => $model->primaryKey]));
             }
         }
 
