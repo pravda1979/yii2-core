@@ -46,8 +46,11 @@ class ActiveRecord extends \yii\db\ActiveRecord
     {
         if ($this->hasAttribute('name'))
             return $this->name;
-        if ($this->hasAttribute(static::primaryKey()))
-            return $this->{static::primaryKey()};
+
+        $pk = is_array(static::primaryKey()) && count(static::primaryKey()) == 1 ? implode('', static::primaryKey()) : null;
+        if (!empty($pk) && $this->hasAttribute($pk))
+            return $this->$pk;
+
         return 'Attribute name for "fullName" property not set!';
     }
 
