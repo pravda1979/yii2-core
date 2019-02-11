@@ -22,15 +22,13 @@ use yii\helpers\Html;
             <ul class="nav navbar-nav">
                 <li class="dropdown user user-menu">
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-                        <img src="<?= $directoryAsset ?>/img/user2-160x160.jpg" class="user-image" alt="User Image"/>
+                        <span class="fa fa-user"></span>
                         <span class="hidden-xs"><?= Yii::$app->user->isGuest ? Yii::t('app', 'Guest') : Yii::$app->user->identity->name ?></span>
                     </a>
                     <ul class="dropdown-menu">
                         <!-- User image -->
                         <li class="user-header">
-                            <img src="<?= $directoryAsset ?>/img/user2-160x160.jpg" class="img-circle"
-                                 alt="User Image"/>
-
+                            <span class="fa fa-4x fa-inverse fa-user"></span>
                             <p>
                                 <?= Yii::$app->user->isGuest ? Yii::t('app', 'Guest') : Yii::$app->user->identity->name ?>
                                 <small>
