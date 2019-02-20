@@ -190,7 +190,7 @@ class AuthItem extends \pravda1979\core\components\core\ActiveRecord
     {
         $result = $this->_childrenItems;
         if ($result === null) {
-            $result = $this->getChildren()->select(['name']);
+            $result = $this->getChildren()->select(['name'])->column();
             $this->_childrenItems = $result;
         }
         return $result;
