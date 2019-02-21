@@ -26,6 +26,7 @@ $this->params['breadcrumbs'][] = $this->title;
             'filterModel' => $searchModel,
             'layout' => "{items}\n{summary}\n{pager}",
             'columns' => [
+                ['class' => 'yii\grid\ActionColumn'],
                 // ['class' => 'yii\grid\SerialColumn'],
 
                 // 'id',
@@ -50,7 +51,6 @@ $this->params['breadcrumbs'][] = $this->title;
                 // 'created_at:datetime',
                 // 'updated_at:datetime',
 
-                ['class' => 'yii\grid\ActionColumn'],
             ],
         ]); ?>
     </div>

@@ -26,7 +26,7 @@ use pravda1979\core\models\User;
 
     </div>
     <div class="box-footer">
-        <?= Html::submitButton(Yii::t('Status', 'Save'), ['class' => 'btn btn-success btn-flat']) ?>
+        <?= Html::submitButton(Yii::t('Status', 'Save'), ['class' => 'btn btn-success btn-flat btn-block']) ?>
     </div>
     <?php ActiveForm::end(); ?>
 </div>

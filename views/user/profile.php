@@ -38,7 +38,7 @@ $this->params['breadcrumbs'][] = Yii::t('User', 'Updating profile');
         </div>
         <div class="box-footer">
             <?= $form->field($model, 'current_password', ['enableClientValidation' => false])->passwordInput() ?>
-            <?= Html::submitButton(Yii::t('User', 'Save profile'), ['class' => 'btn btn-success btn-flat']) ?>
+            <?= Html::submitButton(Yii::t('User', 'Save profile'), ['class' => 'btn btn-success btn-flat btn-block']) ?>
         </div>
         <?php ActiveForm::end(); ?>
     </div>

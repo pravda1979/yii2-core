@@ -28,7 +28,7 @@ $this->params['breadcrumbs'][] = $this->title;
 ]]); ?>
 
 <div class="backup-view box box-primary">
-    <div class="box-body table-responsive no-padding">
+    <div class="box-body table-responsive no-padding table-wrap">
         <?= DetailView::widget([
             'model' => $model,
             'attributes' => [

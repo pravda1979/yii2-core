@@ -56,7 +56,7 @@ use kartik\select2\Select2;
 
     </div>
     <div class="box-footer">
-        <?= Html::submitButton(Yii::t('User', 'Save'), ['class' => 'btn btn-success btn-flat']) ?>
+        <?= Html::submitButton(Yii::t('User', 'Save'), ['class' => 'btn btn-success btn-flat btn-block']) ?>
     </div>
     <?php ActiveForm::end(); ?>
 </div>

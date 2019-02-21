@@ -41,6 +41,7 @@ if ($generator->indexWidgetType === 'grid'):
     echo "        <?= " ?>GridView::widget([
             'dataProvider' => $dataProvider,
             <?= !empty($generator->searchModelClass) ? "'filterModel' => \$searchModel,\n            'layout' => \"{items}\\n{summary}\\n{pager}\",\n            'columns' => [\n" : "'layout' => \"{items}\\n{summary}\\n{pager}\",\n            'columns' => [\n"; ?>
+                ['class' => 'yii\grid\ActionColumn'],
                 // ['class' => 'yii\grid\SerialColumn'],
 
 <?php
@@ -64,7 +65,6 @@ if (($tableSchema = $generator->getTableSchema()) === false) {
 }
 ?>
 
-                ['class' => 'yii\grid\ActionColumn'],
             ],
         ]); ?>
 <?php else: ?>

@@ -79,3 +79,12 @@ ins {
 .nowrap {
     white-space: nowrap !important;
 }
+
+.table-wrap > .table > thead > tr > th,
+.table-wrap > .table > tbody > tr > th,
+.table-wrap > .table > tfoot > tr > th,
+.table-wrap > .table > thead > tr > td,
+.table-wrap > .table > tbody > tr > td,
+.table-wrap > .table > tfoot > tr > td {
+    white-space: normal;
+}

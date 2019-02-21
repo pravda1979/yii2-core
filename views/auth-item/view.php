@@ -18,7 +18,7 @@ $this->params['breadcrumbs'][] = $this->title;
 <?= \pravda1979\core\widgets\EntryMenu::widget(['template' => '{index}{create}{update}{delete}{backup}', 'model' => $model]); ?>
 
 <div class="auth-item-view box box-primary">
-    <div class="box-body table-responsive no-padding">
+    <div class="box-body table-responsive no-padding table-wrap">
         <?= DetailView::widget([
             'model' => $model,
             'attributes' => [

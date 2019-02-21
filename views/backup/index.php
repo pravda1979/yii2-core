@@ -27,6 +27,20 @@ $this->params['breadcrumbs'][] = $this->title;
             'filterModel' => $searchModel,
             'layout' => "{items}\n{summary}\n{pager}",
             'columns' => [
+                [
+                    'class' => 'yii\grid\ActionColumn', 'template' => '{view} {undo}', 'buttons' => [
+                        'undo' => function ($url, $model) {
+                            return Html::a(Html::icon('floppy-remove'), ['undo', 'id' => $model->id], [
+                                'title' => Yii::t('Backup', 'Undo changes'),
+                                'data' => [
+                                    'confirm' => Yii::t('Backup', 'Are you sure you want to undo this changes?'),
+                                    'method' => 'post',
+                                    'data-pjax' => 0,
+                                ],
+                            ]);
+                        },
+                    ]
+                ],
                 // ['class' => 'yii\grid\SerialColumn'],
 
                 // 'id',
@@ -70,20 +84,6 @@ $this->params['breadcrumbs'][] = $this->title;
 //                'created_at:datetime',
                 'updated_at:datetime',
 
-                [
-                    'class' => 'yii\grid\ActionColumn', 'template' => '{view} {undo}', 'buttons' => [
-                    'undo' => function ($url, $model) {
-                        return Html::a(Html::icon('floppy-remove'), ['undo', 'id' => $model->id], [
-                            'title' => Yii::t('Backup', 'Undo changes'),
-                            'data' => [
-                                'confirm' => Yii::t('Backup', 'Are you sure you want to undo this changes?'),
-                                'method' => 'post',
-                                'data-pjax' => 0,
-                            ],
-                        ]);
-                    },
-                ]
-                ],
             ],
         ]); ?>
     </div>

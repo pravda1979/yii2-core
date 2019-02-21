@@ -64,7 +64,7 @@ use pravda1979\core\models\Menu;
 
     </div>
     <div class="box-footer">
-        <?= Html::submitButton(Yii::t('Menu', 'Save'), ['class' => 'btn btn-success btn-flat']) ?>
+        <?= Html::submitButton(Yii::t('Menu', 'Save'), ['class' => 'btn btn-success btn-flat btn-block']) ?>
     </div>
     <?php ActiveForm::end(); ?>
 </div>
