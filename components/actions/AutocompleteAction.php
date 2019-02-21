@@ -31,7 +31,7 @@ class AutocompleteAction extends Action
         }
     }
 
-    public function run($term, array $params = [], $realOnly = true)
+    public function run($term, array $params = [])
     {
         /** @var ActiveRecord $className */
         $className = $this->modelClass;
@@ -41,8 +41,6 @@ class AutocompleteAction extends Action
 
             $qs = explode(" ", $term);
             $query = $className::getListQuery();
-            if ($realOnly)
-                $query->real();
             $query->andFilterWhere($params);
             $fullName = $className::getFullNameSql();
             foreach ($qs as $q) {
@@ -57,8 +55,11 @@ class AutocompleteAction extends Action
 
             if ($totalCount > $this->maxResultCount) {
                 array_unshift($results, [
-                    'id' => null,
-                    'label' => Yii::t('app', '... shown {count} items from {total} ...', ['count' => $this->maxResultCount, 'total' => $totalCount])
+                    'info' => [
+                        'shown' => $this->maxResultCount,
+                        'total' => $totalCount,
+                        'label' => Yii::t('app', '... shown {count} items from {total} ...', ['count' => $this->maxResultCount, 'total' => $totalCount])
+                    ],
                 ]);
             }
 
