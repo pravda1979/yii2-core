@@ -75,3 +75,7 @@ ins {
     font-size: 100%;
     margin-left: 3px;
 }
+
+.nowrap {
+    white-space: nowrap !important;
+}
