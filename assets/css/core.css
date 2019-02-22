@@ -96,3 +96,8 @@ ins {
     max-height: calc(100vh - 200px);
     overflow-y: auto;
 }
+
+div.required label.control-label:after {
+    content: " *";
+    color: red;
+}
