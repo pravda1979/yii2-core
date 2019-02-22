@@ -88,3 +88,11 @@ ins {
 .table-wrap > .table > tfoot > tr > td {
     white-space: normal;
 }
+
+.modal-dialog-scroll{
+    overflow-y: initial !important
+}
+.modal-body-scroll{
+    max-height: calc(100vh - 200px);
+    overflow-y: auto;
+}

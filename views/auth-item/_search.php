@@ -12,7 +12,7 @@ use pravda1979\core\models\User;
 
 <div class="auth-item-search">
     <div class="modal fade auth-item-modal-dialog search-modal-dialog" tabindex="-1" role="dialog">
-        <div class="modal-dialog modal-lg">
+        <div class="modal-dialog modal-dialog-scroll modal-lg">
 
             <?php $form = ActiveForm::begin([
                 'action' => ['index'],
@@ -43,7 +43,7 @@ use pravda1979\core\models\User;
                     <h4 class="modal-title"><?= Yii::t('AuthItem', 'Search') ?></h4>
                 </div>
 
-                <div class="modal-body">
+                <div class="modal-body modal-body-scroll">
 
                     <?= $form->field($model, 'name')->textInput(['maxlength' => true]) ?>
 
@@ -62,8 +62,8 @@ use pravda1979\core\models\User;
                 </div>
 
                 <div class="modal-footer">
-                    <?= Html::submitButton(Html::tag('span', Html::tag('span', ' ' . Yii::t('app', 'Find')), ['class' => 'fa fa-search']), ['class' => 'btn btn-primary']) ?>
-                    <?= Html::a(Html::tag('span', ' ' . Yii::t('app', 'Reset filter'), ['class' => 'fa fa-ban']), ['/' . Yii::$app->controller->route], ['class' => 'btn btn-warning', 'data-pjax' => 0]) ?>
+                    <?= Html::submitButton(Html::tag('span', '', ['class' => 'glyphicon glyphicon-search']) . ' ' . Yii::t('app', 'Find'), ['class' => 'btn btn-primary']) ?>
+                    <?= Html::a(Html::tag('span', '', ['class' => 'glyphicon glyphicon-ban-circle']) . ' ' . Yii::t('app', 'Reset filter'), ['/' . Yii::$app->controller->route], ['class' => 'btn btn-warning', 'data-pjax' => 0]) ?>
                     <button type="button" class="btn btn-default" data-dismiss="modal"><?=  Yii::t('app', 'Cancel') ?></button>
                 </div>
 

@@ -70,8 +70,8 @@ foreach ($generator->getColumnNames() as $attribute) {
                 </div>
 
                 <div class="modal-footer">
-                    <?= "<?= " ?>Html::submitButton(Html::tag('span', Html::tag('span', ' ' . Yii::t('app', 'Find')), ['class' => 'fa fa-search']), ['class' => 'btn btn-primary']) ?>
-                    <?= "<?= " ?>Html::a(Html::tag('span', ' ' . Yii::t('app', 'Reset filter'), ['class' => 'fa fa-ban']), ['/' . Yii::$app->controller->route], ['class' => 'btn btn-warning', 'data-pjax' => 0]) ?>
+                    <?= "<?= " ?>Html::submitButton(Html::tag('span', '', ['class' => 'glyphicon glyphicon-search']) . ' ' . Yii::t('app', 'Find'), ['class' => 'btn btn-primary']) ?>
+                    <?= "<?= " ?>Html::a(Html::tag('span', '', ['class' => 'glyphicon glyphicon-ban-circle']) . ' ' . Yii::t('app', 'Reset filter'), ['/' . Yii::$app->controller->route], ['class' => 'btn btn-warning', 'data-pjax' => 0]) ?>
                     <button type="button" class="btn btn-default" data-dismiss="modal"><?= "<?= " ?> Yii::t('app', 'Cancel') ?></button>
                 </div>
 
