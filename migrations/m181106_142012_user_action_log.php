@@ -50,7 +50,7 @@ class m181106_142012_user_action_log extends Migration
                     'login' => 'Авторизация',
                     'logout' => 'Выход',
                     'delete-cache' => 'Очистка кеша',
-                    'autocomplete' =>'Автокомплит',
+                    'autocomplete' => 'Автокомплит',
                 ],
             ],
         ];
