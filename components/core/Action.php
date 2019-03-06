@@ -9,6 +9,7 @@
 namespace pravda1979\core\components\core;
 
 use Yii;
+use yii\base\Model;
 use yii\web\NotFoundHttpException;
 
 class Action extends \yii\base\Action
@@ -27,6 +28,10 @@ class Action extends \yii\base\Action
      */
 //    public $checkAccess;
 
+    /**
+     * @var string the scenario to be assigned to the new model before it is validated and saved.
+     */
+    public $scenario = Model::SCENARIO_DEFAULT;
 
     /**
      * Finds the Status model based on its primary key value.

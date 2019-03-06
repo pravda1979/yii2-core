@@ -12,12 +12,13 @@ use pravda1979\core\components\core\Action;
 use pravda1979\core\components\core\ActiveRecord;
 use Yii;
 use yii\base\InvalidConfigException;
+use yii\base\Model;
 use yii\helpers\Html;
 
 class CreateAction extends Action
 {
     public $modelClass = '';
-
+    public $scenario = 'create';
     /**
      * {@inheritdoc}
      */
@@ -32,7 +33,10 @@ class CreateAction extends Action
     public function run()
     {
         /** @var ActiveRecord $model */
-        $model = new $this->modelClass;
+        $model = new $this->modelClass([
+            'scenario' => $this->scenario,
+        ]);
+        $model->setDefaultValues();
 
 //        if ($this->checkAccess) {
 //            call_user_func($this->checkAccess, $this->id);

@@ -32,6 +32,14 @@ class ActiveRecord extends \yii\db\ActiveRecord
     }
 
     /**
+     * Set default values for model attributes
+     */
+    public function setDefaultValues()
+    {
+
+    }
+
+    /**
      * @inheritdoc
      */
     public static function getFullNameSql()

@@ -34,6 +34,7 @@ class UpdateAction extends \pravda1979\core\components\core\Action
         /** @var ActiveRecord $model */
 
         $model = $this->findModel($id);
+//        $model->setDefaultValues();
 
 //        if ($this->checkAccess) {
 //            call_user_func($this->checkAccess, $this->id, $model);
