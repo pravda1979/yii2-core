@@ -443,6 +443,7 @@ class User extends \pravda1979\core\components\core\ActiveRecord implements Iden
         foreach ($this->userRights as $right) {
             $rightsArray[] = Yii::t('role', $right);
         }
+        asort($rightsArray);
         return implode(', ', $rightsArray);
     }
 
