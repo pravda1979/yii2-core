@@ -50,7 +50,6 @@ For Advanced Template
 Add to `console/config/main.php`
 
     'controllerMap' => [
-        //...
         'migrate' => [
             'class' => 'yii\console\controllers\MigrateController',
             'templateFile' => '@pravda1979/core/components/migration/template.php',
@@ -60,29 +59,31 @@ Add to `console/config/main.php`
                 '@yii/rbac/migrations',
             ],
         ],
-        //...
     ],    
 
 Add to `backend/config/main.php`
 
     'components' => [
-        //...
+        'view' => [
+            'theme' => [
+                'pathMap' => [
+                    '@app/views' => '@pravda1979/core/views',
+                    '@pravda1979/core/views' => '@app/views',
+                ],
+            ],
+        ],
         'user' => [
             // 'identityClass' => 'pravda1979\core\models\User', //this value setted by default from Module, remove it in config or change
             // 'enableAutoLogin' => true, //this value setted by default from Module, remove it in config or change
             'identityCookie' => ['name' => '_identity-backend', 'httpOnly' => true],
         ],
-        //...
     ],
-    //...
 
 Add to `common/config/main.php`
 
     'language' => 'ru-RU',
     'sourceLanguage' => 'en-US',
-    //...
     'modules' => [
-    //...
         'core' => [
             'class' => 'pravda1979\core\Module',
             // Change table names if you need, by default = "core_(table_name)"
@@ -103,9 +104,7 @@ Add to `common/config/main.php`
             //     'session' => 'core_session',
             // ],
         ],
-    //...
     ],
-    //...
         
 
 For Basic Template
@@ -115,9 +114,7 @@ Add to `config/web.php`
 
     'language' => 'ru-RU',
     'sourceLanguage' => 'en-US',
-    //...
     'modules' => [
-    //...
         'core' => [
             'class' => 'pravda1979\core\Module',
             // Change table names if you need, by default = "core_(table_name)"
@@ -138,30 +135,21 @@ Add to `config/web.php`
             //     'session' => 'core_session',
             // ],
         ],
-    //...
     ],
-    //...
     
 Add to `config/console.php`
 
-    //...
     'modules' => [
         'core' => [
             'class' => 'pravda1979\core\Module',
         ],
     ],
-    //...
     'components' => [
-    //...
         'user' => [
             'identityClass' => 'pravda1979\core\models\User',
-            //...
         ],
-    //...
     ],
-    //...
     'controllerMap' => [
-        //...
         'migrate' => [
             'class' => 'yii\console\controllers\MigrateController',
             'templateFile' => '@pravda1979/core/components/migration/template.php',
@@ -171,9 +159,7 @@ Add to `config/console.php`
                 '@yii/rbac/migrations',
             ],
         ],
-        //...
     ],    
-    //...
 
 
 

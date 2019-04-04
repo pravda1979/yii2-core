@@ -64,15 +64,19 @@ class Bootstrap implements BootstrapInterface
                     'itemChildTable' => $module->tableNames['auth_item_child'],
                     'assignmentTable' => $module->tableNames['auth_assignment'],
                 ]);
-            } else if ($authManager instanceof ManagerInterface) {
-                Yii::$app->set('authManager', [
-                    'ruleTable' => $module->tableNames['auth_rule'],
-                    'itemTable' => $module->tableNames['auth_item'],
-                    'itemChildTable' => $module->tableNames['auth_item_child'],
-                    'assignmentTable' => $module->tableNames['auth_assignment'],
-                ]);
-            } else if (!($authManager instanceof ManagerInterface)) {
-                throw new InvalidConfigException('You have wrong authManager configuration');
+            } else {
+                if ($authManager instanceof ManagerInterface) {
+                    Yii::$app->set('authManager', [
+                        'ruleTable' => $module->tableNames['auth_rule'],
+                        'itemTable' => $module->tableNames['auth_item'],
+                        'itemChildTable' => $module->tableNames['auth_item_child'],
+                        'assignmentTable' => $module->tableNames['auth_assignment'],
+                    ]);
+                } else {
+                    if (!($authManager instanceof ManagerInterface)) {
+                        throw new InvalidConfigException('You have wrong authManager configuration');
+                    }
+                }
             }
 
             if (Yii::$app instanceof ConsoleApplication) {
@@ -85,7 +89,10 @@ class Bootstrap implements BootstrapInterface
                     'sourceMessageTable' => '{{%' . $module->tableNames['source_message'] . '}}',
                     'messageTable' => '{{%' . $module->tableNames['message'] . '}}',
                     'forceTranslation' => true,
-                    'on missingTranslation' => ['pravda1979\core\components\core\TranslationEventHandler', 'addMissingTranslation'],
+                    'on missingTranslation' => [
+                        'pravda1979\core\components\core\TranslationEventHandler',
+                        'addMissingTranslation'
+                    ],
                     'enableCaching' => true,
                 ];
 
@@ -95,7 +102,10 @@ class Bootstrap implements BootstrapInterface
                         'sourceMessageTable' => '{{%' . $module->tableNames['source_message'] . '}}',
                         'messageTable' => '{{%' . $module->tableNames['message'] . '}}',
                         'forceTranslation' => true,
-                        'on missingTranslation' => ['pravda1979\core\components\core\TranslationEventHandler', 'addMissingTranslation'],
+                        'on missingTranslation' => [
+                            'pravda1979\core\components\core\TranslationEventHandler',
+                            'addMissingTranslation'
+                        ],
                         'enableCaching' => true,
                     ];
                 }
@@ -125,18 +135,9 @@ class Bootstrap implements BootstrapInterface
                 //Set LTE Admin theme
                 if (Yii::$app->params['app_Theme'] == 'lteadmin') {
                     LTEAdminAsset::register(Yii::$app->getView());
-//                Yii::$app->layoutPath = Yii::getAlias('@pravda1979/core/views/layouts');
-//                Yii::$app->layout = 'main';
 
-                    Yii::$app->view->theme = new Theme([
-//                    'basePath' => '@webroot/themes/' . $theme,
-//                    'baseUrl' => '@web/themes/' . $theme,
-                        'pathMap' => [
-                            '@app/views' => '@pravda1979/core/views',
-//                        '@common/modules' => '@app/themes/' . $theme . '/modules',
-//                        '@common/widgets' => '@app/themes/' . $theme . '/widgets',
-//                        'baseUrl' => '@web/../themes/' . $theme,
-                        ]]);
+                    Yii::$app->view->theme->pathMap = ArrayHelper::merge(['@app/views' => '@pravda1979/core/views'],
+                        Yii::$app->view->theme->pathMap);
 
                     Yii::$app->assetManager->bundles['dmstr\web\AdminLteAsset'] = [
                         'skin' => ArrayHelper::getValue(Yii::$app->params, 'app_LTEAdminSkin', 'skin-blue'),
