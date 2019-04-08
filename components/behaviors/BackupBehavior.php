@@ -14,8 +14,6 @@ use pravda1979\core\components\core\ActiveRecord;
 use Yii;
 
 use yii\base\Behavior;
-use yii\base\ErrorException;
-use yii\base\Exception;
 use yii\helpers\ArrayHelper;
 use yii\helpers\Html;
 use yii\helpers\Inflector;
@@ -46,7 +44,8 @@ class BackupBehavior extends Behavior
         /** @var ActiveRecord $model */
         $model = $this->owner;
         $this->_oldModel = $model::findOne($model->{$this->id_field});
-        $dirtyAttributes = array_merge($model->dirtyAttributes, array_diff_key($model->backupLabels, $model->attributes));
+        $dirtyAttributes = array_merge($model->dirtyAttributes,
+            array_diff_key($model->backupLabels, $model->attributes));
         $this->getBackupAttributes($dirtyAttributes);
     }
 
@@ -146,6 +145,7 @@ class BackupBehavior extends Behavior
     public function createBackup($changedAttributes = [])
     {
         if (!empty($changedAttributes)) {
+
             /** @var \pravda1979\core\components\core\ActiveRecord $model */
             $model = $this->owner;
             $model->refresh();
@@ -157,14 +157,16 @@ class BackupBehavior extends Behavior
             $backup->record_short_class = Inflector::id2camel(StringHelper::basename($model::className()));
             $backup->save();
 
+            $newAttributes = $this->getBackupAttributes($model->getAttributes(array_keys($changedAttributes)), true);
+
             foreach ($changedAttributes as $attribute => $fields) {
                 $backupAttribute = new BackupAttribute();
                 $backupAttribute->backup_id = $backup->id;
                 $backupAttribute->attribute = $attribute;
                 $backupAttribute->old_value = $fields['old_value'];
-                $backupAttribute->new_value = $fields['new_value'];
                 $backupAttribute->old_label = $fields['old_label'];
-                $backupAttribute->new_label = $fields['new_label'];
+                $backupAttribute->new_value = ArrayHelper::getValue($newAttributes, "$attribute.new_value");
+                $backupAttribute->new_label = ArrayHelper::getValue($newAttributes, "$attribute.new_label");
                 $backupAttribute->save();
             }
         }
@@ -178,11 +180,13 @@ class BackupBehavior extends Behavior
         $model = $backup->getParentModel();
 
         foreach ($backup->getOldValues() as $attribute => $value) {
-            if (!$model->canSetProperty($attribute))
+            if (!$model->canSetProperty($attribute)) {
                 continue;
+            }
 
-            if ((($unserializedValue = @unserialize($value)) !== false || $value == 'b:0;'))
+            if ((($unserializedValue = @unserialize($value)) !== false || $value == 'b:0;')) {
                 $value = $unserializedValue;
+            }
 
             $model->$attribute = $value;
         }
