@@ -40,8 +40,7 @@ class AutocompleteAction extends Action
             $term = trim(preg_replace('/\s+/', ' ', $term));
 
             $qs = explode(" ", $term);
-            $query = $className::getListQuery();
-            $query->andFilterWhere($params);
+            $query = $className::getListQuery($params);
             $fullName = $className::getFullNameSql();
             foreach ($qs as $q) {
                 $query->andWhere(['like', $fullName, "$q"]);
