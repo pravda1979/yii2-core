@@ -118,7 +118,7 @@ class BackupBehavior extends Behavior
                 ((is_array($model->$attribute) && !empty($model->$attribute)) ? serialize($model->$attribute) : $model->$attribute) :
                 $newLabel;
 
-            if ($newValue != $oldValue || $isDeleting) {
+            if (!(empty($newValue) && empty($oldValue)) && $newValue != $oldValue || $isDeleting) {
                 $result[$attribute] = [
                     'old_value' => $oldValue,
                     'new_value' => $newValue,
