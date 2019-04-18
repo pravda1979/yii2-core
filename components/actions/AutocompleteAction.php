@@ -31,7 +31,7 @@ class AutocompleteAction extends Action
         }
     }
 
-    public function run($term, array $params = [])
+    public function run($term='', array $params = [])
     {
         /** @var ActiveRecord $className */
         $className = $this->modelClass;

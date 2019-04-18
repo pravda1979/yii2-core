@@ -11,7 +11,7 @@ use pravda1979\core\models\User;
 ?>
 
 <div class="auth-item-search">
-    <div class="modal fade auth-item-modal-dialog search-modal-dialog" tabindex="-1" role="dialog">
+    <div class="modal fade auth-item-modal-dialog search-modal-dialog" role="dialog">
         <div class="modal-dialog modal-dialog-scroll modal-lg">
 
             <?php $form = ActiveForm::begin([

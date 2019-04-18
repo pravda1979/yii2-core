@@ -4,6 +4,7 @@ namespace pravda1979\core\components\core;
 
 use Yii;
 use pravda1979\core\models\Status;
+use yii\helpers\ArrayHelper;
 
 class ActiveQuery extends \yii\db\ActiveQuery
 {
@@ -57,5 +58,67 @@ class ActiveQuery extends \yii\db\ActiveQuery
     public function one($db = null)
     {
         return parent::one($db);
+    }
+
+    /**
+     * @return string
+     */
+    public function getFullNameSql()
+    {
+        $class = $this->modelClass;
+        return $class::getFullNameSql();
+    }
+
+    /**
+     * @param array $attributes
+     * @return array
+     */
+    public function getDroupDownAttributes()
+    {
+        return ['id' => 'id', 'text' => $this->getFullNameSql()];
+    }
+
+    /**
+     * @return array|Status[]
+     */
+    public function asDropDownList()
+    {
+        return $this
+            ->select($this->getDroupDownAttributes())
+            ->real()
+            ->asArray()
+            ->all();
+    }
+
+    /**
+     * @param array $params
+     * @return $this
+     */
+    public function addWhereParams($params = [])
+    {
+        if ($oldId = ArrayHelper::getValue($params, '::OLD_ID')) {
+            $this->orWhere(['id' => $oldId]);
+            unset($params['::OLD_ID']);
+        }
+        if (!empty($params)) {
+            $this->andWhere($params);
+        }
+
+        return $this;
+    }
+
+    /**
+     * @param string $term
+     * @return $this
+     */
+    public function addTerm($term = '')
+    {
+        $term = trim(preg_replace('/\s+/', ' ', $term));
+        $qs = explode(" ", $term);
+        $text = $this->getFullNameSql();
+        foreach ($qs as $q) {
+            $this->andWhere(['like', $text, "$q"]);
+        }
+        return $this;
     }
 }

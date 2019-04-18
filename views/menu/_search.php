@@ -12,7 +12,7 @@ use pravda1979\core\models\Menu;
 ?>
 
 <div class="menu-search">
-    <div class="modal fade menu-modal-dialog search-modal-dialog" tabindex="-1" role="dialog">
+    <div class="modal fade menu-modal-dialog search-modal-dialog" role="dialog">
         <div class="modal-dialog modal-dialog-scroll modal-lg">
 
             <?php $form = ActiveForm::begin([

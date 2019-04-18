@@ -52,7 +52,7 @@ class DataController extends BackendController
                 'modelClass' => $this::modelClass,
             ],
             'autocomplete' => [
-                'class' => 'pravda1979\core\components\actions\AutocompleteAction',
+                'class' => 'pravda1979\core\components\actions\AutocompleteTextAction',
                 'modelClass' => $this::modelClass,
                 'maxResultCount' => 100,
             ],

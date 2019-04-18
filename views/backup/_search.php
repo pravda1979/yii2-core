@@ -12,7 +12,7 @@ use pravda1979\core\models\UserActionLog;
 ?>
 
 <div class="backup-search">
-    <div class="modal fade backup-modal-dialog search-modal-dialog" tabindex="-1" role="dialog">
+    <div class="modal fade backup-modal-dialog search-modal-dialog" role="dialog">
         <div class="modal-dialog modal-dialog-scroll modal-lg">
 
             <?php $form = ActiveForm::begin([
