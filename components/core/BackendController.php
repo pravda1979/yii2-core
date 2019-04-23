@@ -44,7 +44,13 @@ class BackendController extends Controller
     public function afterAction($action, $result)
     {
         // Remember current url for goBack() function after create/update/delete record
-        if (!Yii::$app->request->isAjax && !$action instanceof Action && !in_array($action->getUniqueId(), ['core/default/delete-cache', 'core/options/index', 'core/user/profile'])) {
+        if (!Yii::$app->request->isAjax && !$action instanceof Action && !in_array($action->getUniqueId(), [
+                'core/default/delete-cache',
+                'core/options/index',
+                'core/user/profile',
+                'trade-object/create',
+                'trade-object/update',
+            ])) {
             Url::remember();
         }
 
