@@ -14,7 +14,18 @@ $this->params['breadcrumbs'][] = ['label' => Yii::t('User', 'Users'), 'url' => [
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 
-<?= \pravda1979\core\widgets\EntryMenu::widget(['template' => '{index}{create}{update}{delete}{backup}', 'model' => $model]); ?>
+<?= \pravda1979\core\widgets\EntryMenu::widget(['template' => '{index}{create}{update}{delete}{backup}{send-new-password}', 'model' => $model, 'buttons' => [
+    'send-new-password' => ['label' => \yii\bootstrap\Html::icon('envelope'), 'url' => ['send-new-password', 'id' => $model->id],
+        'linkOptions' => [
+            'title' => Yii::t('User', 'Send New Password'),
+            'data' => [
+                'confirm' => Yii::t('User', 'Are you sure you want to generate new password for this user?'),
+                'method' => 'post',
+                'data-pjax' => 0,
+            ],
+        ]
+    ],
+]]); ?>
 
 <div class="user-view box box-primary">
     <div class="box-body table-responsive no-padding table-wrap">

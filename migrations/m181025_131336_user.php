@@ -21,6 +21,7 @@ class m181025_131336_user extends Migration
         'User: editor' => [
             'create',
             'update',
+            'send-new-password',
         ],
         'User: admin' => [
             'delete',
@@ -60,6 +61,9 @@ class m181025_131336_user extends Migration
                     'Incorrect current password' => 'Неверно указан Ваш текущий пароль',
                     'Updating profile' => 'Редактирование профиля',
                     'Save profile' => 'Сохранить профиль',
+                    'Are you sure you want to generate new password for this user?' => 'Вы уверены, что хотите сгенерировать новый пароль для этого пользователя?',
+                    'Send New Password' => 'Выслать новый пароль',
+                    'For user "{label}" has been generated new password successfully.' => 'Для пользователя "{label}" был сгенерирован новый пароль и успешно отправлен на email.',
                 ],
                 'actions' => [
                     'profile' => 'Профайл',

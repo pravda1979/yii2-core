@@ -60,9 +60,12 @@ class User extends \pravda1979\core\components\core\ActiveRecord implements Iden
     public function rules()
     {
         return [
-            [['username', 'auth_key', 'password_hash', 'password_reset_token', 'email', 'name', 'note'], StringFilter::className()],
+            [
+                ['username', 'auth_key', 'password_hash', 'password_reset_token', 'email', 'name', 'note'],
+                StringFilter::className()
+            ],
             [['password_reset_token', 'name', 'note', 'updated_at'], 'default', 'value' => null],
-            [['username', 'auth_key', 'password_hash', 'email', 'user_state'], 'required'],
+            [['username', 'email', 'user_state', 'name'], 'required'],
             [['user_state', 'status_id', 'user_id'], 'integer'],
             [['note'], 'string'],
             [['created_at', 'updated_at'], 'safe'],
@@ -72,8 +75,20 @@ class User extends \pravda1979\core\components\core\ActiveRecord implements Iden
             [['username'], 'unique'],
             [['email'], 'unique'],
             [['password_reset_token'], 'unique'],
-            [['status_id'], 'exist', 'skipOnError' => true, 'targetClass' => Status::className(), 'targetAttribute' => ['status_id' => 'id']],
-            [['user_id'], 'exist', 'skipOnError' => true, 'targetClass' => User::className(), 'targetAttribute' => ['user_id' => 'id']],
+            [
+                ['status_id'],
+                'exist',
+                'skipOnError' => true,
+                'targetClass' => Status::className(),
+                'targetAttribute' => ['status_id' => 'id']
+            ],
+            [
+                ['user_id'],
+                'exist',
+                'skipOnError' => true,
+                'targetClass' => User::className(),
+                'targetAttribute' => ['user_id' => 'id']
+            ],
 
             [['password', 'password_repeat', 'current_password', 'userRights'], 'safe'],
             ['password', 'compare', 'on' => ['create', 'update', 'profile'], 'compareAttribute' => 'password_repeat'],
@@ -81,6 +96,18 @@ class User extends \pravda1979\core\components\core\ActiveRecord implements Iden
             ['current_password', 'validateCurrentPassword', 'on' => 'profile'],
             [['name', 'email', 'current_password'], 'required', 'on' => 'profile'],
         ];
+    }
+
+    /**
+     * Заполняем значения по умолчанию
+     */
+    public function setDefaultValues()
+    {
+        if ($this->scenario == 'create') {
+            if (empty($this->user_state)) {
+                $this->user_state = self::STATE_ACTIVE;
+            }
+        }
     }
 
     /**
@@ -321,8 +348,9 @@ class User extends \pravda1979\core\components\core\ActiveRecord implements Iden
      */
     public function setUserRights($rights)
     {
-        if (empty($rights))
+        if (empty($rights)) {
             $rights = [];
+        }
         $rights = is_array($rights) ? $rights : [$rights];
         sort($rights);
         $this->_userRights = $rights;
@@ -356,8 +384,9 @@ class User extends \pravda1979\core\components\core\ActiveRecord implements Iden
         foreach ($this->getUserRights(true) as $right) {
             if (!in_array($right, $this->_userRights) && $authManager->getAssignment($right, $this->id) != null) {
                 $role = $authManager->getRole($right);
-                if ($role !== null)
+                if ($role !== null) {
                     $authManager->revoke($role, $this->id);
+                }
             }
         }
 
@@ -365,8 +394,9 @@ class User extends \pravda1979\core\components\core\ActiveRecord implements Iden
         foreach ($this->_userRights as $right) {
             $role = $authManager->getRole($right);
             if ($role !== null) {
-                if ($authManager->getAssignment($role->name, $this->id) === null)
+                if ($authManager->getAssignment($role->name, $this->id) === null) {
                     $authManager->assign($role, $this->id);
+                }
             }
         }
 
@@ -382,8 +412,35 @@ class User extends \pravda1979\core\components\core\ActiveRecord implements Iden
     {
         parent::afterSave($insert, $changedAttributes);
 
-        if ($this->scenario != 'profile')
+        if ($this->scenario != 'profile') {
             $this->assignUserRights();
+        }
+
+        if ($insert) {
+            $this->sendUserInfo();
+        }
+    }
+
+    /**
+     *
+     */
+    public function sendUserInfo()
+    {
+        /** @var \yii\mail\BaseMailer $mailer */
+        $mailer = Yii::$app->mailer;
+        $mailer->getView()->theme = Yii::$app->view->theme;
+
+        $messages[] = Yii::$app
+            ->mailer
+            ->compose(
+                ['html' => 'register-html'/*, 'text' => 'register-text'*/],
+                ['model' => $this]
+            )
+            ->setFrom([Yii::$app->params['robotEmail'] => Yii::t('app', 'App Name')])
+            ->setTo($this->email)
+            ->setSubject('Регистрация в системе "' . Yii::t('app', 'App Name') . '"');
+
+        Yii::$app->mailer->sendMultiple($messages);
     }
 
     /**
@@ -391,12 +448,24 @@ class User extends \pravda1979\core\components\core\ActiveRecord implements Iden
      */
     public function beforeSave($insert)
     {
-        if (!parent::beforeSave($insert))
+        if (!parent::beforeSave($insert)) {
             return false;
+        }
+
+        if ($this->isNewRecord) {
+            $this->createNewPassword();
+        }
 
         $this->forceReLogin();
 
         return true;
+    }
+
+    public function createNewPassword()
+    {
+        $this->password = Yii::$app->security->generateRandomString(8);
+        $this->password_repeat = $this->password;
+        $this->password_hash = Yii::$app->security->generatePasswordHash($this->password);
     }
 
     /**
@@ -410,19 +479,24 @@ class User extends \pravda1979\core\components\core\ActiveRecord implements Iden
             $this->password_hash = Yii::$app->security->generatePasswordHash($this->password);
             $requireReLogin = true;
         }
-        if (array_key_exists('username', $this->dirtyAttributes))
+        if (array_key_exists('username', $this->dirtyAttributes)) {
             $requireReLogin = true;
-        if (array_key_exists('user_state', $this->dirtyAttributes))
+        }
+        if (array_key_exists('user_state', $this->dirtyAttributes)) {
             $requireReLogin = true;
-        if (array_key_exists('fixed_status_id', $this->dirtyAttributes))
+        }
+        if (array_key_exists('fixed_status_id', $this->dirtyAttributes)) {
             $requireReLogin = true;
+        }
 
         // If need re-login
         if ($requireReLogin) {
             $this->generateAuthKey();
             // Delete user session
-            if (Yii::$app->session instanceof DbSession)
-                Yii::$app->db->createCommand()->delete(Yii::$app->session->sessionTable, ['user_id' => $this->id])->execute();
+            if (Yii::$app->session instanceof DbSession) {
+                Yii::$app->db->createCommand()->delete(Yii::$app->session->sessionTable,
+                    ['user_id' => $this->id])->execute();
+            }
         }
     }
 

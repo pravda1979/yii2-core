@@ -31,6 +31,7 @@ class UserController extends DataController
                 'class' => VerbFilter::className(),
                 'actions' => [
                     'logout' => ['post'],
+                    'send-new-password' => ['post'],
                 ],
             ],
         ]);
@@ -90,5 +91,17 @@ class UserController extends DataController
         return $this->render('profile', [
             'model' => $model,
         ]);
+    }
+
+    public function actionSendNewPassword($id){
+        $model = User::findOne($id);
+        $model->scenario = 'update';
+        $model->createNewPassword();
+        $model->save();
+        $model->sendUserInfo();
+        $label = Html::a($model->fullName, ['view', 'id' => $model->primaryKey]);
+        Yii::$app->getSession()->addFlash('success',
+            Yii::t('User', 'For user "{label}" has been generated new password successfully.', ['label' => $label]));
+        return $this->goBack();
     }
 }

@@ -5,6 +5,7 @@ namespace pravda1979\core\models;
 use function Symfony\Component\Debug\Tests\testHeader;
 use Yii;
 use pravda1979\core\components\validators\StringFilter;
+use yii\db\Expression;
 use yii\helpers\ArrayHelper;
 
 /**
@@ -266,4 +267,18 @@ class AuthItem extends \pravda1979\core\components\core\ActiveRecord
 
         return true;
     }
+
+    public function beforeSave($insert)
+    {
+        if ($insert) {
+            $this->created_at = time();
+            $this->updated_at = time();
+        } else {
+            if (count($this->dirtyAttributes) > 0 && $this->hasAttribute('updated_at')) {
+                $this->updated_at = time();
+            }
+        }
+        return true;
+    }
+
 }

@@ -17,14 +17,16 @@ use kartik\select2\Select2;
 
         <?= $form->field($model, 'username')->textInput(['maxlength' => true]) ?>
 
-        <div class="row">
-            <div class="col-md-6">
-                <?= $form->field($model, 'password', ['enableClientValidation' => false])->passwordInput() ?>
+        <?php if (false) { ?>
+            <div class="row">
+                <div class="col-md-6">
+                    <?= $form->field($model, 'password', ['enableClientValidation' => false])->passwordInput() ?>
+                </div>
+                <div class="col-md-6">
+                    <?= $form->field($model, 'password_repeat', ['enableClientValidation' => false])->passwordInput() ?>
+                </div>
             </div>
-            <div class="col-md-6">
-                <?= $form->field($model, 'password_repeat', ['enableClientValidation' => false])->passwordInput() ?>
-            </div>
-        </div>
+        <?php } ?>
 
         <?php //echo $form->field($model, 'auth_key')->textInput(['maxlength' => true]) ?>
 
@@ -52,7 +54,7 @@ use kartik\select2\Select2;
                 'multiple' => true,
 
             ],
-        ]);?>
+        ]); ?>
 
     </div>
     <div class="box-footer">
