@@ -67,6 +67,7 @@ class m181025_131336_user extends Migration
                 ],
                 'actions' => [
                     'profile' => 'Профайл',
+                    'send-new-password' => 'Создание нового пароля',
                 ],
             ],
         ];

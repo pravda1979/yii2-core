@@ -507,7 +507,8 @@ class User extends \pravda1979\core\components\core\ActiveRecord implements Iden
     {
         return array_merge(parent::getBackupLabels(), [
             'user_state' => Yii::$app->formatter->asBoolean($this->user_state),
-            'userRights' => $this->userRightsAsString
+            'userRights' => $this->userRightsAsString,
+            'password_hash' => '********',
         ]);
     }
 
