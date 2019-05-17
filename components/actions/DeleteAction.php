@@ -10,6 +10,7 @@ namespace pravda1979\core\components\actions;
 
 use pravda1979\core\components\core\ActiveRecord;
 use Yii;
+use yii\base\Exception;
 use yii\base\InvalidConfigException;
 use yii\helpers\Html;
 use yii\helpers\Url;
@@ -42,7 +43,15 @@ class DeleteAction extends \pravda1979\core\components\core\Action
 
         $label = $model->fullName;
 
-        if (!$model->delete()) {
+        try {
+            $isDeleted = $model->delete();
+        } catch (Exception $e) {
+            $isDeleted = false;
+            Yii::$app->getSession()->addFlash('error', $e->getMessage());
+            return $this->controller->goBack(Url::to(['view', 'id' => $model->primaryKey]));
+        }
+
+        if (!$isDeleted) {
             Yii::$app->getSession()->addFlash('error', Html::errorSummary($model, ['header' => '']));
         } else {
             Yii::$app->getSession()->addFlash('success', Yii::t('app', 'Record "{label}" has been deleted successfully.', ['label' => $label]));
