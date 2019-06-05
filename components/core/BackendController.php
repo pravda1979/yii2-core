@@ -50,6 +50,8 @@ class BackendController extends Controller
                 'core/user/profile',
                 'trade-object/create',
                 'trade-object/update',
+                'firm/create',
+                'firm/update',
             ])) {
             Url::remember();
         }
