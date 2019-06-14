@@ -21,7 +21,7 @@ use pravda1979\core\models\User;
 
 <div class="<?= Inflector::camel2id(StringHelper::basename($generator->modelClass)) ?>-search">
     <div class="modal fade <?= Inflector::camel2id(StringHelper::basename($generator->modelClass)) ?>-modal-dialog search-modal-dialog" tabindex="-1" role="dialog">
-        <div class="modal-dialog modal-lg">
+        <div class="modal-dialog modal-dialog-scroll modal-lg">
 
             <?= "<?php " ?>$form = ActiveForm::begin([
                 'method' => 'get',
@@ -53,7 +53,7 @@ use pravda1979\core\models\User;
                     <h4 class="modal-title"><?= "<?= Yii::t('" . StringHelper::basename($generator->modelClass) . "', 'Search') ?>" ?></h4>
                 </div>
 
-                <div class="modal-body">
+                <div class="modal-body modal-body-scroll">
 
 <?php
 $count = 0;
