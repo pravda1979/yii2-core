@@ -147,6 +147,7 @@ class User extends \pravda1979\core\components\core\ActiveRecord implements Iden
             'password' => Yii::t('User', 'Password'),
             'password_repeat' => Yii::t('User', 'Password Repeat'),
             'current_password' => Yii::t('User', 'Current Password'),
+            'districtAdministrations' => Yii::t('User', 'District Administrations')
         ];
     }
 
@@ -505,11 +506,15 @@ class User extends \pravda1979\core\components\core\ActiveRecord implements Iden
      */
     public function getBackupLabels()
     {
-        return array_merge(parent::getBackupLabels(), [
+        $result = array_merge(parent::getBackupLabels(), [
             'user_state' => Yii::$app->formatter->asBoolean($this->user_state),
             'userRights' => $this->userRightsAsString,
             'password_hash' => '********',
         ]);
+        if ($this->hasMethod('getAssignedDistrictAdministrationsText')) {
+            $result['districtAdministrations'] = $this->getAssignedDistrictAdministrationsText();
+        }
+        return $result;
     }
 
     public function getUserRightsAsString()
