@@ -438,6 +438,7 @@ class User extends \pravda1979\core\components\core\ActiveRecord implements Iden
                 ['model' => $this]
             )
             ->setFrom([Yii::$app->params['robotEmail'] => Yii::t('app', 'App Name')])
+            ->setReplyTo(Yii::$app->params['replyToEmail'])
             ->setTo($this->email)
             ->setSubject('Регистрация в системе "' . Yii::t('app', 'App Name') . '"');
 
