@@ -17,6 +17,7 @@ use yii\web\NotFoundHttpException;
 class UpdateAction extends \pravda1979\core\components\core\Action
 {
     public $modelClass = '';
+    public $scenario = 'update';
 
     /**
      * {@inheritdoc}
@@ -34,6 +35,8 @@ class UpdateAction extends \pravda1979\core\components\core\Action
         /** @var ActiveRecord $model */
 
         $model = $this->findModel($id);
+        $model->scenario = $this->scenario;
+
 //        $model->setDefaultValues();
 
 //        if ($this->checkAccess) {

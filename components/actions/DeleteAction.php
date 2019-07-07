@@ -19,6 +19,7 @@ use yii\web\NotFoundHttpException;
 class DeleteAction extends \pravda1979\core\components\core\Action
 {
     public $modelClass = '';
+    public $scenario = 'delete';
 
     /**
      * {@inheritdoc}
@@ -36,6 +37,7 @@ class DeleteAction extends \pravda1979\core\components\core\Action
         /** @var ActiveRecord $model */
 
         $model = $this->findModel($id);
+        $model->scenario = $this->scenario;
 
 //        if ($this->checkAccess) {
 //            call_user_func($this->checkAccess, $this->id, $model);
