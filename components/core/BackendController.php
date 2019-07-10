@@ -36,26 +36,4 @@ class BackendController extends Controller
 
         return ArrayHelper::merge(parent::behaviors(), $result);
     }
-
-
-    /**
-     * @inheritdoc
-     */
-    public function afterAction($action, $result)
-    {
-        // Remember current url for goBack() function after create/update/delete record
-        if (!Yii::$app->request->isAjax && !$action instanceof Action && !in_array($action->getUniqueId(), [
-                'core/default/delete-cache',
-                'core/options/index',
-                'core/user/profile',
-                'trade-object/create',
-                'trade-object/update',
-                'firm/create',
-                'firm/update',
-            ])) {
-            Url::remember();
-        }
-
-        return parent::afterAction($action, $result);
-    }
 }
