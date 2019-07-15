@@ -88,7 +88,7 @@ class EntryMenu extends \yii\bootstrap\Widget
             $this->buttons[$name] = ['label' => Html::tag('span', '', ['class' => 'glyphicon glyphicon-ban-circle entry-menu-icon']) . Html::tag('span', Yii::t('app', 'Reset filter'), ['class' => 'visible-xs-inline entry-menu-label']), 'url' => ['/' . Yii::$app->controller->route],
                 'linkOptions' => [
                     'title' => Yii::t('app', 'Reset filter'),
-                    'data-pjax' => 1,
+                    'data-pjax' => 0,
                 ]
             ];
         }
