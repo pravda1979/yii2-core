@@ -21,7 +21,7 @@ class PhoneValidator extends Validator
         $message = Yii::t('PhoneValidator', 'Wrong phone format. Allowed formats: +38(XXX)XXX-XX-XX, +7(XXX)XXX-XX-XX or +8(XXX)XXX-XX-XX, где X - digit. Brackets, dashes and spaces are optional.');
         if ($this->multiple === true) {
             $arr = explode(',', trim($model->$attribute, ','));
-            $message .= ' '.  Yii::t('PhoneValidator', 'Phone numbers must be separated by commas.');
+            $message .= ' ' . Yii::t('PhoneValidator', 'Phone numbers must be separated by commas.');
         } else {
             $arr[] = $model->$attribute;
         }
@@ -51,5 +51,27 @@ class PhoneValidator extends Validator
         } else {
             return false;
         }
+    }
+
+    /**
+     * @param $phone
+     * @return string
+     */
+    public static function formatPhone($phone)
+    {
+        $phones = explode(',', $phone);
+
+        $result = '';
+        foreach ($phones as $phoneNumber) {
+            $number = trim(preg_replace('/[\s()-]/', '', $phoneNumber));
+            if (preg_match('/^\+(\d+)(\d{3})(\d{3})(\d{2})(\d{2})$/', $number, $matches)) {
+                $resultPhone = '+' . $matches[1] . '(' . $matches[2] . ')' . $matches[3] . '-' . $matches[4] . '-' . $matches[5];
+                if (!empty($result)) {
+                    $result .= ', ';
+                }
+                $result .= $resultPhone;
+            }
+        }
+        return $result;
     }
 }
